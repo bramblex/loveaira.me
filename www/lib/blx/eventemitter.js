@@ -1,5 +1,4 @@
 
-" require blxclass.js
 ;(function(BlxClass){
   'user script';
 

@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "express": "^4.12.3",
+    "express-session": "^1.11.2",
     "lodash": "^3.7.0",
     "mongoose": "^4.0.1",
     "morgan": "^1.5.3",

@@ -4,6 +4,7 @@ var app = express();
 var server = require('http').Server(app);
 var io = require('socket.io')(server);
 var logger = require('morgan');
+var session = require('express-session');
 
 var path = require('path')
 //var mongoose = require('mongoose');
@@ -11,13 +12,22 @@ var path = require('path')
 global.config = require('./config');
 global._ = require('lodash');
 
+//app.use(session({
+  //genid: function(req) {
+    //return genuuid();
+  //},
+  //secret: 'I am a keyboard cat',
+//}));
+
 app.use(logger());
 
 app.use('/', express.static(path.join(__dirname, 'www')));
 
-app.get('/api', function(req, res, next){
-  res.send('Api\'s here!');
-});
+var api_resource = express.Router();
+//api_resource.get('/user',);
+//api_resource.git('/post',);
+
+app.use('/api', api_resource);
 
 // soket.io
 io.on('connection', function(socket){
