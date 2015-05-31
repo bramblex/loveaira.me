@@ -53,25 +53,41 @@
 
   BlxTask.prototype.barrier = function barrier(){
     var tasks = Array(arguments);
-    var count = tasks.length;
-
-    var end = function(){};
 
     this.task(function(data, next){
+      var result = [];
+
+      tasks.forEach(function(task){
+        task(data, function(data){
+          result.push(data || null);
+          if (result.length === task.length)
+            next(result);
+        });
+      });
     });
 
     return this;
   };
 
-  BlxTask.prototype.subtask = function subtask(task){
-    var task = task.fork();
+  BlxTask.prototype.subtask = function subtask(subtask){
+    var subtask = subtask.fork();
+    this.task(function(data, next){
+      subtask.on('end', next);
+      subtask.start(data);
+    });
     return this;
   };
 
-  BlxTask.prototype.branch = function branch(task){
-    var task = task.fork();
+  BlxTask.prototype.branch = function branch(branch){
+    var branch = branch.fork();
+    this.task(function(data, next){
+      branch.start(data);
+      next();
+    });
     return this;
   };
+
+  window.BlxTask = BlxTask;
 
 })();
 
