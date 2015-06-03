@@ -6,7 +6,7 @@
 
     eval('var child = function '+ name +'(){\
          if (this === window){ \
-         return new arguments.callee();\
+          return new arguments.callee();\
          }\
          this.parent = this.prototype;\
          constructor.apply(this, arguments);}');
