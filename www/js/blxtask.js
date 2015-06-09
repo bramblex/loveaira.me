@@ -109,28 +109,13 @@
     this.excute(task);
   };
 
-  TaskSequence.prototype.barrier = function barrier(){
-
-    var args = Array.prototype.slice.call(arguments);
+  TaskSequence.prototype.barrier = function loop(condition, task){
+    this.excute(task);
     this.excute(function(data, next){
-
-      //var tasks = Array.prototype.slice.call(args);
-      //var result = [];
-      //if (tasks.length  === 0){
-        //next(data);
-        //return;
-      //}
-
-      //tasks.forEach(function(task){
-        //var task = Task(task);
-        //task.start(data)
-        //task.once('end', function(data, step){
-          //result.push(data);
-          //if(result.length === tasks.length)
-            //next(result);
-        //});
-      //});
-
+      if (!!condition(data))
+        next(data, -1);
+      else
+        next(data);
     });
   };
 

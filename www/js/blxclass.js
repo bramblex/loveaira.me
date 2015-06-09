@@ -50,8 +50,8 @@
 
   };
 
-  BlxClass.prototype.methond = function methond(_class, _arguments){
-  };
+  //BlxClass.prototype.methond = function methond(_class, _arguments){
+  //};
 
   //BlxClass.prototype.uper = function uper(_this, _class, _func){
     //_class.__parent__.prototype[_func].apply(
