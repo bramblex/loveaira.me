@@ -36,7 +36,7 @@
   BlxClass.prototype.parent = function parent(_this, _class){
 
     var parent = _class.__parent__ || _class.prototype.constructor;
-    if (typeof arguments[3] === 'string'){
+    if (typeof arguments[2] === 'string'){
       return parent.prototype[arguments[3]].apply(
         _this,
         arguments[3] || []
