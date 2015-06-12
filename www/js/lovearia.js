@@ -169,30 +169,52 @@
   //.start();
 
 
-  var t = 'a';
-  var s = Task();
-  s
-    .loop(function(i){
-      return i <= 100;
-    },
-      Task(function(i, next){
-        setTimeout(function(){
-          t = t + 't' + i;
-          console.log(t);
-          next(i+1);
-        }, 0);
-      })
-      )
-    .start(1);
+  //var t = 'a';
+  //var s = Task();
+  //s
+    //.loop(function(i){
+      //return i <= 100;
+    //},
+      //Task(function(i, next){
+        //setTimeout(function(){
+          //t = t + 't' + i;
+          //console.log(t);
+          //next(i+1);
+        //}, 0);
+      //})
+      //)
+    //.start(1);
 
-var t = 'a';
-var func = function(i, s){
-  if (i > s)
-    return;
-  setTimeout(function(){
-    t = t + 't' + i;
-    console.log(t);
-    func(i+1, s);
-  }, 0);
-};
+//var t = 'a';
+//var func = function(i, s){
+  //if (i > s)
+    //return;
+  //setTimeout(function(){
+    //t = t + 't' + i;
+    //console.log(t);
+    //func(i+1, s);
+  //}, 0);
+//};
 //func(1, 3);
+ 
+var Animal = BlxClass.extend('Animal', Object, function(name, sound){
+  this.name = name || null;  
+  this.sound = sound || null;
+});
+
+Animal.prototype.call = function(){
+  console.log(this.sound);
+};
+
+// 现在我希望定义一个doge类，继承自Animal
+var Doge = BlxClass.extend('Doge', Animal, function(name){
+  var sound = 'wang';
+  BlxClass.parent(this, Doge, [name, sound]); // 调用父类的构造函数
+});
+
+Doge.prototype.wang = BlxClass.alias('call');
+
+// 现在实例化一个doge对象
+var doge = Doge('peter'); // 有没有 new 都没关系，结果相同。
+doge.call(); // =>'wang'
+doge.wang(); // =>'wang'

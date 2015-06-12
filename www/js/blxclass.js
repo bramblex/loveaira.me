@@ -37,15 +37,15 @@
 
     var parent = _class.__parent__ || _class.prototype.constructor;
     if (typeof arguments[3] === 'string'){
-      parent.prototype[arguments[3]].apply(
+      return parent.prototype[arguments[3]].apply(
         _this,
-        arguments[4] || []
+        arguments[3] || []
       );
     }
     else{
-      parent.apply(
+      return parent.apply(
         _this, 
-        arguments[3] || []
+        arguments[2] || []
       );
     }
 
