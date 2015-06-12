@@ -26,7 +26,7 @@
     $('#loading_page').fadeOut();
     $('#layout').removeClass('hidden');
     //var LoveAria = {start: function(){console.log('LoveAria start!');}};
-    LoveAria.start();
+    //LoveAria.start();
   };
 
   LoadScript(libs, onReady, onProgress);

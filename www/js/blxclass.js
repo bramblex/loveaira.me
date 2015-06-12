@@ -35,30 +35,21 @@
 
   BlxClass.prototype.parent = function parent(_this, _class){
 
+    var parent = _class.__parent__ || _class.prototype.constructor;
     if (typeof arguments[3] === 'string'){
-      _class.__parent__.prototype[arguments[3]].apply(
+      parent.prototype[arguments[3]].apply(
         _this,
         arguments[4] || []
       );
     }
     else{
-      _class.__parent__.apply(
+      parent.apply(
         _this, 
         arguments[3] || []
       );
     }
 
   };
-
-  //BlxClass.prototype.methond = function methond(_class, _arguments){
-  //};
-
-  //BlxClass.prototype.uper = function uper(_this, _class, _func){
-    //_class.__parent__.prototype[_func].apply(
-      //_this,
-      //Array.prototype.slice.call(arguments, 3)
-    //);
-  //};
 
   window.BlxClass = new BlxClass();
 
