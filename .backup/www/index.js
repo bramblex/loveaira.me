@@ -1,5 +1,6 @@
 ;(function(){
 
+  window.s_tag = document.currentScript;
 
   var libs = [
     'js/zepto.js',

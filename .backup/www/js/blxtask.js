@@ -25,8 +25,8 @@
   });
 
   TaskUnit.prototype.start = function start(data){
-    //if(this.status === START)
-      //throw 'Task is aready ran'
+    if(this.status === START)
+      throw 'Task is aready ran'
     this.status = START;
 
     var data = data;
@@ -102,7 +102,7 @@
   TaskSequence.prototype.branch = function branch(condition, task){
     this.excute(function(data, next){
       if (!!condition(data))
-        next(data);
+        next(data, 1);
       else
         next(data, 2);
     });
@@ -115,7 +115,21 @@
       if (!!condition(data))
         next(data, -1);
       else
-        next(data);
+        next(data, 1);
+    });
+    return this;
+  };
+
+  TaskSequence.prototype.times = function times(i, task){
+    var i = i;
+    this.excute(task);
+    this.excute(function(data, next){
+      if (i > 0){
+        next(data, -1);
+        i--;
+      }
+      else
+        next(data, 1);
     });
     return this;
   };

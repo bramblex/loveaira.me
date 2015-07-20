@@ -24,13 +24,13 @@
     script.async = false;
     script.type = 'text/javascript'
     script.charset = 'utf-8'
-    head.insertBefore(script, head.firstChild);
 
     script.onload = script.onerror = function () {
       script.onload = script.onerror = null;
       _LoadScript(urls.slice(1), callback, progress, source);
     };
 
+    head.insertBefore(script, head.firstChild);
     if (!!progress)
       progress(urls[0], (source.length-urls.length+1), source.length);
   };

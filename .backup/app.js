@@ -1,3 +1,4 @@
+#!/usr/local/bin/node
 
 var express = require('express');
 var app = express();
@@ -21,6 +22,11 @@ global._ = require('lodash');
 
 app.use(logger());
 
+//app.use('/', function(res, req, next){
+  //setTimeout(function(){
+    //next();
+  //}, 500);
+//});
 app.use('/', express.static(path.join(__dirname, 'www')));
 
 var api_resource = express.Router();

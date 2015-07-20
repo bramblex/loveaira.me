@@ -18,12 +18,76 @@
     //.excute()
     //.excute();
 
+
+//var Model = Task(function(data, next){
+  //console.log('模型任务开始');
+  //setTimeout(function(){
+    //console.log('模型任务结束');
+    //next(data);
+  //}, 0);
+//});
+
+//var View = Task(function(data, next){
+  //console.log('视图任务开始');
+  //setTimeout(function(){
+    //console.log('视图任务结束');
+    //next(data);
+  //}, 0);
+//});
+
+//var ViewModel = Task();
+//ViewModel
+  //.excute(Task(function(data, next){
+    //console.log('视图模型任务开始');
+    //next(data);
+  //}))
+  //.excute(Model)
+  //.excute(Task(function(data, next){
+    //console.log('视图模型任务结束');
+    //next(data);
+  //}));
+
+//var Router = Task(function(data, next){
+  //console.log('路由任务开始');
+  //setTimeout(function(){
+    //console.log('路由任务结束');
+    //next(data);
+  //}, 0);
+//});
+
+//var Dispatcher = Task();
+//Dispatcher
+  //.excute(Task(function(data, next){
+    //console.log('分发器任务开始');
+    //next(data);
+  //}))
+  //.excute(ViewModel)
+  //.excute(Task(function(data, next){
+    //console.log('分发器任务结束');
+    //next(data);
+  //}));
+
+//var Render = Task();
+//Render
+  //.excute(Task(function(data, next){
+    //console.log('渲染任务开始');
+    //next(data);
+  //}))
+  //.excute(View)
+  //.excute(Task(function(data, next){
+    //console.log('渲染任务结束');
+    //next(data);
+  //}));
+
+
   ////============= 主流程 ==================
   LoveAria = Task();
   //LoveAria
     //.excute(Router)
     //.excute(Dispatcher)
     //.excute(Render);
+
+  //LoveAria.start();
 
   //Task()
     //.excute(function(data, next){ next(localtion.hash); })
@@ -94,14 +158,14 @@
 
 //var delay_task_1 = Task(function(data, next){
   //consloe.log('delay_task_1');
-  //setTimout(function(){
+  //setTimeout(function(){
     //next(data);
   //}, 1000);
 //});
 
 //var delay_task_2 = Task(function(data, next){
   //consloe.log('delay_task_2');
-  //setTimout(function(){
+  //setTimeout(function(){
     //next(data);
   //}, 2000);
 //});
@@ -168,22 +232,30 @@
   //.excute(t3)
   //.start();
 
-
   //var t = 'a';
-  //var s = Task();
-  //s
-    //.loop(function(i){
-      //return i <= 100;
-    //},
-      //Task(function(i, next){
-        //setTimeout(function(){
-          //t = t + 't' + i;
-          //console.log(t);
-          //next(i+1);
-        //}, 0);
-      //})
-      //)
-    //.start(1);
+  //for (var i = 1; i <= 3; i++){
+    //setTimeout(function(){
+      //i++;
+      //t = t + 't' + i;
+      //console.log(t);
+    //}, 0);
+  //}
+
+//var t = 'a';
+//var s = Task();
+//s
+  //.loop(function(i){
+    //return i <= 3;
+  //},
+    //Task(function(i, next){
+      //setTimeout(function(){
+        //t = t + 't' + i;
+        //console.log(t);
+        //next(i+1);
+      //}, 0);
+    //})
+    //)
+  //.start(1);
 
 //var t = 'a';
 //var func = function(i, s){
@@ -197,24 +269,24 @@
 //};
 //func(1, 3);
  
-var Animal = BlxClass.extend('Animal', Object, function(name, sound){
-  this.name = name || null;  
-  this.sound = sound || null;
-});
+//var Animal = BlxClass.extend('Animal', Object, function(name, sound){
+  //this.name = name || null;  
+  //this.sound = sound || null;
+//});
 
-Animal.prototype.call = function(){
-  console.log(this.sound);
-};
+//Animal.prototype.call = function(){
+  //console.log(this.sound);
+//};
 
-// 现在我希望定义一个doge类，继承自Animal
-var Doge = BlxClass.extend('Doge', Animal, function(name){
-  var sound = 'wang';
-  BlxClass.parent(this, Doge, [name, sound]); // 调用父类的构造函数
-});
+//// 现在我希望定义一个doge类，继承自Animal
+//var Doge = BlxClass.extend('Doge', Animal, function(name){
+  //var sound = 'wang';
+  //BlxClass.parent(this, Doge, [name, sound]); // 调用父类的构造函数
+//});
 
-Doge.prototype.wang = BlxClass.alias('call');
+//Doge.prototype.wang = BlxClass.alias('call');
 
-// 现在实例化一个doge对象
-var doge = Doge('peter'); // 有没有 new 都没关系，结果相同。
-doge.call(); // =>'wang'
-doge.wang(); // =>'wang'
+//// 现在实例化一个doge对象
+//var doge = Doge('peter'); // 有没有 new 都没关系，结果相同。
+//doge.call(); // =>'wang'
+//doge.wang(); // =>'wang'
