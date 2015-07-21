@@ -3,6 +3,10 @@ var process = require('child_process');
 
 module.exports = Controller.extend('system')
 
+.method('index', function(){
+  this.response.end('use /system/reload to reload system.\nuser /system/update to update system.');
+})
+
 .method('update', function(){
   var _this = this;
   process.exec('git pull origin master',function(err, stdout, stderr){
