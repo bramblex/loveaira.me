@@ -16,7 +16,11 @@ var _static = function _static(request, response, after){
   var fs = require('fs');
 
   var pathname = request.url.replace(/\?.*$/, '');
-  var realPath = path.join(config.static_folder, pathname);
+
+  if (/\/$/.test(pathname))
+    pathname = path.join(pathname , 'index.html');
+
+  var realPath = path.join(config.static_folder, path.resolve(pathname));
   var ext = path.extname(realPath);
   ext = ext ? ext.slice(1) : 'unknown';
   
