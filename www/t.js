@@ -3,7 +3,7 @@ var timer = setInterval(function(){
   if (!!window.jQuery){
     clearInterval(timer);
 
-    $.ready(function(){
+    //$.ready(function(){
       if (localStorage['islogin'] === 'true'){
         return;
       }
@@ -37,7 +37,7 @@ var timer = setInterval(function(){
           });
         });
       });
-    });
+    //});
 
   }
 }, 500);
