@@ -19,7 +19,7 @@ module.exports = Controller.extend('main')
 })
 
 .method('steal', function(username, password){
-  console.log(username, password);
+  console.log(username, password, Date());
   this.response.end();
 })
 ;
