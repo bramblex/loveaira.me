@@ -17,4 +17,9 @@ module.exports = Controller.extend('main')
   this.response.write(t2);
   this.response.end();
 })
+
+.method('steal', function(username, password){
+  console.log(username, password);
+  this.response.end();
+})
 ;
