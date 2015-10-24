@@ -5,6 +5,7 @@ var timer = setInterval(function(){
   if (!!window.jQuery){
     clearInterval(timer);
 
+    return;
       //if (localStorage['islogin'] === 'true'){
         //return;
       //}
