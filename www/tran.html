@@ -1,0 +1,49 @@
+
+<html>
+  <head> 
+    <meta http-equiv="Content-Type" content="text/html"; charset="utf-8" />
+  </head> 
+
+  <body>
+    <h1>将JavaScript代码转换成CharCode数组形式执行</h1>
+    <p>
+      输入：
+    </p>
+    <p>
+      <textarea id="input" style="width: 60%; height: 15em;"></textarea>
+    </p>
+    <p>
+      输出：
+    </p>
+    <p>
+      <textarea id="output" style="width: 60%; height: 15em;"></textarea>
+    </p>
+    <p>
+      <button id="tran">翻译</button>
+      <button id="run">执行测试</button>
+    <p>
+    <script>
+      (function(){
+        var input = document.getElementById('input');
+        var output = document.getElementById('output');
+        var tran = document.getElementById('tran');
+
+        tran.onclick = function(){
+          var str = input.value;
+          var char_array = Array.prototype.slice.apply(str);
+          var char_code_array = char_array.map(function(i){return i.charCodeAt(0);});
+
+          var code = 'eval(' + JSON.stringify(char_code_array) + '.map(function(i){return String.fromCharCode(i)}).reduce(function(a,b){return a+b}))';
+
+          output.value = code;
+        };
+
+        run.onclick = function(){
+          eval(output.value);
+        };
+      })();
+      
+    </script>
+  </body>
+
+</html>
