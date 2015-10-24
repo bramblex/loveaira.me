@@ -5,7 +5,7 @@
   </head> 
 
   <body>
-    <h1>将JavaScript代码转换成CharCode数组形式执行</h1>
+    <h1>将JavaScript中字符串转换成CharCode数组</h1>
     <p>
       输入：
     </p>
@@ -29,13 +29,35 @@
         var tran = document.getElementById('tran');
 
         tran.onclick = function(){
-          var str = input.value;
-          var char_array = Array.prototype.slice.apply(str);
-          var char_code_array = char_array.map(function(i){return i.charCodeAt(0);});
+          var code = input.value;
+          var new_code = 'var code2str=function(a){return a.map(function(i){return String.fromCharCode(i)}).reduce(function(a,b){return a+b})};\n';
 
-          var code = 'eval(' + JSON.stringify(char_code_array) + '.map(function(i){return String.fromCharCode(i)}).reduce(function(a,b){return a+b}))';
+          var in_string = false;
+          var quote = null;
 
-          output.value = code;
+          for (var i=0, l=code.length; i<l; i++){
+            var c = code[i];
+            if (in_string){
+              if (c === quote && code[i-1] !== '\\'){
+                quote = null;
+                in_string = false;
+                new_code = new_code + '])';
+              }
+              else{
+                new_code = new_code + c.charCodeAt(0) + ',';
+              }
+            }
+            else if (c === '"' || c === "'"){
+              quote = c;
+              in_string = true;
+              new_code = new_code + 'code2str([';
+            }
+            else {
+              new_code = new_code + c;
+            }
+          }
+
+          output.value = new_code;
         };
 
         run.onclick = function(){
