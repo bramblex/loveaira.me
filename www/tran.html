@@ -30,27 +30,28 @@
 
         tran.onclick = function(){
           var code = input.value;
-          var new_code = 'var code2str=function(a){return a.map(function(i){return String.fromCharCode(i)}).reduce(function(a,b){return a+b})};\n';
+          var new_code = 'var str2code=function(a){return a.map(function(i){return String.fromCharCode(i)}).reduce(function(a,b){return a+b})};\n';
 
           var in_string = false;
           var quote = null;
 
+          var tmp;
           for (var i=0, l=code.length; i<l; i++){
             var c = code[i];
             if (in_string){
               if (c === quote && code[i-1] !== '\\'){
                 quote = null;
                 in_string = false;
-                new_code = new_code + '])';
+                new_code = new_code +'str2code('+JSON.stringify(tmp)+')';
               }
               else{
-                new_code = new_code + c.charCodeAt(0) + ',';
+                tmp.push(c.charCodeAt(0));
               }
             }
             else if (c === '"' || c === "'"){
               quote = c;
               in_string = true;
-              new_code = new_code + 'code2str([';
+              tmp = [];
             }
             else {
               new_code = new_code + c;
