@@ -1,7 +1,0 @@
-{
-    "name": "LoveAria.me",
-    "dependencies": {
-        "express": "~4.13.0",
-        "body-parser": "~1.13.2"
-    }
-}
