@@ -1,16 +1,16 @@
 
 project_dir = $(shell pwd)/
-client_objects = $(shell ls Client/) 
-client_object_targets = $(foreach o, $(client_objects), Website/static/js/$(o).js)
+client_objects = $(shell ls client/) 
+client_object_targets = $(foreach o, $(client_objects), website/static/js/$(o).js)
 
-all: Server Client
+all: server client
 
-Client: $(client_object_targets)
-Server: Website/Server.js
+client: $(client_object_targets)
+server: website/server.js
 
-Website/Server.js:
-	cd Server && pulp build -O --to $(project_dir)Website/Server.js	
+website/server.js:
+	cd server && pulp build -O --to $(project_dir)website/server.js	
 
-$(client_object_targets): Website/static/js/%.js:Client/%
+$(client_object_targets): website/static/js/%.js:client/%
 	cd $< && pulp build -O --to $(project_dir)$@
 
