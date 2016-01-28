@@ -1,32 +1,37 @@
 module Main where
 
 import Prelude
-import Data.Foldable (foldl)
+-- import Data.Foldable (foldl)
 import Control.Monad.Eff
-import Control.Monad.Eff.Console
-import Data.Either
+-- import Control.Monad.Eff.Console
+-- import Data.Either
 
-import Control.Monad.Cont.Trans
-import Control.Monad.Except.Trans
+-- import Control.Monad.Cont.Trans
+-- import Control.Monad.Except.Trans
 
-import SQLite
+import MyTest
 
-type Lorem = Row (info :: String)
+main :: forall t. Eff t Unit
+main = test {aaa: "bbb", ccc: "ddd"}
 
-insertTest :: forall eff. String -> ExceptT ErrorCode (ContT Unit (Eff eff)) (Array Lorem)
-insertTest info = do
-  db <- connectContEx "/tmp/test.db" default_mode
-  rows <- allContEx db $ "select * from lorem where `info` = \""++ info ++"\""
-  return rows
+-- import SQLite
 
-main :: forall e. Eff (console :: CONSOLE | e) Unit
-main = do
-  runAsyncEx (insertTest "再试试") $ next
-    where next (Right rows) =
-            foldl
-            (\l row-> l >>= (\_ -> (log $ show row.id ++ "|" ++ row.info )))
-            (log "123") rows
-          next (Left err) = error err
+-- type Lorem = Row (info :: String)
+
+-- insertTest :: forall eff. String -> ExceptT ErrorCode (ContT Unit (Eff eff)) (Array Lorem)
+-- insertTest info = do
+--   db <- connectContEx "/tmp/test.db" default_mode
+--   rows <- allContEx db $ "select * from lorem where `info` = \""++ info ++"\""
+--   return rows
+
+-- main :: forall e. Eff (console :: CONSOLE | e) Unit
+-- main = do
+--   runAsyncEx (insertTest "再试试") $ next
+--     where next (Right rows) =
+--             foldl
+--             (\l row-> l >>= (\_ -> (log $ show row.id ++ "|" ++ row.info )))
+--             (log "123") rows
+--           next (Left err) = error err
 
 -- main = flip runContT print . runExceptT $ insertTest
 
