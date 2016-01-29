@@ -6,3 +6,4 @@
 */src/.webpack.js
 */database/
 .#*
+.DS_Store
