@@ -9,12 +9,25 @@ import Control.Monad.Eff.Console
 -- import Control.Monad.Cont.Trans
 -- import Control.Monad.Except.Trans
 
-import Data.DOM.Free
+import Data.DOM.Render
+import Data.DOM.Type
+import Data.DOM.Tags (Template(), img, p, text)
+import Data.DOM.Attributes (src, _class, (:=))
+
+doc :: Template
+doc = do
+
+  p [ _class := "first_class" ] $ do
+    img [ src := "cat.jpg" ]
+    text "A cat"
+
+  p [ _class := "last_class" ] $ do
+    img [ src := "dog.jpg" ]
+    text "A dog"
 
 main :: forall e. Eff (console :: CONSOLE | e) Unit
-main = log $ render $ p [] $ do
-  elem $ img [ src := "cat.jpg" ]
-  text "A cat"
+main = log $ render doc
+
 -- main = log "hello world"
 -- main = log $ render $
 --        a [_class := "main", href := "http://baidu.com"] [text "Hello World!"]

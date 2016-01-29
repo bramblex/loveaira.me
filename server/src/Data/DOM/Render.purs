@@ -1,12 +1,19 @@
 module Data.DOM.Render where
 
+import Prelude
 import Control.Monad.Writer
+import Control.Monad.Free
 import Data.Foldable (for_)
+import Data.Maybe
 
 import Data.DOM.Type
+import Data.DOM.Tags (Template())
 
-render :: Element -> String
-render = execWriter <<< renderElement
+render :: Template -> String
+render cont = execWriter (runFreeM renderContent cont)
+
+-- render :: Element -> String
+-- render = execWriter <<< renderElement
 
 renderElement :: Element -> Writer String Unit
 renderElement (Element e) = do
@@ -17,6 +24,7 @@ renderElement (Element e) = do
   case e.cont of
     Nothing -> tell "/>"
     Just cont -> do
+      tell ">"
       runFreeM renderContent cont
       tell $ "</" ++ e.name ++ ">"
 

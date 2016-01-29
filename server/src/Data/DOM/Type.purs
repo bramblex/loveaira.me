@@ -1,7 +1,7 @@
 module Data.DOM.Type where
 
 import Prelude
-import Data.Maybe
+import Data.Maybe (Maybe())
 
 import Control.Monad.Free
 
@@ -22,15 +22,9 @@ newtype Element = Element { name :: String
                           , cont :: Maybe (Content Unit)
                           }
 
+
 element :: String -> Array Attribute -> Maybe (Content Unit) -> Element
 element name attr cont = Element { name: name
                                  , attr: attr
                                  , cont: cont
                                  }
-
-
-text :: String -> Content Unit
-text s = liftF $ TextContent s unit
-
-elem :: Element -> Content Unit
-elem e = liftF $ ElementContent e unit
