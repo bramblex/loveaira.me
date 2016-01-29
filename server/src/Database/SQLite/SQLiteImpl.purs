@@ -1,4 +1,4 @@
-module SQLiteImpl where
+module Database.SQLite.SQLiteImpl where
 
 import Prelude
 import Data.Function

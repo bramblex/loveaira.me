@@ -1,5 +1,5 @@
 "use strict";
-// module SQLiteImpl
+// module Database.SQLite.SQLiteImpl
 var makeBinding = function makeBinding(origin, method, args, result){
     var _result;
     if (result === undefined) { _result = ''; }

@@ -3,16 +3,21 @@ module Main where
 import Prelude
 -- import Data.Foldable (foldl)
 import Control.Monad.Eff
--- import Control.Monad.Eff.Console
+import Control.Monad.Eff.Console
 -- import Data.Either
 
 -- import Control.Monad.Cont.Trans
 -- import Control.Monad.Except.Trans
 
-import MyTest
+import Data.DOM.Free
 
-main :: forall t. Eff t Unit
-main = test {aaa: "bbb", ccc: "ddd"}
+main :: forall e. Eff (console :: CONSOLE | e) Unit
+main = log $ render $ p [] $ do
+  elem $ img [ src := "cat.jpg" ]
+  text "A cat"
+-- main = log "hello world"
+-- main = log $ render $
+--        a [_class := "main", href := "http://baidu.com"] [text "Hello World!"]
 
 -- import SQLite
 

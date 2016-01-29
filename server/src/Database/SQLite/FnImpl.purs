@@ -1,4 +1,4 @@
-module FnImpl where
+module Database.SQLite.FnImpl where
 
 import Prelude
 import Data.Function

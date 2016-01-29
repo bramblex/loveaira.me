@@ -11,8 +11,8 @@
     "output"
   ],
   "dependencies": {
-      "purescript-console": "^0.1.0",
-      "purescript-node-fs": "^0.8.1",
-      "purescript-express": "master"
+    "purescript-console": "^0.1.0",
+    "purescript-free": "~0.9.1",
+    "purescript-express": "master"
   }
 }
