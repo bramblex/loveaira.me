@@ -26,7 +26,7 @@ exports.default_mode = sqlite3.OPEN_READWRITE | sqlite3.OPEN_CREATE;
 
 exports.connectDBImpl = function(path, mode, onSuccess, onFailure){
     return function(){
-        var db = new sqlite3.Database(path, mode, function(err){
+        var db = new sqlite3.cached.Database(path, mode, function(err){
             if (err){onFailure(err)();}
             else{onSuccess(db)();}
         });

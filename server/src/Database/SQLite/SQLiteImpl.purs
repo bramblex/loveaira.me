@@ -8,10 +8,10 @@ type FilePath = String
 type Sql = String
 type Mode = Int
 type Error = { errno :: Int, code :: String, message :: String }
-type Row t = { id :: Int | t }
+type Row t = { | t }
 type Param = String
 type ParamList = Array Param
-type ParamMap t = Object t
+type ParamMap t = { | t }
 
 foreign import data DB :: *
 foreign import data DATABASE :: !

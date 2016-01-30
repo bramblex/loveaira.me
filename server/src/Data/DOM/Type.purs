@@ -19,12 +19,10 @@ data Attribute = Attribute { key :: String , val :: String }
 
 newtype Element = Element { name :: String
                           , attr :: Array Attribute
-                          , cont :: Maybe (Content Unit)
-                          }
+                          , cont :: Maybe (Content Unit)}
 
 
 element :: String -> Array Attribute -> Maybe (Content Unit) -> Element
 element name attr cont = Element { name: name
                                  , attr: attr
-                                 , cont: cont
-                                 }
+                                 , cont: cont}

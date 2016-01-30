@@ -1,9 +1,10 @@
-module Database.SQLite where
+module Database.SQLite
+       (module Database.SQLite.SQLiteImpl
+       , module Database.SQLite)
+       where
 
 import Prelude
 import Control.Monad.Eff
--- import Data.Function
--- import Control.Monad.Eff.Console
 
 import Control.Monad.Cont.Trans
 import Control.Monad.Except.Trans
@@ -12,8 +13,8 @@ import Data.Either
 import Database.SQLite.SQLiteImpl
 import Database.SQLite.FnImpl
 
-type Async eff t = ExceptT Error (ContT Unit (Eff eff)) t
-type DBAsync eff t = Async (database :: DATABASE | eff) t
+type Async eff = ExceptT Error (ContT Unit (Eff eff))
+type DBAsync eff = Async (database :: DATABASE | eff)
 
 mkAsync :: forall eff t.
            ((Either Error t -> Eff eff Unit) -> Eff eff Unit) -> Async eff t

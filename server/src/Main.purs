@@ -9,13 +9,14 @@ import Control.Monad.Eff.Console
 -- import Control.Monad.Cont.Trans
 -- import Control.Monad.Except.Trans
 
-import Data.DOM.Render
-import Data.DOM.Type
-import Data.DOM.Tags (Template(), img, p, text)
+import Data.DOM.Render (render)
+import Data.DOM.Tags (Template(), img, p, text, a)
 import Data.DOM.Attributes (src, _class, (:=))
 
 doc :: Template
 doc = do
+  a [ _class := "Class" ] do
+    text "Somethings"
 
   p [ _class := "first_class" ] $ do
     img [ src := "cat.jpg" ]

@@ -12,9 +12,6 @@ import Data.DOM.Tags (Template())
 render :: Template -> String
 render cont = execWriter (runFreeM renderContent cont)
 
--- render :: Element -> String
--- render = execWriter <<< renderElement
-
 renderElement :: Element -> Writer String Unit
 renderElement (Element e) = do
   tell $ "<" ++ e.name
