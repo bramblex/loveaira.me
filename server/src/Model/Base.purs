@@ -1,11 +1,11 @@
 module Model.Base where
 
 import Prelude
-import Data.Foldable
-import Control.Monad
-import Control.Monad.Trans
-import Control.Monad.Reader
-import Control.Monad.Reader.Trans
+-- import Data.Foldable
+-- import Control.Monad
+-- import Control.Monad.Trans
+-- import Control.Monad.Reader
+-- import Control.Monad.Reader.Trans
 
 -- import Control.Monad.Eff
 -- import Control.Monad.Cont.Trans
@@ -15,55 +15,112 @@ import Control.Monad.Reader.Trans
 
 import Database.SQLite
 
--- type Date = String
--- type Record t = Row ( id :: Int, create_at :: Date, update_at :: Date | t )
+type Date = String
+type Record t = Row (id :: Int, create_at :: Date, update_at :: Date | t)
 
--- type Table = String
--- type Column = String
--- type Value = String
+type Table = String
+type Column = String
+type QValue = String
 
--- data Condition = Eq Column Value
---                | Gt Column Value
---                | Gte Column Value
---                | Lt Column Value
---                | Lte Column Value
+data Condition = Eq Column QValue
+               | Gt Column QValue
+               | Gte Column QValue
+               | Lt Column QValue
+               | Lte Column QValue
 
--- (.=) :: Column -> Value -> Condition
--- (.=) c v = Eq c v
+class IsValue a where
+  toValue :: a -> QValue
 
--- (.>) :: Column -> Value -> Condition
--- (.>) c v = Gt c v
+instance isValueInt :: IsValue Int where
+  toValue = show
 
--- (.<) :: Column -> Value -> Condition
--- (.<) c v = Lt c v
+instance isValueString :: IsValue String where
+  toValue = show
 
--- (.>=) :: Column -> Value -> Condition
--- (.>=) c v = Gte c v
+(.=) :: forall a. (IsValue a) => Column -> a -> Condition
+(.=) c v = Eq c (toValue v)
 
--- (.<=) :: Column -> Value -> Condition
--- (.<=) c v = Lte c v
+(.>) :: forall a. (IsValue a) => Column -> a -> Condition
+(.>) c v = Gt c (toValue v)
 
--- data Conditions = And Conditions Condition
---                 | Or Conditions Condition
---                 | Where Condition
+(.<) :: forall a. (IsValue a) => Column -> a -> Condition
+(.<) c v = Lt c (toValue v)
 
+(.>=) :: forall a. (IsValue a) => Column -> a -> Condition
+(.>=) c v = Gte c (toValue v)
 
--- (.&&) :: Conditions -> Condition -> Conditions
--- (.&&) cs c = And cs c
+(.<=) :: forall a. (IsValue a) => Column -> a -> Condition
+(.<=) c v = Lte c (toValue v)
 
--- (.||) :: Conditions -> Condition -> Conditions
--- (.||) cs c = Or cs c
+class Relation f where
+  (.&&) :: forall a. f a -> a -> f a
+  (.||) :: forall a. f a -> a -> f a
 
--- data Order = Asec | Dsec
--- data OrderBy = OrderBy Column Order
+type Conditions = ConditionsR Condition
+data ConditionsR c = CAnd (ConditionsR c) c
+         | COr (ConditionsR c) c
+         | Where c
 
--- newtype Set = Set (Array Condition)
--- newtype Value = Value (Array Condition)
+type Set = SetR Condition
+data SetR c = SAnd (SetR c) c
+            | Set c
 
--- data Qurey t = Find Table Conditions OrderBy
---              | Insert Table Value
---              | Update Table Set Conditions
---              | Delete Table Conditions
+type Value = ValueR Condition
+data ValueR c = VAnd (ValueR c) c
+              | Value c
+
+instance relationConditionsR :: Relation ConditionsR where
+  (.&&) r c = CAnd r c
+  (.||) r c = COr r c
+
+instance relationSetR :: Relation SetR where
+  (.&&) r c = SAnd r c
+  (.||) r c = r .&& c
+
+instance relationValueR :: Relation ValueR where
+  (.&&) r c = VAnd r c
+  (.||) r c = r .&& c
+
+data Order = Asc | Desc
+data OrderBy = OrderBy Column Order
+
+data Qurey = Find Table Conditions OrderBy
+           | Insert Table Value
+           | Update Table Set Conditions
+           | Delete Table Conditions
+
+class ToSql f where
+  tosql :: f -> Sql
+
+instance toSqlOrderBy :: ToSql OrderBy where
+  tosql (OrderBy col o) =
+    "ORDER BY " ++ col ++ " " ++
+    case o of
+      Asc -> "ASC"
+      Desc -> "DESC"
+
+instance toSqlCondition :: ToSql Condition where
+  tosql c = case c of
+    Eq col v -> col ++ "=" ++ v
+    Gt col v -> col ++ ">" ++ v
+    Gte col v -> col ++ ">=" ++ v
+    Lt col v -> col ++ "<" ++ v
+    Lte col v -> col ++ "<=" ++ v
+
+-- instance toSqlConditions :: ToSql Conditions where
+-- tosql cs = case cs of
+--   Where c -> "WHERE " ++ tosql c
+--   CAnd cs c -> tosql cs ++ " AND " ++ tosql c
+--   COr cs c -> tosql cs ++ " OR " ++ tosql c
+
+-- instance toSqlQuery :: ToSql Qurey where
+--   tosql (Find table condistions order)
+
+-- qurey :: Qurey
+-- qurey = Insert
+--         "name"
+--         (Value ("name" .= "qiao") .&& ("role" .= "admin"))
+-- qurey = Find "name" (Where ("id" .> 10) .&& ("role" .= "admin")) (OrderBy "id" Dsec)
 
 -- runQurey :: forall eff t. Qurey -> Async eff f
 -- runQurey  =
