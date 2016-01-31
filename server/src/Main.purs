@@ -9,25 +9,26 @@ import Control.Monad.Eff.Console
 -- import Control.Monad.Cont.Trans
 -- import Control.Monad.Except.Trans
 
-import Data.DOM.Render (render)
-import Data.DOM.Tags (Template(), img, p, text, a)
-import Data.DOM.Attributes (src, _class, (:=))
+-- import Data.DOM.Render (render)
+-- import Data.DOM.Tags (Template(), img, p, text, a)
+-- import Data.DOM.Attributes (src, _class, (:=))
 
-doc :: Template
-doc = do
-  a [ _class := "Class" ] do
-    text "Somethings"
+-- doc :: Template
+-- doc = do
+--   a [ _class := "Class" ] do
+--     text "Somethings"
 
-  p [ _class := "first_class" ] $ do
-    img [ src := "cat.jpg" ]
-    text "A cat"
+--   p [ _class := "first_class" ] $ do
+--     img [ src := "cat.jpg" ]
+--     text "A cat"
 
-  p [ _class := "last_class" ] $ do
-    img [ src := "dog.jpg" ]
-    text "A dog"
+--   p [ _class := "last_class" ] $ do
+--     img [ src := "dog.jpg" ]
+--     text "A dog"
 
+import Model.Base
 main :: forall e. Eff (console :: CONSOLE | e) Unit
-main = log $ render doc
+main = log $ join_ ["aaa", "bbb", "ccc"]
 
 -- main = log "hello world"
 -- main = log $ render $
