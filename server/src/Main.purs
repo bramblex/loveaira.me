@@ -4,6 +4,8 @@ import Prelude
 -- import Data.Foldable (foldl)
 import Control.Monad.Eff
 import Control.Monad.Eff.Console
+
+import Data.Either
 -- import Data.Either
 
 -- import Control.Monad.Cont.Trans
@@ -17,20 +19,32 @@ import Control.Monad.Eff.Console
 -- doc = do
 --   a [ _class := "Class" ] do
 --     text "Somethings"
-
 --   p [ _class := "first_class" ] $ do
 --     img [ src := "cat.jpg" ]
 --     text "A cat"
-
 --   p [ _class := "last_class" ] $ do
 --     img [ src := "dog.jpg" ]
 --     text "A dog"
 
-import Model.Base
-main :: forall e. Eff (console :: CONSOLE | e) Unit
-main = log $ join_ ["aaa", "bbb", "ccc"]
+-- import Model.Base
+import Lib.Utils
 
--- main = log "hello world"
+import Model.Base
+
+-- insertTest :: forall eff. DBAsync eff Int
+-- insertTest = do
+--   delete "lorem" (by ("id" .> 1) .&& ("info" .= "Test"))
+--   return 1
+
+insertTest :: forall eff. DBAsync eff String
+insertTest = getDBFullPath
+
+main :: forall eff. Eff (console :: CONSOLE , database :: DATABASE | eff) Unit
+main = runAsync insertTest result
+       where result (Right str) = print str
+             result (Left err) = print err.message
+
+-- main = log "hello"
 -- main = log $ render $
 --        a [_class := "main", href := "http://baidu.com"] [text "Hello World!"]
 

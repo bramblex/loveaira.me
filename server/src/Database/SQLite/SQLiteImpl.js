@@ -2,17 +2,21 @@
 // module Database.SQLite.SQLiteImpl
 var makeBinding = function makeBinding(origin, method, args, result){
     var _result;
-    if (result === undefined) { _result = ''; }
-    else if (result === null) { _result = '()'; }
+    if (result === undefined) { _result = '(result)'; }
+    else if (result === null) { _result = ''; }
     else { _result = '('+result+')'; }
-    return eval('(function('+[origin].concat(args).join(', ')+', onSuccess, onFailure){\
-                   return function(){\
-                     var _return = '+origin+'.'+method+'('+[origin].concat(args).join(', ')+', function(error, result){\
-                       if (error) { onFailure(error)(); }\
-                       else { onSuccess'+_result+'(); }\
-                     });\
-                   };\
+
+    var r = ('\n\
+             (function('+[origin].concat(args).join(', ')+', onSuccess, onFailure){\n\
+                   return function(){\n\
+                     try{console.log("SQL:", sql);}catch(e){};\n\
+                     var _return = '+origin+'.'+method+'('+args.map(function(a){return a+', ';}).join('')+'function(error, result){\n\
+                       if (error) { onFailure(error)(); }\n\
+                       else { onSuccess'+_result+'(); }\n\
+                     });\n\
+                   };\n\
                  })');
+    return eval(r);
 };
 
 var sqlite3 = require('sqlite3');

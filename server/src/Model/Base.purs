@@ -1,11 +1,14 @@
-module Model.Base where
+module Model.Base (module Model.Base, module Database.SQLite) where
 
 import Prelude
 import Data.Tuple
-import Data.Foldable (foldl)
-import Data.String (drop, length)
+import Data.Either
+import Control.Monad.Eff
+import Control.Monad.Trans
 
 import Database.SQLite
+import Config
+import Lib.Utils
 
 type Date = String
 type Record t = Row (id :: Int, create_at :: Date, update_at :: Date | t)
@@ -47,7 +50,7 @@ instance isValueString :: IsValue String where
 class Relation f where
   (.&&) :: forall a. f a -> a -> f a
   (.||) :: forall a. f a -> a -> f a
-  with :: forall a. a -> f a
+  by :: forall a. a -> f a
 
 type Conditions = ConditionsR Condition
 data ConditionsR c = CAnd (ConditionsR c) c
@@ -65,43 +68,38 @@ data ValueR c = VAnd (ValueR c) c
 instance relationConditionsR :: Relation ConditionsR where
   (.&&) r c = CAnd r c
   (.||) r c = COr r c
-  with = Where
+  by = Where
 
 instance relationSetR :: Relation SetR where
   (.&&) r c = SAnd r c
   (.||) r c = r .&& c
-  with = Set
+  by = Set
 
 instance relationValueR :: Relation ValueR where
   (.&&) r c = VAnd r c
   (.||) r c = r .&& c
-  with = Value
+  by = Value
 
 data Order = Asc | Desc
 data OrderBy = OrderBy Column Order
 
 data Limit = Limit Int Int
+           | NoLimit
 
 data Query = Find Table Conditions OrderBy Limit
+           | First Table Conditions OrderBy
            | Insert Table Value
            | Update Table Set Conditions
            | Delete Table Conditions
            | Count Table Conditions
-
-join :: String -> Array String -> String
-join sp arr = drop (length sp) $ foldl (\l s -> l ++ sp ++ s) "" arr
-
-join' :: Array String -> String
-join' = join ", "
-
-join_ :: Array String -> String
-join_ = join " "
+           | CreateTable Table (Array Condition)
 
 class ToSql f where
   tosql :: f -> Sql
 
 instance toSqlLimit :: ToSql Limit where
   tosql (Limit offset count) = join_ ["LIMIT", join' [show offset, show count]]
+  tosql NoLimit = ""
 
 instance toSqlOrderBy :: ToSql OrderBy where
   tosql (OrderBy col order) = join_ ["ORDER BY", col, order']
@@ -151,7 +149,70 @@ instance toSqlValue :: ToSql (ValueR Condition) where
 instance toSqlQuery :: ToSql Query where
   tosql query = case query of
     Find t cs o l -> join_ ["SELECT * FROM", t, tosql cs, tosql o, tosql l]
-    Insert t v -> join_ ["INSERT INTO", t, tosql v]
-    Update t s cs -> join_ ["UPDATE", t, tosql s, tosql cs]
-    Delete t cs -> join_ ["DELETE", t, tosql cs]
-    Count t cs -> join_ ["SELECT COUNT(*) FROM", t, tosql cs]
+    First t cs o -> join_ ["SELECT FIRST(*) FROM", t, tosql cs, tosql o]
+    Insert t v -> join_ ["INSERT INTO", t, tosql (v .&& ("update_at" .= "NOW()") .&& ("create_at" .= "NOW()"))]
+    Update t s cs -> join_ ["UPDATE", t, tosql (s .&& ("update_at" .= "NOW()")), tosql cs]
+    Delete t cs -> join_ ["DELETE FROM", t, tosql cs]
+    Count t cs -> join_ ["SELECT COUNT(*) AS count FROM", t, tosql cs]
+
+    CreateTable t ts -> join_ ["CREATE TABLE IF NOT EXISTS", t, "( id INTEGER PRIMARY KEY AUTOINCREMENT,", tosqlts ts, ", create_at DATETIME, update_at DATETIME)"]
+      where tosqlts ts = join' $ map tosqlc ts
+            tosqlc (Eq k v) = join_ [k, v]
+
+-- getDBFullPath :: forall eff. Async eff String
+-- getDBFullPath = do
+--   root_path <- liftAsyncEff __dirname
+--   return $ join "/" [root_path, database_path]
+
+getDBFullPath :: forall eff. Async eff String
+getDBFullPath = mkAsyncEff "/tmp/test.db"
+
+connect :: forall eff. DBAsync eff DB
+connect = do
+  full_path <- getDBFullPath
+  db <- connectDB full_path default_mode
+  return db
+
+find :: forall eff t. Table -> Conditions -> OrderBy -> Limit -> DBAsync eff (Array (Record t))
+find t cs o l = do
+  db <- connect
+  records <- allDB db (tosql $ Find t cs o l)
+  return records
+
+first :: forall eff t. Table -> Conditions -> OrderBy -> DBAsync eff (Record t)
+first t cs o = do
+  db <- connect
+  record <- getDB db (tosql $ First t cs o)
+  return record
+
+findall :: forall eff t. Table -> Conditions -> OrderBy -> DBAsync eff (Array (Record t))
+findall t cs o = do
+  db <- connect
+  records <- allDB db (tosql $ Find t cs o NoLimit)
+  return records
+
+insert :: forall eff t. Table -> Value -> DBAsync eff Unit
+insert t v = do
+  db <- connect
+  runDB db (tosql $ Insert t v)
+
+update :: forall eff t. Table -> Set -> Conditions -> DBAsync eff Unit
+update t s cs = do
+  db <- connect
+  runDB db (tosql $ Update t s cs)
+
+delete :: forall eff t. Table -> Conditions -> DBAsync eff Unit
+delete t cs = do
+  db <- connect
+  runDB db (tosql $ Delete t cs)
+
+count :: forall eff. Table -> Conditions -> DBAsync eff Int
+count t cs = do
+  db <- connect
+  result <- getDB db (tosql $ Count t cs)
+  return result.count
+
+createTable :: forall eff. Table -> Array Condition -> DBAsync eff Unit
+createTable t ts = do
+  db <- connect
+  runDB db (tosql $ CreateTable t ts)

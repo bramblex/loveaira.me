@@ -5,7 +5,7 @@ module Database.SQLite
 
 import Prelude
 import Control.Monad.Eff
-
+import Control.Monad.Trans
 import Control.Monad.Cont.Trans
 import Control.Monad.Except.Trans
 import Data.Either
@@ -20,10 +20,17 @@ mkAsync :: forall eff t.
            ((Either Error t -> Eff eff Unit) -> Eff eff Unit) -> Async eff t
 mkAsync = ExceptT <<< ContT
 
+mkAsyncEff :: forall eff t. t -> Async eff t
+mkAsyncEff t = mkAsync $ runImpl fnImpl
+  where runImpl fn k = fn (k <<< Right) (k <<< Left)
+        fnImpl onSuccess onFailure = onSuccess t
+
 runAsync :: forall eff t.
             Async eff t -> (Either Error t -> Eff eff Unit) -> Eff eff Unit
 runAsync cont next = runContT (runExceptT cont) next
 
+liftAsyncEff :: forall eff t. Eff eff t -> Async eff t
+liftAsyncEff act = lift (lift act)
 
 connectDB :: forall eff. FilePath -> Mode -> DBAsync eff DB
 connectDB path mode =  mkAsync $ runFn4Impl connectDBImpl path mode
