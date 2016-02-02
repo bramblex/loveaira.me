@@ -1,3 +1,4 @@
 module Config where
 
-database_path = "database/lovearia.db"
+database_path = "data/lovearia.db"
+authfile = "data/lovearia.auth"

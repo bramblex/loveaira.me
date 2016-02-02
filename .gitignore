@@ -4,6 +4,6 @@
 */output/
 */.psci*
 */src/.webpack.js
-*/database/
+*/data/
 .#*
 .DS_Store
