@@ -31,13 +31,14 @@ import Lib.Utils
 
 import Model.Base
 
--- insertTest :: forall eff. DBAsync eff Int
--- insertTest = do
---   delete "lorem" (by ("id" .> 1) .&& ("info" .= "Test"))
---   return 1
-
 insertTest :: forall eff. DBAsync eff String
-insertTest = getDBFullPath
+insertTest = do
+  createTable "Test" ["info" .= "TEXT"]
+  -- delete "lorem" (by ("id" .> 1) .&& ("info" .= "Test"))
+  return "success"
+
+-- insertTest :: forall eff. DBAsync eff String
+-- insertTest = getDBFullPath
 
 main :: forall eff. Eff (console :: CONSOLE , database :: DATABASE | eff) Unit
 main = runAsync insertTest result
