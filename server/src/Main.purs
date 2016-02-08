@@ -1,11 +1,151 @@
 module Main where
 
 import Prelude
--- import Data.Foldable (foldl)
 import Control.Monad.Eff
-import Control.Monad.Eff.Console
+import qualified Control.Monad.Eff.Console as C
 
-import Data.Either
+import Control.Monad.Aff
+import Control.Monad.Aff.Class
+
+import Control.Monad.Eff.Class
+import Control.Monad.Trans
+
+import Control.Monad.Eff.Exception
+import Control.Monad.Error.Class
+
+-- import Data.Function
+
+-- foreign import __setTimeout ::
+--   forall eff t. Fn3 Int
+--   (Error -> Eff eff Unit)
+--   (t -> Eff eff Unit)
+--   (Eff eff Unit)
+
+-- delay :: forall eff. Int -> Aff eff Unit
+-- delay n = makeAff $ runFn3 __setTimeout n
+
+-- job :: forall eff. Aff (console::C.CONSOLE | eff) Unit
+-- job = do
+--   delay 1000
+--   liftEff $ C.log "Hello World!"
+--   delay 1000
+--   liftEff $ C.log "Hello World!"
+--   throwError $ error "TestError"
+
+-- import Database.SQLite
+
+-- job :: forall eff. Aff (database::DATABASE, console::C.CONSOLE | eff) Unit
+-- job = do
+--   db <- connectDB "/tmp/test.db" default_mode
+--   row <- getDB db "select * from lorem"
+--   liftEff $ C.log (row.id ++ "|"++ row.info)
+
+-- getDBFullPath :: forall eff. Aff eff String
+-- getDBFullPath = do
+--   root_path <- liftEff __dirname
+--   return $ join "/" [root_path, database_path]
+
+-- job :: forall eff. Aff (console::C.CONSOLE, current::CURRENT | eff) Unit
+-- job = do
+--   str <-  liftEff __dirname
+--   liftEff $ C.log str
+
+-- main = launchAff $ do
+--   job
+
+import Lib.Utils
+import Model.Base
+
+main = launchAff $ do
+  str <- getDBPath
+  liftEff $ C.log str
+-- main = C.print ("test")
+
+-- import Data.Maybe
+-- import Data.Either
+-- import Control.Monad.Eff
+-- import Control.Monad.Eff.Class
+-- import Data.Monoid (mempty, Monoid)
+-- import Data.Function
+-- -- import Control.Monad.Eff.Class
+-- -- import Control.Monad.Eff.Console (CONSOLE(), log)
+-- import Control.Monad.Eff.Console as C
+-- -- import Control.Monad.Aff.Console (log, print)
+-- import Node.Express.Types
+-- import Node.Express.App
+-- import Node.Express.Handler
+-- import Node.Express.Request
+-- import Node.Express.Response
+-- import Node.HTTP (Server())
+
+-- import Data.Foldable (for_, sequence_, foldl, Foldable)
+
+-- import Control.Monad.Aff
+-- import Control.Monad.Aff.Class
+
+-- import Config (port)
+-- import Data.DOM.Render
+
+-- import Data.DOM.Tags (Template(), html, head, body, h1, text, script', ul, li)
+-- import Data.DOM.Attributes ((:=), _class, src)
+-- import Model.Base hiding (delete)
+-- import Control.Monad.Trans
+-- import Lib.Utils
+
+-- import Template.Base
+
+-- foreign import bodyParser :: forall eff. Fn3 Request Response (ExpressM eff Unit) (ExpressM eff Unit)
+
+-- type Test = Record (info :: String)
+
+-- doc :: Array Test -> Template
+-- doc ts = ul [] do
+--   forT ts \t ->
+--     li [] $ text $ join "," [show t.id, t.info]
+
+-- main = runAsync query next
+--   where query = do
+--           insert "Test" (by ("info" .= "something"))
+--           rows <- findall "Test" (by ("id" .> 0)) (OrderBy "id" Asc)
+--           return rows
+--         next (Right ts) = log (render $ doc ts)
+
+-- indexHandler :: forall eff. Handler (database :: DATABASE | eff)
+-- indexHandler = do
+--   HandlerM $ runAsync query next
+--     where query = do
+--             rows <- findall "Test" (by ("id" .> 0)) (OrderBy "id" Asc)
+--             return rows
+--           next (Right ts) = send (render $ doc ts)
+
+-- echoHandler :: forall eff. Handler eff
+-- echoHandler = do
+--   msg <- getBodyParam "message"
+--   case msg of
+--     Nothing -> send "Nothing"
+--     Just m -> send $ "aaa" ++ m
+
+-- app :: forall eff. App (console :: CONSOLE | eff)
+-- app = do
+--   liftEff $ log "Setting up"
+--   useExternal bodyParser
+--   get "/" indexHandler
+--   post "/" echoHandler
+
+-- main :: forall eff. Eff (express :: EXPRESS, console :: CONSOLE | eff) Server
+-- main = listenHttp app port \_ -> log $ "Listening on prot: " ++ show port
+
+-- main = do
+--   log "start"
+--   for [1, 2, 3] \n -> do
+--     log (show n)
+
+-- import Prelude
+-- import Data.Foldable (foldl)
+-- import Control.Monad.Eff
+-- import Control.Monad.Eff.Console
+
+-- import Data.Either
 -- import Data.Either
 
 -- import Control.Monad.Cont.Trans
@@ -26,24 +166,22 @@ import Data.Either
 --     img [ src := "dog.jpg" ]
 --     text "A dog"
 
+-- import Lib.Utils
 -- import Model.Base
-import Lib.Utils
 
-import Model.Base
-
-insertTest :: forall eff. DBAsync eff String
-insertTest = do
-  createTable "Test" ["info" .= "TEXT"]
-  -- delete "lorem" (by ("id" .> 1) .&& ("info" .= "Test"))
-  return "success"
+-- insertTest :: forall eff. DBAsync eff String
+-- insertTest = do
+--   createTable "Test" ["info" .= "TEXT"]
+--   delete "lorem" (by ("id" .> 1) .&& ("info" .= "Test"))
+--   return "success"
 
 -- insertTest :: forall eff. DBAsync eff String
 -- insertTest = getDBFullPath
 
-main :: forall eff. Eff (console :: CONSOLE , database :: DATABASE | eff) Unit
-main = runAsync insertTest result
-       where result (Right str) = print str
-             result (Left err) = print err.message
+-- main :: forall eff. Eff (console :: CONSOLE , database :: DATABASE | eff) Unit
+-- main = runAsync insertTest result
+--        where result (Right str) = print str
+--              result (Left err) = print err.message
 
 -- main = log "hello"
 -- main = log $ render $

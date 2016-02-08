@@ -25,4 +25,4 @@ newtype Element = Element { name :: String
 element :: String -> Array Attribute -> Maybe (Content Unit) -> Element
 element name attr cont = Element { name: name
                                  , attr: attr
-                                 , cont: Cont }
+                                 , cont: cont }

@@ -260,9 +260,6 @@ s attr cont = elem $ element "s" attr (Just cont)
 samp :: Array Attribute -> Template -> Template
 samp attr cont = elem $ element "samp" attr (Just cont)
 
-script :: Array Attribute -> Template -> Template
-script attr cont = elem $ element "script" attr (Just cont)
-
 section :: Array Attribute -> Template -> Template
 section attr cont = elem $ element "section" attr (Just cont)
 
@@ -387,3 +384,11 @@ track attr = elem $ element "track" attr Nothing
 
 wbr :: Array Attribute -> Template
 wbr attr = elem $ element "wbr" attr Nothing
+
+-- Script Tag
+
+script :: Array Attribute -> Template -> Template
+script attr cont = elem $ element "script" attr (Just cont)
+
+script' :: Array Attribute -> Template
+script' attr = elem $ element "script" attr (Just $ text "")

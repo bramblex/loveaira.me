@@ -1,1 +1,0 @@
-module Model.Article where

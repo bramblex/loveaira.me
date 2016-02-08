@@ -14,6 +14,8 @@ join' = join ", "
 join_ :: Array String -> String
 join_ = join " "
 
-foreign import __filename :: forall e. Eff e String
+foreign import data CURRENT :: !
 
-foreign import __dirname :: forall e. Eff e String
+foreign import __filename :: forall eff. Eff (current::CURRENT | eff) String
+
+foreign import __dirname :: forall eff. Eff (current::CURRENT | eff) String

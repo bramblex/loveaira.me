@@ -1,0 +1,1 @@
+module Template.Ariticle where
