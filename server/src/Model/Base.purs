@@ -130,11 +130,11 @@ instance toSqlCondition :: ToSql Condition where
   tosql (Or c1 c2) = join_ [tosql c1, "OR", tosql c2]
 
 instance toSqlConditionSet :: ToSql ConditionSet where
-  tosql cs = join_ ["WHERE", tosql cs]
+  tosql (ConditionSet cs) = join_ ["WHERE", tosql cs]
 
 instance toSqlOrder :: ToSql Order where
-  tosql (Desc col) = join_ [col, "DESC"]
-  tosql (Asc col) = join_ [col, "ASC"]
+  tosql (Desc col) = join_ ["ORDER BY", col, "DESC"]
+  tosql (Asc col) = join_ ["ORDER BY", col, "ASC"]
 
 instance toSqlLimit :: ToSql Limit where
   tosql (Limit a) = join_ ["LIMIT", show a]
@@ -163,7 +163,7 @@ instance toSqlSchema :: ToSql Schema where
 
 instance toSqlQuery :: ToSql Query where
   tosql (Find tn cs od lm off) = join_ $ ["SELECT * FROM", tn, tosql cs, tosql od, tosql lm, tosql off]
-  tosql (First tn cs od) = join_ $ ["SELECT FIRST(*) FROM", tn, tosql cs, tosql od]
+  tosql (First tn cs od) = join_ $ ["SELECT * FROM", tn, tosql cs, tosql od]
   tosql (Insert tn iv) = join_ $ ["INSERT INTO", tn, tosql iv]
   tosql (Update tn uv cs od lm off) = join_ $ ["UPDATE", tn, tosql uv, tosql cs, tosql od, tosql lm, tosql off]
   tosql (Delete tn cs od lm off) = join_ $ ["DELETE FROM", tn, tosql cs, tosql od, tosql lm, tosql off]

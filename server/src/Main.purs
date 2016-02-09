@@ -1,8 +1,26 @@
 module Main where
 
-import Prelude
+import Prelude hiding (apply)
 import Control.Monad.Eff
-import qualified Control.Monad.Eff.Console as C
+
+import Control.Monad.Eff.Console
+
+import Data.Maybe
+import Data.Either
+import Control.Monad.Eff
+import Control.Monad.Eff.Class
+import Data.Monoid (mempty, Monoid)
+import Data.Function
+-- import Control.Monad.Eff.Class
+-- import Control.Monad.Eff.Console (CONSOLE(), log)
+import Control.Monad.Eff.Console as C
+-- import Control.Monad.Aff.Console (log, print)
+import Node.Express.Types
+import Node.Express.App
+import Node.Express.Handler
+import Node.Express.Request
+import Node.Express.Response
+import Node.HTTP (Server())
 
 import Control.Monad.Aff
 import Control.Monad.Aff.Class
@@ -10,8 +28,39 @@ import Control.Monad.Aff.Class
 import Control.Monad.Eff.Class
 import Control.Monad.Trans
 
-import Control.Monad.Eff.Exception
-import Control.Monad.Error.Class
+-- import Control.Monad.Eff.Exception
+-- import Control.Monad.Error.Class
+
+import Lib.Utils
+import Model.Base hiding (delete)
+
+import Config (port)
+
+-- main = launchAff $ do
+--   str <- getDBPath
+--   liftEff $ C.log str
+
+indexHandler :: forall eff. Handler (database :: DATABASE, current :: CURRENT |eff)
+indexHandler = do
+  record <- liftAff $ first "Test" ("id" .> 0) (Desc "id")
+  sendJson record
+
+echoHandler :: forall eff. Handler eff
+echoHandler = do
+  msg <- getBodyParam "message"
+  case msg of
+    Nothing -> send "Nothing"
+    Just m -> send $ "aaa" ++ m
+
+-- app :: forall eff. App (console :: CONSOLE | eff)
+app = do
+  liftEff $ log "Setting up"
+  -- useExternal bodyParser
+  get "/" indexHandler
+  post "/" echoHandler
+
+-- main :: forall eff. Eff (express :: EXPRESS, console :: CONSOLE | eff) Server
+main = listenHttp app port \_ -> log $ "Listening on prot: " ++ show port
 
 -- import Data.Function
 
@@ -53,37 +102,14 @@ import Control.Monad.Error.Class
 -- main = launchAff $ do
 --   job
 
-import Lib.Utils
-import Model.Base
-
-main = launchAff $ do
-  str <- getDBPath
-  liftEff $ C.log str
 -- main = C.print ("test")
 
--- import Data.Maybe
--- import Data.Either
--- import Control.Monad.Eff
--- import Control.Monad.Eff.Class
--- import Data.Monoid (mempty, Monoid)
--- import Data.Function
--- -- import Control.Monad.Eff.Class
--- -- import Control.Monad.Eff.Console (CONSOLE(), log)
--- import Control.Monad.Eff.Console as C
--- -- import Control.Monad.Aff.Console (log, print)
--- import Node.Express.Types
--- import Node.Express.App
--- import Node.Express.Handler
--- import Node.Express.Request
--- import Node.Express.Response
--- import Node.HTTP (Server())
 
 -- import Data.Foldable (for_, sequence_, foldl, Foldable)
 
 -- import Control.Monad.Aff
 -- import Control.Monad.Aff.Class
 
--- import Config (port)
 -- import Data.DOM.Render
 
 -- import Data.DOM.Tags (Template(), html, head, body, h1, text, script', ul, li)
@@ -110,30 +136,6 @@ main = launchAff $ do
 --           return rows
 --         next (Right ts) = log (render $ doc ts)
 
--- indexHandler :: forall eff. Handler (database :: DATABASE | eff)
--- indexHandler = do
---   HandlerM $ runAsync query next
---     where query = do
---             rows <- findall "Test" (by ("id" .> 0)) (OrderBy "id" Asc)
---             return rows
---           next (Right ts) = send (render $ doc ts)
-
--- echoHandler :: forall eff. Handler eff
--- echoHandler = do
---   msg <- getBodyParam "message"
---   case msg of
---     Nothing -> send "Nothing"
---     Just m -> send $ "aaa" ++ m
-
--- app :: forall eff. App (console :: CONSOLE | eff)
--- app = do
---   liftEff $ log "Setting up"
---   useExternal bodyParser
---   get "/" indexHandler
---   post "/" echoHandler
-
--- main :: forall eff. Eff (express :: EXPRESS, console :: CONSOLE | eff) Server
--- main = listenHttp app port \_ -> log $ "Listening on prot: " ++ show port
 
 -- main = do
 --   log "start"
