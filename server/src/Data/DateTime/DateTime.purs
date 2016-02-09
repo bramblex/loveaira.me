@@ -5,6 +5,7 @@ data DateTime = Now
                          , month::Int
                          , day::Int
                          , hour::Int
-                         , minute::Int}
+                         , minute::Int
+                         , second::Int }
 
 type DateTimeStr = String

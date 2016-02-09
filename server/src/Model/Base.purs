@@ -1,15 +1,176 @@
-module Model.Base (module Model.Base, module Database.SQLite.Type) where
+module Model.Base ( module Model.Base
+                  , module Database.SQLite.Type) where
 
 import Prelude
-import Control.Monad.Eff.Class
 
-import Database.SQLite
-import Database.SQLite.Type
-import Data.DateTime
+import Data.Tuple
+import Data.Array ((:))
+import Data.Foldable (foldr)
+
+import Control.Monad.Eff.Class
 
 import Lib.Utils
 
+import Database.SQLite.Type
+import Database.SQLite
+import Data.DateTime
+
 import Config as Config
+
+type Table = String
+type Column = String
+type Value = String
+
+data OP = Eq | Neq | Gt | Gte | Lt | Lte | Like
+data Condition = Condition OP Column Value
+               | And Condition Condition
+               | Or Condition Condition
+
+newtype ConditionSet = ConditionSet Condition
+
+class IsValue a where
+  toValue :: a -> Value
+
+data Assign = Assign Column Value
+
+newtype UpdateValue = UpdateValue (Array Assign)
+newtype InsertValue = InsertValue (Array Assign)
+newtype Schema = Schema (Array Assign)
+data TableSchema = TableSchema Table (Array Assign)
+
+data Order = Desc Column
+           | Asc Column
+
+data Limit = Limit Int
+           | NoLimit
+
+data Offset = Offset Int
+            | NoOffset
+
+data Query = Find Table ConditionSet Order Limit Offset
+           | First Table ConditionSet Order
+           | Insert Table InsertValue
+           | Update Table UpdateValue ConditionSet Order Limit Offset
+           | Delete Table ConditionSet Order Limit Offset
+           | Count Table ConditionSet
+           | CreateTable Table Schema
+
+infix 5 .~=
+infix 5 .==
+infix 5 .!=
+infix 5 .>
+infix 5 .<
+infix 5 .<=
+
+(.==) :: forall a. (IsValue a) => Column -> a -> Condition
+(.==) c v = Condition Eq c (toValue v)
+
+(.!=) :: forall a. (IsValue a) => Column -> a -> Condition
+(.!=) c v = Condition Neq c (toValue v)
+
+(.>) :: forall a. (IsValue a) => Column -> a -> Condition
+(.>) c v = Condition Gt c (toValue v)
+
+(.>=) :: forall a. (IsValue a) => Column -> a -> Condition
+(.>=) c v = Condition Gte c (toValue v)
+
+(.<) :: forall a. (IsValue a) => Column -> a -> Condition
+(.<) c v = Condition Lt c (toValue v)
+
+(.<=) :: forall a. (IsValue a) => Column -> a -> Condition
+(.<=) c v = Condition Lte c (toValue v)
+
+(.~=) :: forall a. (IsValue a) => Column -> a -> Condition
+(.~=) c v = Condition Like c (toValue v)
+
+infix 4 .||
+infix 4 .&&
+
+(.||) :: Condition -> Condition -> Condition
+(.||) a b = Or a b
+
+(.&&) :: Condition -> Condition -> Condition
+(.&&) a b = And a b
+
+infix 5 .=
+(.=) :: forall a. (IsValue a) => Column -> a -> Assign
+(.=) c v = Assign c (toValue v)
+
+class ToSql a where
+  tosql :: a -> Sql
+
+-- instance of IsValue
+instance isValueString :: IsValue String where
+  toValue str = show str
+
+instance isValueInt :: IsValue Int where
+  toValue int = show int
+
+instance isValueDateTime :: IsValue DateTime where
+  toValue Now = "DATETIME('NOW')"
+  toValue (DateTime d) = "DATETIME('"
+                       ++ join "-" (map show [d.year, d.month, d.day])
+                       ++ " "
+                       ++ join ":" (map show [d.hour, d.minute, d.second])
+                       ++ "')"
+
+
+-- instance of ToSql
+
+instance toSqlCondition :: ToSql Condition where
+  tosql (Condition op col v) = case op of
+    Eq -> join_ [col, "=", v]
+    Neq -> join_ [col, "!=", v]
+    Gt -> join_ [col, ">", v]
+    Gte -> join_ [col, ">=", v]
+    Lt -> join_ [col, "<", v]
+    Lte -> join_ [col, "<=", v]
+    Like -> join_ [col, "LIKE", "%" ++ v ++ "%"]
+  tosql (And c1 c2) = join_ [tosql c1, "AND", tosql c2]
+  tosql (Or c1 c2) = join_ [tosql c1, "OR", tosql c2]
+
+instance toSqlConditionSet :: ToSql ConditionSet where
+  tosql cs = join_ ["WHERE", tosql cs]
+
+instance toSqlOrder :: ToSql Order where
+  tosql (Desc col) = join_ [col, "DESC"]
+  tosql (Asc col) = join_ [col, "ASC"]
+
+instance toSqlLimit :: ToSql Limit where
+  tosql (Limit a) = join_ ["LIMIT", show a]
+  tosql (NoLimit) = ""
+
+instance toSqlOffset :: ToSql Offset where
+  tosql (Offset a) = join_ ["OFFSET", show a]
+  tosql (NoOffset) = ""
+
+instance toSqlAssign :: ToSql Assign where
+  tosql (Assign c v) = join_ [c, "=", v]
+
+instance toSqlUpdateValue :: ToSql UpdateValue where
+  tosql (UpdateValue as) = join_ ["SET", join ", " $ map tosql (as ++ ["update_at" .= Now])]
+
+instance toSqlInsertValue :: ToSql InsertValue where
+  tosql (InsertValue as) = join_ ["(", cols, ")", "VALUES", "(", vals, ")"]
+    where
+      cols = join ", " $ fst cvs
+      vals = join ", " $ snd cvs
+      cvs = foldr (\(Assign c v) l -> Tuple (c:(fst l)) (v:(snd l))) (Tuple [] []) (as ++ ["create_at" .= Now, "update_at" .= Now])
+
+instance toSqlSchema :: ToSql Schema where
+  tosql (Schema as) = join ", " $ map toschema (as ++ ["create_at" .= "DATETIME NOT NULL", "update_at" .= "DATETIME NOT NULL"])
+    where toschema (Assign col val) = join_ [col, val]
+
+instance toSqlQuery :: ToSql Query where
+  tosql (Find tn cs od lm off) = join_ $ ["SELECT * FROM", tn, tosql cs, tosql od, tosql lm, tosql off]
+  tosql (First tn cs od) = join_ $ ["SELECT FIRST(*) FROM", tn, tosql cs, tosql od]
+  tosql (Insert tn iv) = join_ $ ["INSERT INTO", tn, tosql iv]
+  tosql (Update tn uv cs od lm off) = join_ $ ["UPDATE", tn, tosql uv, tosql cs, tosql od, tosql lm, tosql off]
+  tosql (Delete tn cs od lm off) = join_ $ ["DELETE FROM", tn, tosql cs, tosql od, tosql lm, tosql off]
+  tosql (Count tn cs) = join_ $ ["SELECT COUNT(*)", tn, tosql cs]
+  tosql (CreateTable tn shm) = join_ $ ["CREATE TABLE", tn, "IF NOT EXISTS", "(", tosql shm, ")"]
+
+-- Model Base
 
 type ModelAff eff = DBAff (current::CURRENT | eff)
 
@@ -18,246 +179,60 @@ type Record t = Row (id :: Int
                     , update_at :: DateTimeStr | t)
 
 getDBPath :: forall eff. ModelAff eff String
-getDBPath = do
+getDBPath =
   if Config.is_debug
-    then return "/tmp/test.db"
-    else do
-      path <- liftEff __dirname
-      return $ join "/" [path, Config.database_path]
+  then return "/tmp/test.db"
+  else do
+    path <- liftEff __dirname
+    return $ join "/" [path, Config.database_path]
 
--- module Model.Base (module Model.Base, module Database.SQLite) where
+connect :: forall eff. ModelAff eff DB
+connect = do
+  path <- getDBPath
+  connectDB path default_mode
 
--- import Prelude
--- import Database.SQLite
+find :: forall eff t. Table -> Condition -> Order -> Limit -> Offset -> ModelAff eff (Array (Record t))
+find tn cs od lm off = do
+  db <- connect
+  allDB db (tosql $ Find tn (ConditionSet cs) od lm off)
 
--- module Model.Base (module Model.Base, module Database.SQLite) where
+first :: forall eff t. Table -> Condition -> Order -> ModelAff eff (Record t)
+first tn cs od = do
+  db <- connect
+  getDB db (tosql $ First tn (ConditionSet cs) od)
 
--- import Prelude
--- import Data.Tuple
--- import Data.Either
--- import Control.Monad.Eff
--- import Control.Monad.Trans
+findall :: forall eff t. Table -> Condition -> Order -> ModelAff eff (Array (Record t))
+findall tn cs od = do
+  db <- connect
+  allDB db (tosql $ Find tn (ConditionSet cs) od NoLimit NoOffset)
 
--- import Database.SQLite
--- import Config
--- import Lib.Utils
+insert :: forall eff t. Table -> (Array Assign) -> ModelAff eff Unit
+insert tn iv = do
+  db <- connect
+  runDB db (tosql $ Insert tn (InsertValue iv))
 
--- type Date = String
--- type Record t = Row (id :: Int, create_at :: Date, update_at :: Date | t)
+update :: forall eff t. Table -> (Array Assign) -> Condition -> Order -> Limit -> Offset -> ModelAff eff Unit
+update tn uv cs od lm off = do
+  db <- connect
+  runDB db (tosql $ Update tn (UpdateValue uv) (ConditionSet cs) od lm off)
 
--- type Table = String
--- type Column = String
--- type QValue = String
+delete :: forall eff t. Table -> Condition -> Order -> Limit -> Offset -> ModelAff eff Unit
+delete tn cs od lm off = do
+  db <- connect
+  runDB db (tosql $ Delete tn (ConditionSet cs) od lm off)
 
--- data Condition = Eq Column QValue
---                | Gt Column QValue
---                | Gte Column QValue
---                | Lt Column QValue
---                | Lte Column QValue
+count :: forall eff. Table -> Condition -> ModelAff eff Int
+count tn cs = do
+  db <- connect
+  result <- getDB db (tosql $ Count tn (ConditionSet cs))
+  return result.count
 
--- data DateTime = Now
---               | DateTime { year :: Int
---                          , month :: Int
---                          , day :: Int
---                          , hour :: Int
---                          , minute :: Int
---                          , second :: Int }
-
--- class IsValue a where
---   toValue :: a -> QValue
-
--- instance isValueInt :: IsValue Int where
---   toValue = show
-
--- instance isValueString :: IsValue String where
---   toValue = show
-
--- instance isValueDateTime :: IsValue DateTime where
---   toValue Now = "datetime(\"now\")"
---   -- TODO
-
-
--- (.=) :: forall a. (IsValue a) => Column -> a -> Condition
--- (.=) c v = Eq c (toValue v)
-
--- (.>) :: forall a. (IsValue a) => Column -> a -> Condition
--- (.>) c v = Gt c (toValue v)
-
--- (.<) :: forall a. (IsValue a) => Column -> a -> Condition
--- (.<) c v = Lt c (toValue v)
-
--- (.>=) :: forall a. (IsValue a) => Column -> a -> Condition
--- (.>=) c v = Gte c (toValue v)
-
--- (.<=) :: forall a. (IsValue a) => Column -> a -> Condition
--- (.<=) c v = Lte c (toValue v)
-
--- class Relation f where
---   (.&&) :: forall a. f a -> a -> f a
---   (.||) :: forall a. f a -> a -> f a
---   by :: forall a. a -> f a
-
--- type Conditions = ConditionsR Condition
--- data ConditionsR c = CAnd (ConditionsR c) c
---          | COr (ConditionsR c) c
---          | Where c
-
--- type Set = SetR Condition
--- data SetR c = SAnd (SetR c) c
---             | Set c
-
--- type Value = ValueR Condition
--- data ValueR c = VAnd (ValueR c) c
---               | Value c
-
--- instance relationConditionsR :: Relation ConditionsR where
---   (.&&) r c = CAnd r c
---   (.||) r c = COr r c
---   by = Where
-
--- instance relationSetR :: Relation SetR where
---   (.&&) r c = SAnd r c
---   (.||) r c = r .&& c
---   by = Set
-
--- instance relationValueR :: Relation ValueR where
---   (.&&) r c = VAnd r c
---   (.||) r c = r .&& c
---   by = Value
-
--- data Order = Asc | Desc
--- data OrderBy = OrderBy Column Order
-
--- data Limit = Limit Int Int
---            | NoLimit
-
--- data Query = Find Table Conditions OrderBy Limit
---            | First Table Conditions OrderBy
---            | Insert Table Value
---            | Update Table Set Conditions
---            | Delete Table Conditions
---            | Count Table Conditions
---            | CreateTable Table (Array Condition)
-
--- class ToSql f where
---   tosql :: f -> Sql
-
--- instance toSqlLimit :: ToSql Limit where
---   tosql (Limit offset count) = join_ ["LIMIT", join' [show offset, show count]]
---   tosql NoLimit = ""
-
--- instance toSqlOrderBy :: ToSql OrderBy where
---   tosql (OrderBy col order) = join_ ["ORDER BY", col, order']
---     where order' = case order of
---             Asc -> "ASC"
---             Desc -> "DESC"
-
--- instance toSqlCondition :: ToSql Condition where
---   tosql c = case c of
---     Eq col v -> join_ [col, "=", v]
---     Gt col v -> join_ [col, ">", v]
---     Gte col v -> join_ [col, ">=", v]
---     Lt col v -> join_ [col, "<", v]
---     Lte col v -> join_ [col, "<=", v]
-
--- instance toSqlConditions :: ToSql (ConditionsR Condition) where
---   tosql cs = case cs of
---     CAnd cs c -> join_ [tosql cs, "AND", tosql c]
---     COr cs c -> join_ [tosql cs, "OR", tosql c]
---     Where c -> join_ ["WHERE", tosql c]
-
--- instance toSqlSet :: ToSql (SetR Condition) where
---   tosql s = case s of
---     SAnd s c -> join ", " [tosql s, tosql c]
---     Set c -> join_ ["SET", tosql c]
-
--- unpack :: Value -> Tuple (Array Column) (Array QValue)
--- unpack v = case v of
---   VAnd v c -> let cols = fst rs ++ [fst r]
---                   vals = snd rs ++ [snd r]
---                   r = unpackc c
---                   rs = unpack v
---               in Tuple cols vals
---   Value c -> let r = unpackc c
---                  col = fst r
---                  val = snd r
---              in Tuple [col] [val]
---   where unpackc c = case c of
---           Eq col val -> Tuple col val
-
--- instance toSqlValue :: ToSql (ValueR Condition) where
---   tosql v = join_ ["(", join' cols, ")", "VALUES", "(", join' vals, ")"]
---     where rs = unpack v
---           cols = fst rs
---           vals = snd rs
-
--- instance toSqlQuery :: ToSql Query where
---   tosql query = case query of
---     Find t cs o l -> join_ ["SELECT * FROM", t, tosql cs, tosql o, tosql l]
---     First t cs o -> join_ ["SELECT FIRST(*) FROM", t, tosql cs, tosql o]
---     Insert t v -> join_ ["INSERT INTO", t, tosql (v .&& ("update_at" .= Now) .&& ("create_at" .= Now))]
---     Update t s cs -> join_ ["UPDATE", t, tosql (s .&& ("update_at" .= Now)), tosql cs]
---     Delete t cs -> join_ ["DELETE FROM", t, tosql cs]
---     Count t cs -> join_ ["SELECT COUNT(*) AS count FROM", t, tosql cs]
-
---     CreateTable t ts -> join_ ["CREATE TABLE IF NOT EXISTS", t, "( id INTEGER PRIMARY KEY AUTOINCREMENT,", tosqlts ts, ", create_at DATETIME, update_at DATETIME)"]
---       where tosqlts ts = join' $ map tosqlc ts
---             tosqlc (Eq k v) = join_ [k, v]
-
--- -- getDBFullPath :: forall eff. Async eff String
--- -- getDBFullPath = do
--- --   root_path <- liftAsyncEff __dirname
--- --   return $ join "/" [root_path, database_path]
-
--- getDBFullPath :: forall eff. Async eff String
--- getDBFullPath = mkAsyncEff "/tmp/test.db"
-
--- connect :: forall eff. DBAsync eff DB
--- connect = do
---   full_path <- getDBFullPath
---   db <- connectDB full_path default_mode
---   return db
-
--- find :: forall eff t. Table -> Conditions -> OrderBy -> Limit -> DBAsync eff (Array (Record t))
--- find t cs o l = do
+-- createTable :: forall eff. Table -> Array Assign-> ModelAff eff Unit
+-- createTable tn shm = do
 --   db <- connect
---   records <- allDB db (tosql $ Find t cs o l)
---   return records
+--   runDB db (tosql $ CreateTable tn (Schema shm))
 
--- first :: forall eff t. Table -> Conditions -> OrderBy -> DBAsync eff (Record t)
--- first t cs o = do
---   db <- connect
---   record <- getDB db (tosql $ First t cs o)
---   return record
-
--- findall :: forall eff t. Table -> Conditions -> OrderBy -> DBAsync eff (Array (Record t))
--- findall t cs o = do
---   db <- connect
---   records <- allDB db (tosql $ Find t cs o NoLimit)
---   return records
-
--- insert :: forall eff t. Table -> Value -> DBAsync eff Unit
--- insert t v = do
---   db <- connect
---   runDB db (tosql $ Insert t v)
-
--- update :: forall eff t. Table -> Set -> Conditions -> DBAsync eff Unit
--- update t s cs = do
---   db <- connect
---   runDB db (tosql $ Update t s cs)
-
--- delete :: forall eff t. Table -> Conditions -> DBAsync eff Unit
--- delete t cs = do
---   db <- connect
---   runDB db (tosql $ Delete t cs)
-
--- count :: forall eff. Table -> Conditions -> DBAsync eff Int
--- count t cs = do
---   db <- connect
---   result <- getDB db (tosql $ Count t cs)
---   return result.count
-
--- createTable :: forall eff. Table -> Array Condition -> DBAsync eff Unit
--- createTable t ts = do
---   db <- connect
---   runDB db (tosql $ CreateTable t ts)
+createTable :: forall eff. TableSchema -> ModelAff eff Unit
+createTable (TableSchema tn shm) = do
+  db <- connect
+  runDB db (tosql $ CreateTable tn (Schema shm))
