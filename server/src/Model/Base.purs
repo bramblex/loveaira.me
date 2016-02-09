@@ -227,11 +227,6 @@ count tn cs = do
   result <- getDB db (tosql $ Count tn (ConditionSet cs))
   return result.count
 
--- createTable :: forall eff. Table -> Array Assign-> ModelAff eff Unit
--- createTable tn shm = do
---   db <- connect
---   runDB db (tosql $ CreateTable tn (Schema shm))
-
 createTable :: forall eff. TableSchema -> ModelAff eff Unit
 createTable (TableSchema tn shm) = do
   db <- connect
