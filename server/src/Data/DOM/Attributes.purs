@@ -9,533 +9,534 @@ newtype AttributeKey = AttributeKey String
 (:=) (AttributeKey key) val = Attribute { key: key , val: val}
 
 -- Normal Attributes --
-accept :: AttributeKey
-accept = AttributeKey "accept"
 
-accept_accept :: AttributeKey
-accept_accept = AttributeKey "accept-charset"
+a_accept :: AttributeKey
+a_accept = AttributeKey "accept"
 
-accesskey :: AttributeKey
-accesskey = AttributeKey "accesskey"
+a_accept_accept :: AttributeKey
+a_accept_accept = AttributeKey "accept-charset"
 
-action :: AttributeKey
-action = AttributeKey "action"
+a_accesskey :: AttributeKey
+a_accesskey = AttributeKey "accesskey"
 
-align :: AttributeKey
-align = AttributeKey "align"
+a_action :: AttributeKey
+a_action = AttributeKey "action"
 
-alt :: AttributeKey
-alt = AttributeKey "alt"
+a_align :: AttributeKey
+a_align = AttributeKey "align"
 
-autocomplete :: AttributeKey
-autocomplete = AttributeKey "autocomplete"
+a_alt :: AttributeKey
+a_alt = AttributeKey "alt"
 
-autosave :: AttributeKey
-autosave = AttributeKey "autosave"
+a_autocomplete :: AttributeKey
+a_autocomplete = AttributeKey "autocomplete"
 
-bgcolor :: AttributeKey
-bgcolor = AttributeKey "bgcolor"
+a_autosave :: AttributeKey
+a_autosave = AttributeKey "autosave"
 
-border :: AttributeKey
-border = AttributeKey "border"
+a_bgcolor :: AttributeKey
+a_bgcolor = AttributeKey "bgcolor"
 
-buffered :: AttributeKey
-buffered = AttributeKey "buffered"
+a_border :: AttributeKey
+a_border = AttributeKey "border"
 
-challenge :: AttributeKey
-challenge = AttributeKey "challenge"
+a_buffered :: AttributeKey
+a_buffered = AttributeKey "buffered"
 
-charset :: AttributeKey
-charset = AttributeKey "charset"
+a_challenge :: AttributeKey
+a_challenge = AttributeKey "challenge"
 
-cite :: AttributeKey
-cite = AttributeKey "cite"
+a_charset :: AttributeKey
+a_charset = AttributeKey "charset"
 
-_class :: AttributeKey
-_class = AttributeKey "class"
+a_cite :: AttributeKey
+a_cite = AttributeKey "cite"
 
-code :: AttributeKey
-code = AttributeKey "code"
+a__class :: AttributeKey
+a__class = AttributeKey "class"
 
-codebase :: AttributeKey
-codebase = AttributeKey "codebase"
+a_code :: AttributeKey
+a_code = AttributeKey "code"
 
-color :: AttributeKey
-color = AttributeKey "color"
+a_codebase :: AttributeKey
+a_codebase = AttributeKey "codebase"
 
-cols :: AttributeKey
-cols = AttributeKey "cols"
+a_color :: AttributeKey
+a_color = AttributeKey "color"
 
-colspan :: AttributeKey
-colspan = AttributeKey "colspan"
+a_cols :: AttributeKey
+a_cols = AttributeKey "cols"
 
-content :: AttributeKey
-content = AttributeKey "content"
+a_colspan :: AttributeKey
+a_colspan = AttributeKey "colspan"
 
-contenteditable :: AttributeKey
-contenteditable = AttributeKey "contenteditable"
+a_content :: AttributeKey
+a_content = AttributeKey "content"
 
-contextmenu :: AttributeKey
-contextmenu = AttributeKey "contextmenu"
+a_contenteditable :: AttributeKey
+a_contenteditable = AttributeKey "contenteditable"
 
-controls :: AttributeKey
-controls = AttributeKey "controls"
+a_contextmenu :: AttributeKey
+a_contextmenu = AttributeKey "contextmenu"
 
-coords :: AttributeKey
-coords = AttributeKey "coords"
+a_controls :: AttributeKey
+a_controls = AttributeKey "controls"
 
-datetime :: AttributeKey
-datetime = AttributeKey "datetime"
+a_coords :: AttributeKey
+a_coords = AttributeKey "coords"
 
-_default :: AttributeKey
-_default = AttributeKey "default"
+a_datetime :: AttributeKey
+a_datetime = AttributeKey "datetime"
 
-dir :: AttributeKey
-dir = AttributeKey "dir"
+a__default :: AttributeKey
+a__default = AttributeKey "default"
 
-dirname :: AttributeKey
-dirname = AttributeKey "dirname"
+a_dir :: AttributeKey
+a_dir = AttributeKey "dir"
 
-download :: AttributeKey
-download = AttributeKey "download"
+a_dirname :: AttributeKey
+a_dirname = AttributeKey "dirname"
 
-draggable :: AttributeKey
-draggable = AttributeKey "draggable"
+a_download :: AttributeKey
+a_download = AttributeKey "download"
 
-dropzone :: AttributeKey
-dropzone = AttributeKey "dropzone"
+a_draggable :: AttributeKey
+a_draggable = AttributeKey "draggable"
 
-enctype :: AttributeKey
-enctype = AttributeKey "enctype"
+a_dropzone :: AttributeKey
+a_dropzone = AttributeKey "dropzone"
 
-for :: AttributeKey
-for = AttributeKey "for"
+a_enctype :: AttributeKey
+a_enctype = AttributeKey "enctype"
 
-form :: AttributeKey
-form = AttributeKey "form"
+a_for :: AttributeKey
+a_for = AttributeKey "for"
 
-formaction :: AttributeKey
-formaction = AttributeKey "formaction"
+a_form :: AttributeKey
+a_form = AttributeKey "form"
 
-headers :: AttributeKey
-headers = AttributeKey "headers"
+a_formaction :: AttributeKey
+a_formaction = AttributeKey "formaction"
 
-height :: AttributeKey
-height = AttributeKey "height"
+a_headers :: AttributeKey
+a_headers = AttributeKey "headers"
 
-high :: AttributeKey
-high = AttributeKey "high"
+a_height :: AttributeKey
+a_height = AttributeKey "height"
 
-href :: AttributeKey
-href = AttributeKey "href"
+a_high :: AttributeKey
+a_high = AttributeKey "high"
 
-hreflang :: AttributeKey
-hreflang = AttributeKey "hreflang"
+a_href :: AttributeKey
+a_href = AttributeKey "href"
 
-http_http :: AttributeKey
-http_http = AttributeKey "http-equiv"
+a_hreflang :: AttributeKey
+a_hreflang = AttributeKey "hreflang"
 
-icon :: AttributeKey
-icon = AttributeKey "icon"
+a_http_http :: AttributeKey
+a_http_http = AttributeKey "http-equiv"
 
-id :: AttributeKey
-id = AttributeKey "id"
+a_icon :: AttributeKey
+a_icon = AttributeKey "icon"
 
-itemprop :: AttributeKey
-itemprop = AttributeKey "itemprop"
+a_id :: AttributeKey
+a_id = AttributeKey "id"
 
-keytype :: AttributeKey
-keytype = AttributeKey "keytype"
+a_itemprop :: AttributeKey
+a_itemprop = AttributeKey "itemprop"
 
-kind :: AttributeKey
-kind = AttributeKey "kind"
+a_keytype :: AttributeKey
+a_keytype = AttributeKey "keytype"
 
-label :: AttributeKey
-label = AttributeKey "label"
+a_kind :: AttributeKey
+a_kind = AttributeKey "kind"
 
-lang :: AttributeKey
-lang = AttributeKey "lang"
+a_label :: AttributeKey
+a_label = AttributeKey "label"
 
-language :: AttributeKey
-language = AttributeKey "language"
+a_lang :: AttributeKey
+a_lang = AttributeKey "lang"
 
-list :: AttributeKey
-list = AttributeKey "list"
+a_language :: AttributeKey
+a_language = AttributeKey "language"
 
-low :: AttributeKey
-low = AttributeKey "low"
+a_list :: AttributeKey
+a_list = AttributeKey "list"
 
-manifest :: AttributeKey
-manifest = AttributeKey "manifest"
+a_low :: AttributeKey
+a_low = AttributeKey "low"
 
-max :: AttributeKey
-max = AttributeKey "max"
+a_manifest :: AttributeKey
+a_manifest = AttributeKey "manifest"
 
-maxlength :: AttributeKey
-maxlength = AttributeKey "maxlength"
+a_max :: AttributeKey
+a_max = AttributeKey "max"
 
-media :: AttributeKey
-media = AttributeKey "media"
+a_maxlength :: AttributeKey
+a_maxlength = AttributeKey "maxlength"
 
-method :: AttributeKey
-method = AttributeKey "method"
+a_media :: AttributeKey
+a_media = AttributeKey "media"
 
-min :: AttributeKey
-min = AttributeKey "min"
+a_method :: AttributeKey
+a_method = AttributeKey "method"
 
-name :: AttributeKey
-name = AttributeKey "name"
+a_min :: AttributeKey
+a_min = AttributeKey "min"
 
-open :: AttributeKey
-open = AttributeKey "open"
+a_name :: AttributeKey
+a_name = AttributeKey "name"
 
-optimum :: AttributeKey
-optimum = AttributeKey "optimum"
+a_open :: AttributeKey
+a_open = AttributeKey "open"
 
-pattern :: AttributeKey
-pattern = AttributeKey "pattern"
+a_optimum :: AttributeKey
+a_optimum = AttributeKey "optimum"
 
-ping :: AttributeKey
-ping = AttributeKey "ping"
+a_pattern :: AttributeKey
+a_pattern = AttributeKey "pattern"
 
-placeholder :: AttributeKey
-placeholder = AttributeKey "placeholder"
+a_ping :: AttributeKey
+a_ping = AttributeKey "ping"
 
-poster :: AttributeKey
-poster = AttributeKey "poster"
+a_placeholder :: AttributeKey
+a_placeholder = AttributeKey "placeholder"
 
-preload :: AttributeKey
-preload = AttributeKey "preload"
+a_poster :: AttributeKey
+a_poster = AttributeKey "poster"
 
-radiogroup :: AttributeKey
-radiogroup = AttributeKey "radiogroup"
+a_preload :: AttributeKey
+a_preload = AttributeKey "preload"
 
-rel :: AttributeKey
-rel = AttributeKey "rel"
+a_radiogroup :: AttributeKey
+a_radiogroup = AttributeKey "radiogroup"
 
-required :: AttributeKey
-required = AttributeKey "required"
+a_rel :: AttributeKey
+a_rel = AttributeKey "rel"
 
-reversed :: AttributeKey
-reversed = AttributeKey "reversed"
+a_required :: AttributeKey
+a_required = AttributeKey "required"
 
-rows :: AttributeKey
-rows = AttributeKey "rows"
+a_reversed :: AttributeKey
+a_reversed = AttributeKey "reversed"
 
-rowspan :: AttributeKey
-rowspan = AttributeKey "rowspan"
+a_rows :: AttributeKey
+a_rows = AttributeKey "rows"
 
-sandbox :: AttributeKey
-sandbox = AttributeKey "sandbox"
+a_rowspan :: AttributeKey
+a_rowspan = AttributeKey "rowspan"
 
-scope :: AttributeKey
-scope = AttributeKey "scope"
+a_sandbox :: AttributeKey
+a_sandbox = AttributeKey "sandbox"
 
-scoped :: AttributeKey
-scoped = AttributeKey "scoped"
+a_scope :: AttributeKey
+a_scope = AttributeKey "scope"
 
-seamless :: AttributeKey
-seamless = AttributeKey "seamless"
+a_scoped :: AttributeKey
+a_scoped = AttributeKey "scoped"
 
-shape :: AttributeKey
-shape = AttributeKey "shape"
+a_seamless :: AttributeKey
+a_seamless = AttributeKey "seamless"
 
-size :: AttributeKey
-size = AttributeKey "size"
+a_shape :: AttributeKey
+a_shape = AttributeKey "shape"
 
-sizes :: AttributeKey
-sizes = AttributeKey "sizes"
+a_size :: AttributeKey
+a_size = AttributeKey "size"
 
-span :: AttributeKey
-span = AttributeKey "span"
+a_sizes :: AttributeKey
+a_sizes = AttributeKey "sizes"
 
-spellcheck :: AttributeKey
-spellcheck = AttributeKey "spellcheck"
+a_span :: AttributeKey
+a_span = AttributeKey "span"
 
-src :: AttributeKey
-src = AttributeKey "src"
+a_spellcheck :: AttributeKey
+a_spellcheck = AttributeKey "spellcheck"
 
-srcdoc :: AttributeKey
-srcdoc = AttributeKey "srcdoc"
+a_src :: AttributeKey
+a_src = AttributeKey "src"
 
-srclang :: AttributeKey
-srclang = AttributeKey "srclang"
+a_srcdoc :: AttributeKey
+a_srcdoc = AttributeKey "srcdoc"
 
-srcset :: AttributeKey
-srcset = AttributeKey "srcset"
+a_srclang :: AttributeKey
+a_srclang = AttributeKey "srclang"
 
-start :: AttributeKey
-start = AttributeKey "start"
+a_srcset :: AttributeKey
+a_srcset = AttributeKey "srcset"
 
-step :: AttributeKey
-step = AttributeKey "step"
+a_start :: AttributeKey
+a_start = AttributeKey "start"
 
-style :: AttributeKey
-style = AttributeKey "style"
+a_step :: AttributeKey
+a_step = AttributeKey "step"
 
-summary :: AttributeKey
-summary = AttributeKey "summary"
+a_style :: AttributeKey
+a_style = AttributeKey "style"
 
-tabindex :: AttributeKey
-tabindex = AttributeKey "tabindex"
+a_summary :: AttributeKey
+a_summary = AttributeKey "summary"
 
-target :: AttributeKey
-target = AttributeKey "target"
+a_tabindex :: AttributeKey
+a_tabindex = AttributeKey "tabindex"
 
-title :: AttributeKey
-title = AttributeKey "title"
+a_target :: AttributeKey
+a_target = AttributeKey "target"
 
-_type :: AttributeKey
-_type = AttributeKey "type"
+a_title :: AttributeKey
+a_title = AttributeKey "title"
 
-usemap :: AttributeKey
-usemap = AttributeKey "usemap"
+a_type :: AttributeKey
+a_type = AttributeKey "type"
 
-value :: AttributeKey
-value = AttributeKey "value"
+a_usemap :: AttributeKey
+a_usemap = AttributeKey "usemap"
 
-width :: AttributeKey
-width = AttributeKey "width"
+a_value :: AttributeKey
+a_value = AttributeKey "value"
 
-wrap :: AttributeKey
-wrap = AttributeKey "wrap"
+a_width :: AttributeKey
+a_width = AttributeKey "width"
+
+a_wrap :: AttributeKey
+a_wrap = AttributeKey "wrap"
 
 -- Data Attributes --
 
-_data_ :: String -> AttributeKey
-_data_ key = AttributeKey ("data-" ++ key)
+a_data_ :: String -> AttributeKey
+a_data_ key = AttributeKey ("data-" ++ key)
 
-_data :: AttributeKey
-_data = AttributeKey "data"
+a_data :: AttributeKey
+a_data = AttributeKey "data"
 
 -- Boolean Attributes --
 
-async :: Attribute
-async = BooleanAttr { key: "async" }
+a_async :: Attribute
+a_async = BooleanAttr { key: "async" }
 
-selected :: Attribute
-selected = BooleanAttr { key: "selected" }
+a_selected :: Attribute
+a_selected = BooleanAttr { key: "selected" }
 
-autofocus :: Attribute
-autofocus = BooleanAttr { key: "autofocus" }
+a_autofocus :: Attribute
+a_autofocus = BooleanAttr { key: "autofocus" }
 
-checked :: Attribute
-checked = BooleanAttr { key: "checked" }
+a_checked :: Attribute
+a_checked = BooleanAttr { key: "checked" }
 
-disabled :: Attribute
-disabled = BooleanAttr { key: "disabled" }
+a_disabled :: Attribute
+a_disabled = BooleanAttr { key: "disabled" }
 
-multiple :: Attribute
-multiple = BooleanAttr { key: "multiple" }
+a_multiple :: Attribute
+a_multiple = BooleanAttr { key: "multiple" }
 
-readonly :: Attribute
-readonly = BooleanAttr { key: "readonly" }
+a_readonly :: Attribute
+a_readonly = BooleanAttr { key: "readonly" }
 
-novalidate :: Attribute
-novalidate = BooleanAttr { key: "novalidate" }
+a_novalidate :: Attribute
+a_novalidate = BooleanAttr { key: "novalidate" }
 
-autoplay :: Attribute
-autoplay = BooleanAttr { key: "autoplay" }
+a_autoplay :: Attribute
+a_autoplay = BooleanAttr { key: "autoplay" }
 
-hidden :: Attribute
-hidden = BooleanAttr { key: "hidden" }
+a_hidden :: Attribute
+a_hidden = BooleanAttr { key: "hidden" }
 
-loop :: Attribute
-loop = BooleanAttr { key: "loop" }
+a_loop :: Attribute
+a_loop = BooleanAttr { key: "loop" }
 
-defer :: Attribute
-defer = BooleanAttr { key: "defer" }
+a_defer :: Attribute
+a_defer = BooleanAttr { key: "defer" }
 
-ismap :: Attribute
-ismap = BooleanAttr { key: "ismap" }
+a_ismap :: Attribute
+a_ismap = BooleanAttr { key: "ismap" }
 
 -- Event Handler Attributes --
 
-onabort :: AttributeKey
-onabort = AttributeKey "onabort"
+a_onabort :: AttributeKey
+a_onabort = AttributeKey "onabort"
 
-onautocomplete :: AttributeKey
-onautocomplete = AttributeKey "onautocomplete"
+a_onautocomplete :: AttributeKey
+a_onautocomplete = AttributeKey "onautocomplete"
 
-onautocompleteerror :: AttributeKey
-onautocompleteerror = AttributeKey "onautocompleteerror"
+a_onautocompleteerror :: AttributeKey
+a_onautocompleteerror = AttributeKey "onautocompleteerror"
 
-onblur :: AttributeKey
-onblur = AttributeKey "onblur"
+a_onblur :: AttributeKey
+a_onblur = AttributeKey "onblur"
 
-oncancel :: AttributeKey
-oncancel = AttributeKey "oncancel"
+a_oncancel :: AttributeKey
+a_oncancel = AttributeKey "oncancel"
 
-oncanp :: AttributeKey
-oncanp = AttributeKey "oncanp"
+a_oncanp :: AttributeKey
+a_oncanp = AttributeKey "oncanp"
 
-oncanplaythrough :: AttributeKey
-oncanplaythrough = AttributeKey "oncanplaythrough"
+a_oncanplaythrough :: AttributeKey
+a_oncanplaythrough = AttributeKey "oncanplaythrough"
 
-onchange :: AttributeKey
-onchange = AttributeKey "onchange"
+a_onchange :: AttributeKey
+a_onchange = AttributeKey "onchange"
 
-onclick :: AttributeKey
-onclick = AttributeKey "onclick"
+a_onclick :: AttributeKey
+a_onclick = AttributeKey "onclick"
 
-onclose :: AttributeKey
-onclose = AttributeKey "onclose"
+a_onclose :: AttributeKey
+a_onclose = AttributeKey "onclose"
 
-oncontextmenu :: AttributeKey
-oncontextmenu = AttributeKey "oncontextmenu"
+a_oncontextmenu :: AttributeKey
+a_oncontextmenu = AttributeKey "oncontextmenu"
 
-oncuechange :: AttributeKey
-oncuechange = AttributeKey "oncuechange"
+a_oncuechange :: AttributeKey
+a_oncuechange = AttributeKey "oncuechange"
 
-ondblclick :: AttributeKey
-ondblclick = AttributeKey "ondblclick"
+a_ondblclick :: AttributeKey
+a_ondblclick = AttributeKey "ondblclick"
 
-ondrag :: AttributeKey
-ondrag = AttributeKey "ondrag"
+a_ondrag :: AttributeKey
+a_ondrag = AttributeKey "ondrag"
 
-ondragend :: AttributeKey
-ondragend = AttributeKey "ondragend"
+a_ondragend :: AttributeKey
+a_ondragend = AttributeKey "ondragend"
 
-ondragenter :: AttributeKey
-ondragenter = AttributeKey "ondragenter"
+a_ondragenter :: AttributeKey
+a_ondragenter = AttributeKey "ondragenter"
 
-ondragexit :: AttributeKey
-ondragexit = AttributeKey "ondragexit"
+a_ondragexit :: AttributeKey
+a_ondragexit = AttributeKey "ondragexit"
 
-ondragleave :: AttributeKey
-ondragleave = AttributeKey "ondragleave"
+a_ondragleave :: AttributeKey
+a_ondragleave = AttributeKey "ondragleave"
 
-ondragover :: AttributeKey
-ondragover = AttributeKey "ondragover"
+a_ondragover :: AttributeKey
+a_ondragover = AttributeKey "ondragover"
 
-ondragstart :: AttributeKey
-ondragstart = AttributeKey "ondragstart"
+a_ondragstart :: AttributeKey
+a_ondragstart = AttributeKey "ondragstart"
 
-ondrop :: AttributeKey
-ondrop = AttributeKey "ondrop"
+a_ondrop :: AttributeKey
+a_ondrop = AttributeKey "ondrop"
 
-ondurationchange :: AttributeKey
-ondurationchange = AttributeKey "ondurationchange"
+a_ondurationchange :: AttributeKey
+a_ondurationchange = AttributeKey "ondurationchange"
 
-onemptied :: AttributeKey
-onemptied = AttributeKey "onemptied"
+a_onemptied :: AttributeKey
+a_onemptied = AttributeKey "onemptied"
 
-onended :: AttributeKey
-onended = AttributeKey "onended"
+a_onended :: AttributeKey
+a_onended = AttributeKey "onended"
 
-onerror :: AttributeKey
-onerror = AttributeKey "onerror"
+a_onerror :: AttributeKey
+a_onerror = AttributeKey "onerror"
 
-onfocus :: AttributeKey
-onfocus = AttributeKey "onfocus"
+a_onfocus :: AttributeKey
+a_onfocus = AttributeKey "onfocus"
 
-oninput :: AttributeKey
-oninput = AttributeKey "oninput"
+a_oninput :: AttributeKey
+a_oninput = AttributeKey "oninput"
 
-oninvalid :: AttributeKey
-oninvalid = AttributeKey "oninvalid"
+a_oninvalid :: AttributeKey
+a_oninvalid = AttributeKey "oninvalid"
 
-onkeydown :: AttributeKey
-onkeydown = AttributeKey "onkeydown"
+a_onkeydown :: AttributeKey
+a_onkeydown = AttributeKey "onkeydown"
 
-onkeypress :: AttributeKey
-onkeypress = AttributeKey "onkeypress"
+a_onkeypress :: AttributeKey
+a_onkeypress = AttributeKey "onkeypress"
 
-onkeyup :: AttributeKey
-onkeyup = AttributeKey "onkeyup"
+a_onkeyup :: AttributeKey
+a_onkeyup = AttributeKey "onkeyup"
 
-onload :: AttributeKey
-onload = AttributeKey "onload"
+a_onload :: AttributeKey
+a_onload = AttributeKey "onload"
 
-onloadeddata :: AttributeKey
-onloadeddata = AttributeKey "onloadeddata"
+a_onloadeddata :: AttributeKey
+a_onloadeddata = AttributeKey "onloadeddata"
 
-onloadedmetadata :: AttributeKey
-onloadedmetadata = AttributeKey "onloadedmetadata"
+a_onloadedmetadata :: AttributeKey
+a_onloadedmetadata = AttributeKey "onloadedmetadata"
 
-onloadstart :: AttributeKey
-onloadstart = AttributeKey "onloadstart"
+a_onloadstart :: AttributeKey
+a_onloadstart = AttributeKey "onloadstart"
 
-onmousedown :: AttributeKey
-onmousedown = AttributeKey "onmousedown"
+a_onmousedown :: AttributeKey
+a_onmousedown = AttributeKey "onmousedown"
 
-onmouseenter :: AttributeKey
-onmouseenter = AttributeKey "onmouseenter"
+a_onmouseenter :: AttributeKey
+a_onmouseenter = AttributeKey "onmouseenter"
 
-onmouseleave :: AttributeKey
-onmouseleave = AttributeKey "onmouseleave"
+a_onmouseleave :: AttributeKey
+a_onmouseleave = AttributeKey "onmouseleave"
 
-onmousemove :: AttributeKey
-onmousemove = AttributeKey "onmousemove"
+a_onmousemove :: AttributeKey
+a_onmousemove = AttributeKey "onmousemove"
 
-onmouseout :: AttributeKey
-onmouseout = AttributeKey "onmouseout"
+a_onmouseout :: AttributeKey
+a_onmouseout = AttributeKey "onmouseout"
 
-onmouseover :: AttributeKey
-onmouseover = AttributeKey "onmouseover"
+a_onmouseover :: AttributeKey
+a_onmouseover = AttributeKey "onmouseover"
 
-onmouseup :: AttributeKey
-onmouseup = AttributeKey "onmouseup"
+a_onmouseup :: AttributeKey
+a_onmouseup = AttributeKey "onmouseup"
 
-onmousewheel :: AttributeKey
-onmousewheel = AttributeKey "onmousewheel"
+a_onmousewheel :: AttributeKey
+a_onmousewheel = AttributeKey "onmousewheel"
 
-onpause :: AttributeKey
-onpause = AttributeKey "onpause"
+a_onpause :: AttributeKey
+a_onpause = AttributeKey "onpause"
 
-onplay :: AttributeKey
-onplay = AttributeKey "onplay"
+a_onplay :: AttributeKey
+a_onplay = AttributeKey "onplay"
 
-onplaying :: AttributeKey
-onplaying = AttributeKey "onplaying"
+a_onplaying :: AttributeKey
+a_onplaying = AttributeKey "onplaying"
 
-onprogress :: AttributeKey
-onprogress = AttributeKey "onprogress"
+a_onprogress :: AttributeKey
+a_onprogress = AttributeKey "onprogress"
 
-onratechange :: AttributeKey
-onratechange = AttributeKey "onratechange"
+a_onratechange :: AttributeKey
+a_onratechange = AttributeKey "onratechange"
 
-onreset :: AttributeKey
-onreset = AttributeKey "onreset"
+a_onreset :: AttributeKey
+a_onreset = AttributeKey "onreset"
 
-onresize :: AttributeKey
-onresize = AttributeKey "onresize"
+a_onresize :: AttributeKey
+a_onresize = AttributeKey "onresize"
 
-onscroll :: AttributeKey
-onscroll = AttributeKey "onscroll"
+a_onscroll :: AttributeKey
+a_onscroll = AttributeKey "onscroll"
 
-onseeked :: AttributeKey
-onseeked = AttributeKey "onseeked"
+a_onseeked :: AttributeKey
+a_onseeked = AttributeKey "onseeked"
 
-onseeking :: AttributeKey
-onseeking = AttributeKey "onseeking"
+a_onseeking :: AttributeKey
+a_onseeking = AttributeKey "onseeking"
 
-onselect :: AttributeKey
-onselect = AttributeKey "onselect"
+a_onselect :: AttributeKey
+a_onselect = AttributeKey "onselect"
 
-onshow :: AttributeKey
-onshow = AttributeKey "onshow"
+a_onshow :: AttributeKey
+a_onshow = AttributeKey "onshow"
 
-onsort :: AttributeKey
-onsort = AttributeKey "onsort"
+a_onsort :: AttributeKey
+a_onsort = AttributeKey "onsort"
 
-onstalled :: AttributeKey
-onstalled = AttributeKey "onstalled"
+a_onstalled :: AttributeKey
+a_onstalled = AttributeKey "onstalled"
 
-onsubmit :: AttributeKey
-onsubmit = AttributeKey "onsubmit"
+a_onsubmit :: AttributeKey
+a_onsubmit = AttributeKey "onsubmit"
 
-onsuspend :: AttributeKey
-onsuspend = AttributeKey "onsuspend"
+a_onsuspend :: AttributeKey
+a_onsuspend = AttributeKey "onsuspend"
 
-ontimeupdate :: AttributeKey
-ontimeupdate = AttributeKey "ontimeupdate"
+a_ontimeupdate :: AttributeKey
+a_ontimeupdate = AttributeKey "ontimeupdate"
 
-ontoggle :: AttributeKey
-ontoggle = AttributeKey "ontoggle"
+a_ontoggle :: AttributeKey
+a_ontoggle = AttributeKey "ontoggle"
 
-onvolumechange :: AttributeKey
-onvolumechange = AttributeKey "onvolumechange"
+a_onvolumechange :: AttributeKey
+a_onvolumechange = AttributeKey "onvolumechange"
 
-onwaiting :: AttributeKey
-onwaiting = AttributeKey "onwaiting"
+a_onwaiting :: AttributeKey
+a_onwaiting = AttributeKey "onwaiting"

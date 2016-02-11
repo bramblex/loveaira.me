@@ -19,3 +19,5 @@ foreign import data CURRENT :: !
 foreign import __filename :: forall eff. Eff (current::CURRENT | eff) String
 
 foreign import __dirname :: forall eff. Eff (current::CURRENT | eff) String
+
+foreign import sha1 :: String -> String -> String

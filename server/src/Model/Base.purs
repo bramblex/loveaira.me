@@ -36,7 +36,6 @@ data Assign = Assign Column Value
 newtype UpdateValue = UpdateValue (Array Assign)
 newtype InsertValue = InsertValue (Array Assign)
 newtype Schema = Schema (Array Assign)
-data TableSchema = TableSchema Table (Array Assign)
 
 data Order = Desc Column
            | Asc Column
@@ -158,7 +157,7 @@ instance toSqlInsertValue :: ToSql InsertValue where
       cvs = foldr (\(Assign c v) l -> Tuple (c:(fst l)) (v:(snd l))) (Tuple [] []) (as ++ ["create_at" .= Now, "update_at" .= Now])
 
 instance toSqlSchema :: ToSql Schema where
-  tosql (Schema as) = join ", " $ map toschema (as ++ ["create_at" .= "DATETIME NOT NULL", "update_at" .= "DATETIME NOT NULL"])
+  tosql (Schema as) = join ", " $ map toschema (as ++ ["create_at" .= "DATETIME NOT NULL", "update_at" .= "DATETIME NOT NULL", "id" .= "INTEGER PRIMARY KEY AUTOINCREMENT"])
     where toschema (Assign col val) = join_ [col, val]
 
 instance toSqlQuery :: ToSql Query where
@@ -174,7 +173,7 @@ instance toSqlQuery :: ToSql Query where
 
 type ModelAff eff = DBAff (current::CURRENT | eff)
 
-type Record t = Row (id :: Int
+type Record t = Row ( id :: Int
                     , create_at :: DateTimeStr
                     , update_at :: DateTimeStr | t)
 
@@ -227,7 +226,7 @@ count tn cs = do
   result <- getDB db (tosql $ Count tn (ConditionSet cs))
   return result.count
 
-createTable :: forall eff. TableSchema -> ModelAff eff Unit
-createTable (TableSchema tn shm) = do
+createTable :: forall eff. Table -> Array Assign -> ModelAff eff Unit
+createTable tn shm = do
   db <- connect
   runDB db (tosql $ CreateTable tn (Schema shm))
