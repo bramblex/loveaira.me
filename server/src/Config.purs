@@ -1,9 +1,11 @@
 module Config where
 
-is_debug = true
+import qualified Lib.Utils as Utils
 
 port = 8000
 
 security_key = "keyborad cat"
 
-database_path = "data/lovearia.db"
+database_path = Utils.projectDir "data/lovearia.db"
+
+static_path = Utils.projectDir "static"

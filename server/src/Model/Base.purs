@@ -4,6 +4,7 @@ module Model.Base ( module Model.Base
 import Prelude
 
 import Data.Tuple
+import Data.Maybe
 import Data.Array ((:))
 import Data.Foldable (foldr)
 
@@ -15,7 +16,7 @@ import Database.SQLite.Type
 import Database.SQLite
 import Data.DateTime
 
-import Config as Config
+import qualified Config as Config
 
 type Table = String
 type Column = String
@@ -30,6 +31,8 @@ newtype ConditionSet = ConditionSet Condition
 
 class IsValue a where
   toValue :: a -> Value
+
+newtype Raw = Raw String
 
 data Assign = Assign Column Value
 
@@ -49,10 +52,13 @@ data Offset = Offset Int
 data Query = Find Table ConditionSet Order Limit Offset
            | First Table ConditionSet Order
            | Insert Table InsertValue
-           | Update Table UpdateValue ConditionSet Order Limit Offset
-           | Delete Table ConditionSet Order Limit Offset
+           | InsertOrUpdate Table InsertValue
+           | Update Table UpdateValue ConditionSet
+           | Delete Table ConditionSet
            | Count Table ConditionSet
            | CreateTable Table Schema
+
+           | Join Table Query
 
 infix 5 .~=
 infix 5 .==
@@ -95,12 +101,23 @@ infix 5 .=
 (.=) :: forall a. (IsValue a) => Column -> a -> Assign
 (.=) c v = Assign c (toValue v)
 
+infix 5 .=>
+(.=>) :: Column -> String -> Assign
+(.=>) c v = Assign c (toValue $ Raw v)
+
 class ToSql a where
   tosql :: a -> Sql
 
 -- instance of IsValue
+instance isValueRaw:: IsValue Raw where
+  toValue (Raw str) = str
+
 instance isValueString :: IsValue String where
   toValue str = show str
+
+instance isMaybe :: (IsValue a) => IsValue (Maybe a)  where
+  toValue Nothing = "NULL"
+  toValue (Just a) = toValue a
 
 instance isValueInt :: IsValue Int where
   toValue int = show int
@@ -157,17 +174,18 @@ instance toSqlInsertValue :: ToSql InsertValue where
       cvs = foldr (\(Assign c v) l -> Tuple (c:(fst l)) (v:(snd l))) (Tuple [] []) (as ++ ["create_at" .= Now, "update_at" .= Now])
 
 instance toSqlSchema :: ToSql Schema where
-  tosql (Schema as) = join ", " $ map toschema (as ++ ["create_at" .= "DATETIME NOT NULL", "update_at" .= "DATETIME NOT NULL", "id" .= "INTEGER PRIMARY KEY AUTOINCREMENT"])
+  tosql (Schema as) = join ", " $ map toschema (as ++ ["create_at" .=> "DATETIME NOT NULL", "update_at" .=> "DATETIME NOT NULL", "id" .=> "INTEGER PRIMARY KEY AUTOINCREMENT"])
     where toschema (Assign col val) = join_ [col, val]
 
 instance toSqlQuery :: ToSql Query where
   tosql (Find tn cs od lm off) = join_ $ ["SELECT * FROM", tn, tosql cs, tosql od, tosql lm, tosql off]
   tosql (First tn cs od) = join_ $ ["SELECT * FROM", tn, tosql cs, tosql od]
   tosql (Insert tn iv) = join_ $ ["INSERT INTO", tn, tosql iv]
-  tosql (Update tn uv cs od lm off) = join_ $ ["UPDATE", tn, tosql uv, tosql cs, tosql od, tosql lm, tosql off]
-  tosql (Delete tn cs od lm off) = join_ $ ["DELETE FROM", tn, tosql cs, tosql od, tosql lm, tosql off]
+  tosql (InsertOrUpdate tn iv) = join_ $ ["INSERT OR REPLACE INTO", tn, tosql iv]
+  tosql (Update tn uv cs) = join_ $ ["UPDATE", tn, tosql uv, tosql cs]
+  tosql (Delete tn cs) = join_ $ ["DELETE FROM", tn, tosql cs]
   tosql (Count tn cs) = join_ $ ["SELECT COUNT(*)", tn, tosql cs]
-  tosql (CreateTable tn shm) = join_ $ ["CREATE TABLE", tn, "IF NOT EXISTS", "(", tosql shm, ")"]
+  tosql (CreateTable tn shm) = join_ $ ["CREATE TABLE IF NOT EXISTS", tn, "(", tosql shm, ")"]
 
 -- Model Base
 
@@ -177,17 +195,9 @@ type Record t = Row ( id :: Int
                     , create_at :: DateTimeStr
                     , update_at :: DateTimeStr | t)
 
-getDBPath :: forall eff. ModelAff eff String
-getDBPath =
-  if Config.is_debug
-  then return "/tmp/test.db"
-  else do
-    path <- liftEff __dirname
-    return $ join "/" [path, Config.database_path]
-
 connect :: forall eff. ModelAff eff DB
 connect = do
-  path <- getDBPath
+  path <- liftEff $ Config.database_path
   connectDB path default_mode
 
 find :: forall eff t. Table -> Condition -> Order -> Limit -> Offset -> ModelAff eff (Array (Record t))
@@ -210,15 +220,20 @@ insert tn iv = do
   db <- connect
   runDB db (tosql $ Insert tn (InsertValue iv))
 
-update :: forall eff t. Table -> (Array Assign) -> Condition -> Order -> Limit -> Offset -> ModelAff eff Unit
-update tn uv cs od lm off = do
+insertOrUpdate :: forall eff t. Table -> (Array Assign) -> ModelAff eff Unit
+insertOrUpdate tn iv = do
   db <- connect
-  runDB db (tosql $ Update tn (UpdateValue uv) (ConditionSet cs) od lm off)
+  runDB db (tosql $ InsertOrUpdate tn (InsertValue iv))
 
-delete :: forall eff t. Table -> Condition -> Order -> Limit -> Offset -> ModelAff eff Unit
-delete tn cs od lm off = do
+update :: forall eff t. Table -> (Array Assign) -> Condition -> ModelAff eff Unit
+update tn uv cs = do
   db <- connect
-  runDB db (tosql $ Delete tn (ConditionSet cs) od lm off)
+  runDB db (tosql $ Update tn (UpdateValue uv) (ConditionSet cs))
+
+delete :: forall eff t. Table -> Condition ->ModelAff eff Unit
+delete tn cs = do
+  db <- connect
+  runDB db (tosql $ Delete tn (ConditionSet cs))
 
 count :: forall eff. Table -> Condition -> ModelAff eff Int
 count tn cs = do

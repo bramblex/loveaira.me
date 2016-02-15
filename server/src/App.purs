@@ -19,60 +19,30 @@ import Node.Express.Request
 import Node.Express.Response
 import Node.HTTP (Server())
 
-main :: forall e. App (console :: CONSOLE | e)
+import Lib.CookieSession
+import qualified Config as Config
+
+import qualified Lib.Middleware as MW
+import qualified Lib.Utils as Utils
+import qualified Template.Base as T
+
+import qualified Handler.User as UserHandler
+import qualified Handler.Article as ArticleHandler
+
+import Handler.Base
+
+
+main :: forall e. ModelApp (console :: CONSOLE | e)
 main = do
   liftEff $ log "Setting up"
   setProp "json spaces" 4.0
+
+  useExternal $ MW.bodyParser {extended: false}
+  static_path <- liftEff $ Config.static_path
+  useExternalAt "/static" $ MW.static static_path
   useExternal $ cookieSession {secret: Config.security_key}
-  mount "/subapp" subapp
 
--- main =
+  get "/" $ render T.index
 
--- indexHandler :: forall e. AppState -> Handler e
--- indexHandler _ = do
---   sendJson help
-
--- import Lib.CookieSession
--- import Config
-
--- subAppIndexHandler :: forall eff. Handler eff
--- subAppIndexHandler = do
---   send "This is subapp"
-
--- setSessionHandler :: forall eff. Handler eff
--- setSessionHandler = do
---   sessionSet "user" {info: "something"}
---   send "set session test: "
-
--- getSessionHandler :: forall eff. Handler eff
--- getSessionHandler = do
---   user <- sessionGet "user"
---   send $ "session test: " ++ user.info
-
--- subapp :: forall eff. App eff
--- subapp = do
---   get "/" subAppIndexHandler
---   get "/set" setSessionHandler
---   get "/get" getSessionHandler
-
-
-  -- get "/set" setSessionHandler
-  -- get "/get" getSessionHandler
-
-  -- use               (logger            state)
-  -- get "/"           (indexHandler      state)
-  -- get "/list"       (listTodosHandler  state)
-  -- get "/create"     (createTodoHandler state)
-  -- get "/update/:id" (updateTodoHandler state)
-  -- get "/delete/:id" (deleteTodoHandler state)
-  -- get "/done/:id"   (doTodoHandler     state)
-  -- useOnError        (errorHandler      state)
-
--- foreign import _mount ::
---   forall eff. Fn3 Application String Application (Eff (express :: EXPRESS | eff) Unit)
-
--- mount :: forall eff. Path -> App eff -> App eff
--- mount mountpath (AppM subact) = AppM \app -> do
---   subapp <- mkApplication
---   subact subapp
---   runFn3 app mountpath subapp
+  mount "/user" UserHandler.main
+  mount "/article" ArticleHandler.main

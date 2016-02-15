@@ -14,3 +14,17 @@ exports._sessionGet = function(req, key){
         return req.session[key] || {};
     };
 };
+
+exports._sessionClear = function(req, key){
+    return function(){
+        req.session[key] = null;
+    };
+};
+
+exports._sessionClearAll = function(req){
+    return function(){
+        for (var key in req.session){
+            req.session[key] = null;
+        }
+    };
+};

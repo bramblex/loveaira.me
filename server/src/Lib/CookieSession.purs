@@ -6,19 +6,43 @@ import Data.Function
 import Node.Express.Types
 import Node.Express.Handler
 
+import Data.Foreign.NullOrUndefined
+import Data.Foreign
+import Data.Foreign.Class
+import Data.Maybe
+import Data.Either
+
+import qualified Lib.Utils as Utils
+
 foreign import cookieSession ::
   forall eff t. {| t } -> Fn3 Request Response (ExpressM eff Unit) (ExpressM eff Unit)
 
-sessionSet :: forall eff t. String -> t -> Handler eff
+sessionSet :: forall eff a. (IsForeign a) => String -> a -> Handler eff
 sessionSet k v = HandlerM $ \req _ _ ->
-  liftEff $ runFn3 _sessionSet req k v
+  liftEff $ runFn3 _sessionSet req k (toForeign v)
 
-sessionGet :: forall eff t. String -> HandlerM (express::EXPRESS | eff) t
+sessionGet :: forall eff a. (IsForeign a) => String -> HandlerM (express::EXPRESS | eff) (Maybe a)
 sessionGet k = HandlerM $ \req _ _ ->
-  liftEff $ runFn2 _sessionGet req k
+  liftEff $ do
+    r <- runFn2 _sessionGet req k
+    return $ Utils.eitherToMaybe <<< read $ r
+
+sessionClear :: forall eff. String -> Handler eff
+sessionClear k = HandlerM $ \req _ _ ->
+  liftEff $ runFn2 _sessionClear req k
+
+sessionClearAll :: forall eff. Handler eff
+sessionClearAll = HandlerM $ \req _ _ ->
+  liftEff $ runFn1 _sessionClearAll req
 
 foreign import _sessionSet ::
-  forall eff t. Fn3 Request String t (ExpressM eff Unit)
+  forall eff. Fn3 Request String Foreign (ExpressM eff Unit)
 
 foreign import _sessionGet ::
-  forall eff t. Fn2 Request String (ExpressM eff t)
+  forall eff. Fn2 Request String (ExpressM eff Foreign)
+
+foreign import _sessionClear ::
+  forall eff. Fn2 Request String (ExpressM eff Unit)
+
+foreign import _sessionClearAll ::
+  forall eff. Fn1 Request (ExpressM eff Unit)

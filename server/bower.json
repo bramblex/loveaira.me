@@ -14,6 +14,8 @@
     "purescript-console": "^0.1.0",
     "purescript-free": "~0.9.1",
     "purescript-aff": "~0.14.0",
-    "purescript-express": "https://github.com/bramblex/purescript-express.git#master"
+    "purescript-express": "https://github.com/bramblex/purescript-express.git#master",
+    "purescript-foreign": "~0.7.2",
+    "purescript-yargs": "~0.7.2"
   }
 }

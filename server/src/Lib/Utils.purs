@@ -5,6 +5,9 @@ import Control.Monad.Eff
 import Data.Foldable (foldl)
 import Data.String (drop, length)
 
+import Data.Either
+import Data.Maybe
+
 join :: String -> Array String -> String
 join sp arr = drop (length sp) $ foldl (\l s -> l ++ sp ++ s) "" arr
 
@@ -14,10 +17,34 @@ join' = join ", "
 join_ :: Array String -> String
 join_ = join " "
 
+import Data.Maybe
+import Data.Int
+parseInt :: String -> Int
+parseInt str = fromMaybe 0 $ fromString str
+
+projectDir :: forall eff. String -> Eff (current::CURRENT | eff) String
+projectDir path = do
+  root_path <- __toplevel
+  return $ join "/" [root_path, "website", path]
+
+eitherToMaybe :: forall a e. Either e a -> Maybe a
+eitherToMaybe (Left _)  = Nothing
+eitherToMaybe (Right v) = Just v
+
+-- testProjectDir :: forall eff. String -> Eff (current::CURRENT | eff) String
+-- testProjectDir path = do
+--   root_path <- __toplevel
+--   return $ join "/" [root_path, "website", path]
+
 foreign import data CURRENT :: !
 
-foreign import __filename :: forall eff. Eff (current::CURRENT | eff) String
-
-foreign import __dirname :: forall eff. Eff (current::CURRENT | eff) String
-
 foreign import sha1 :: String -> String -> String
+
+foreign import __filename :: forall eff. Eff (current::CURRENT | eff) String
+foreign import __dirname :: forall eff. Eff (current::CURRENT | eff) String
+foreign import __toplevel  :: forall eff. Eff (current::CURRENT | eff) String
+
+foreign import encodeURIComponent :: String -> String
+foreign import encodeURI :: String -> String
+foreign import decodeURIComponent :: String -> String
+foreign import decodeURI :: String -> String

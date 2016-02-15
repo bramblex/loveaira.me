@@ -3,7 +3,7 @@
 var makeBinding = function makeBinding(origin, method, args, result){
     var _result;
     if (result === undefined) { _result = '(result)'; }
-    else if (result === null) { _result = ''; }
+    else if (result === null) { _result = '()'; }
     else { _result = '('+result+')'; }
 
     var r = ('\n\
@@ -11,7 +11,8 @@ var makeBinding = function makeBinding(origin, method, args, result){
                    return function(){\n\
                      try{console.log("SQL:", sql);}catch(e){};\n\
                      var _return = '+origin+'.'+method+'('+args.map(function(a){return a+', ';}).join('')+'function(error, result){\n\
-                       if (error) { onFailure(error)(); }\n\
+                       if (error) { onFailure(error)(); }\n' + (result !== null ? '\
+                       else if (!'+_result+') { onFailure(new Error("Not Found"))(); }\n' : '') + '\
                        else { onSuccess'+_result+'(); }\n\
                      });\n\
                    };\n\

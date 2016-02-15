@@ -22,3 +22,6 @@ clean:
 	-rm website/package.json
 	-rm website/server.js
 	-rm $(client_object_targets)
+
+run: all
+	node website/server.js
