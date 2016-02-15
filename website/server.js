@@ -4338,8 +4338,10 @@ var PS = { };
   };
   var index = base(Prelude.bind(Control_Monad_Free.freeBind)(Data_DOM_Tags.t_h1([  ])(Data_DOM_Tags.text("LoveAria")))(function () {
       return Prelude.bind(Control_Monad_Free.freeBind)(Data_DOM_Tags.t_hr([  ]))(function () {
-          return Prelude.bind(Control_Monad_Free.freeBind)(Data_DOM_Tags.t_p([  ])(Data_DOM_Tags.t_a([ Data_DOM_Attributes[":="](Data_DOM_Attributes.a_href)("/article/") ])(Data_DOM_Tags.text("\u535a\u5ba2\u5217\u8868"))))(function () {
-              return Data_DOM_Tags.t_p([  ])(Data_DOM_Tags.text("LoveAria \u7528 PureScript \u91cd\u5199\u4e86\u3002\u73b0\u5728\u5df2\u7ecf\u5b9e\u73b0\u5927\u90e8\u5206\u57fa\u672c\u529f\u80fd\u4e86\u3002\u5269\u4e0b\u7684\u529f\u80fd\u6b63\u5728\u6162\u6162\u5b9e\u73b0\u3002\u5fc3\u585e\uff0c\u672c\u5b9d\u5b9d\u5199\u4e2a\u4ee3\u7801\u90fd\u90a3\u4e48\u5fe7\u4f24\u3002"));
+          return Prelude.bind(Control_Monad_Free.freeBind)(Data_DOM_Tags.t_p([  ])(Data_DOM_Tags.t_a([ Data_DOM_Attributes[":="](Data_DOM_Attributes.a_href)("https://github.com/bramblex/loveaira.me") ])(Data_DOM_Tags.text("GitHub \u9879\u76ee\u5730\u5740"))))(function () {
+              return Prelude.bind(Control_Monad_Free.freeBind)(Data_DOM_Tags.t_p([  ])(Data_DOM_Tags.t_a([ Data_DOM_Attributes[":="](Data_DOM_Attributes.a_href)("/article/") ])(Data_DOM_Tags.text("\u535a\u5ba2\u5217\u8868"))))(function () {
+                  return Data_DOM_Tags.t_p([  ])(Data_DOM_Tags.text("\u8fd9\u662f\u4e00\u4e2a\u7528\u7eaf PureScript \u5b9e\u73b0\u7684\u7b80\u6613 Web \u6846\u67b6\u3002\u8fd8\u6709\u597d\u591a\u86cb\u75bc\u7684\u95ee\u9898\u6b63\u5728\u89e3\u51b3\u4e2d\u3002\u73b0\u5728\u5c31\u5148\u51d1\u6d3b\u7528\u4e86"));
+              });
           });
       });
   }));
