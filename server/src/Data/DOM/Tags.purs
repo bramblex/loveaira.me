@@ -8,11 +8,22 @@ import Data.DOM.Type
 
 type Template = Content Unit
 
+element :: String -> Array Attribute -> Maybe (Template) -> Element
+element name attr cont = Element { name: name
+                                 , attr: attr
+                                 , cont: cont }
+
 text :: String -> Template
 text str = liftF $ TextContent str unit
 
 elem :: Element -> Template
 elem e = liftF $ ElementContent e unit
+
+block :: String -> Maybe (Template) -> Template
+block name cont = liftF $ BlockContent (Block {name:name, cont:cont}) unit
+
+extend :: String -> Template -> Template
+extend name cont = liftF $ ExtendContent (Block {name:name, cont:Just cont}) unit
 
 -- Normal Tags --
 

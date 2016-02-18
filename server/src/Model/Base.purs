@@ -113,7 +113,8 @@ instance isValueRaw:: IsValue Raw where
   toValue (Raw str) = str
 
 instance isValueString :: IsValue String where
-  toValue str = show str
+  toValue str = escapeString str
+  -- toValue str = show str
 
 instance isMaybe :: (IsValue a) => IsValue (Maybe a)  where
   toValue Nothing = "NULL"

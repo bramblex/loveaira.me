@@ -24,10 +24,10 @@ schema = [ "username" .=> "VARCHAR(255) UNIQUE NOT NULL"
          , "role" .=> "VARCHAR(255) DEFAULT \"auth\""]
 init = do
   createTable table_name schema
-  insertOrUpdateUser [ "id" .= 0
-                     , "username" .= "admin"
-                     , "role" .= "admin"
-                     , "password" .= Password "admin" ]
+  -- insertOrUpdateUser [ "id" .= 0
+  --                    , "username" .= "admin"
+  --                    , "role" .= "admin"
+  --                    , "password" .= Password "admin" ]
 
 findUser = find table_name
 firstUser = first table_name

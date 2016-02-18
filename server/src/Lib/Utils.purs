@@ -48,3 +48,7 @@ foreign import encodeURIComponent :: String -> String
 foreign import encodeURI :: String -> String
 foreign import decodeURIComponent :: String -> String
 foreign import decodeURI :: String -> String
+
+foreign import escapeString :: String -> String
+
+foreign import randString :: forall eff. Int -> Eff (current::CURRENT | eff) String

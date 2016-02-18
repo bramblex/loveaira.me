@@ -97,15 +97,3 @@ sessionLogout :: forall eff. ModelHandler eff
 sessionLogout = do
   sessionSet "is_login" false
   sessionClear "current_user"
-
-isLogin :: forall eff. ModelHandlerM eff Boolean
-isLogin = do
-  is_login :: Maybe Boolean <- sessionGet "is_login"
-  case is_login of
-    Just true -> return true
-    _ -> return false
-
-currentUser :: forall eff. ModelHandlerM eff (SimpleUser ())
-currentUser = do
-  (Just (SessionUser user)) <- sessionGet "current_user"
-  return user

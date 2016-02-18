@@ -12,8 +12,7 @@ website/server.js:
 	cp server/package.json $(project_dir)website/package.json
 	cd website/ && npm install
 	cd server && pulp build --force -O --to $(project_dir)website/server.js
-	sed -i -e 's/is_debug = true/is_debug = false/' $(project_dir)website/server.js
-	-rm $(project_dir)website/server.js-e
+	-jscompiler $(project_dir)website/server.js $(project_dir)website/server.js.min && mv $(project_dir)website/server.js.min $(project_dir)website/server.js 
 
 $(client_object_targets): website/static/js/%.js:client/%
 	cd $< && pulp browserify --force -O --to $(project_dir)$@
