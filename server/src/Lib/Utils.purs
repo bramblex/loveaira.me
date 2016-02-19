@@ -52,3 +52,5 @@ foreign import decodeURI :: String -> String
 foreign import escapeString :: String -> String
 
 foreign import randString :: forall eff. Int -> Eff (current::CURRENT | eff) String
+
+foreign import mdToHtml  :: String -> String

@@ -35,6 +35,10 @@ exports.randString = function randString(x){
     };
 };
 
+exports.mdToHtml = function (md){
+    return require('markdown').parse(md);
+};
+
 // exports.escapeString = function(str){
 //     return "'" + str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
 //         switch (char) {
