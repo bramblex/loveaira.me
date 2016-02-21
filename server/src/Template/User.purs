@@ -4,7 +4,7 @@ import Prelude (show)
 import Data.Maybe
 import Template.Base
 
-import qualified Model.User as M
+import qualified Lib.CookieSession as M
 
 login :: Maybe String -> Template
 login mes = do

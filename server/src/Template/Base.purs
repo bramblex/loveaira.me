@@ -29,8 +29,12 @@ base = do
 
     t_body [] do
       t_header [] do
-        block "logined_user" $ Just do
+
+        ifLoginedElse (
+          \user -> t_a [a_style := "float: right", a_href := "/user/status"] $ text $ user.username ++"("++user.role++")"
+          ) (
           t_a [a_style := "float: right", a_href := "/user/login"] $ text "Login"
+          )
 
         t_h1 [] $ do
           block "title_header" $ Just do
@@ -59,9 +63,9 @@ index = do
     t_p [] $ text "这是一个用纯 PureScript 实现的简易 Web 框架。还有好多蛋疼的问题正在解决中。现在就先凑活用了"
 
 
-import Model.User (SimpleUser(), SessionUser(..), toSessionUser)
+-- import Lib.CookieSession (SimpleUser(), SessionUser(..), toSessionUser)
 
-loginedUser :: forall t. SimpleUser t -> Template
-loginedUser user = do
-  extend "logined_user" do
-    t_a [a_style := "float: right", a_href := "/user/status"] $ text $ user.username ++"("++user.role++")"
+-- loginedUser :: forall t. SimpleUser t -> Template
+-- loginedUser user = do
+--   extend "logined_user" do
+    -- t_a [a_style := "float: right", a_href := "/user/status"] $ text $ user.username ++"("++user.role++")"

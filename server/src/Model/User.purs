@@ -73,17 +73,3 @@ changePassword _ _ _ = return false
 reloadUser :: forall eff. User -> ModelAff eff User
 reloadUser user = do
   findUserById user.id
-
-import Data.Foreign
-import Data.Foreign.Class
-
-type SimpleUser t = {id :: Int, username :: String, role :: String | t}
-newtype SessionUser = SessionUser (SimpleUser ())
-toSessionUser user = SessionUser {id: user.id, username: user.username, role: user.role}
-
-instance sessionuUerIsForeign :: IsForeign SessionUser where
-  read value = do
-    id <- readProp "id" value
-    username <- readProp "username" value
-    role <- readProp "role" value
-    return $ SessionUser {id: id, username: username, role: role}

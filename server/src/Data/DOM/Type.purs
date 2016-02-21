@@ -5,16 +5,20 @@ import Data.Maybe
 
 import Control.Monad.Free
 
+import Lib.CookieSession (Session())
+
 data ContentF a = TextContent String a
                 | ElementContent Element a
                 | BlockContent Block a
                 | ExtendContent Block a
+                | GetSession (Session -> a)
 
 instance functorContentF :: Functor ContentF where
   map f (TextContent s a) = TextContent s (f a)
   map f (ElementContent e a) = ElementContent e (f a)
   map f (BlockContent b a) = BlockContent b (f a)
   map f (ExtendContent b a) = ExtendContent b (f a)
+  map f (GetSession k) = GetSession (f <<< k)
 
 type Content = Free ContentF
 

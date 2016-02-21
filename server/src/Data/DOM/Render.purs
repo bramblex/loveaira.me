@@ -8,6 +8,9 @@ import Data.Foldable (find, for_)
 import Control.Monad.Writer
 import Control.Monad.Writer.Trans
 
+import Control.Monad.State
+import Control.Monad.State.Trans
+
 import Control.Monad.Reader
 import Control.Monad.Reader.Trans
 
@@ -18,11 +21,13 @@ import Control.Monad.Free
 import Data.DOM.Type
 import Data.DOM.Tags (Template(), text, elem, block, extend)
 
-type Interp = WriterT String (Reader (Array Block))
+import Lib.CookieSession (Session(..), empty_session)
 
-render :: Template -> String
-render cont = let blocks = getExtend cont
-              in flip runReader blocks (execWriterT (runFreeM renderContent cont)) 
+type Interp = WriterT String (ReaderT (Array Block) (State Session))
+
+render :: Session -> Template -> String
+render session cont = let blocks = getExtend cont
+              in evalState (flip runReaderT blocks (execWriterT (runFreeM renderContent cont))) session
 
 renderElement :: Element -> Interp Unit
 renderElement (Element e) = do
@@ -74,6 +79,9 @@ renderContent (BlockContent b rest) = do
   return rest
 renderContent (ExtendContent _ rest) = do
   return rest
+renderContent (GetSession k) = do
+  session :: Session <- get
+  return (k session)
 
 getExtend :: Template -> Array Block
 getExtend cont = execWriter (runFreeM getExtendW cont)
@@ -89,6 +97,8 @@ getExtendW (BlockContent b rest) = do
 getExtendW (ElementContent e rest) = do
   getExtendFromElement e
   return rest
+getExtendW (GetSession k) = do
+  return $ k empty_session
 
 getExtendFromElement :: Element -> Writer (Array Block) Unit
 getExtendFromElement (Element e) = do

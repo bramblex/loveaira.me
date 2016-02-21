@@ -1,10 +1,11 @@
 module Data.DOM.Tags where
 
-import Prelude (Unit(), ($), unit)
+import Prelude
 import Data.Maybe
 import Control.Monad.Free
 
 import Data.DOM.Type
+
 
 type Template = Content Unit
 
@@ -24,6 +25,35 @@ block name cont = liftF $ BlockContent (Block {name:name, cont:cont}) unit
 
 extend :: String -> Template -> Template
 extend name cont = liftF $ ExtendContent (Block {name:name, cont:Just cont}) unit
+
+import Lib.CookieSession (Session(..), SimpleUser())
+
+session :: Content Session
+session = liftF $ GetSession id
+
+sessionIsLogined :: Content Boolean
+sessionIsLogined = do
+  (Session s) <- session
+  return s.is_logined
+
+sessionGetUser :: Content (Maybe (SimpleUser ()))
+sessionGetUser = do
+  (Session s) <- session
+  return s.user
+
+ifLogined :: (SimpleUser () -> Template) -> Template
+ifLogined k = do
+  (Session s) <- session
+  case s.is_logined of
+    false -> text ""
+    true -> (\(Just u) -> k u) s.user
+
+ifLoginedElse :: (SimpleUser () -> Template) -> Template -> Template
+ifLoginedElse k d = do
+  (Session s) <- session
+  case s.is_logined of
+    false -> d
+    true -> (\(Just u) -> k u) s.user
 
 -- Normal Tags --
 

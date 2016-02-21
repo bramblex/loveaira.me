@@ -40,7 +40,7 @@ type ModelHandler eff = ModelHandlerM eff Unit
 type ModelApp eff = App (database::DATABASE, current::CURRENT | eff)
 
 
-import Model.User (SimpleUser(), SessionUser(..), toSessionUser)
+-- import Model.User (SimpleUser(), SessionUser(..), toSessionUser)
 import Lib.CookieSession
 
 isLogin :: forall eff. ModelHandlerM eff Boolean
@@ -60,11 +60,22 @@ import qualified Template.Base as T
 
 -- render = send <<< R.render
 
+
+-- import
+import Lib.CookieSession (Session(..), empty_session)
+
 render :: forall eff. Template -> ModelHandler eff
 render cont = do
   is_logined <- isLogin
   case is_logined of
-    false -> send <<< R.render $ cont
+    false -> send <<< R.render empty_session $ cont
     true -> do
       user <- currentUser
-      send <<< R.render $ cont .<= T.loginedUser user
+      send <<< R.render (Session { is_logined: true , user: Just user}) $ cont
+
+  -- is_logined <- isLogin
+  -- case is_logined of
+  --   false -> send <<< R.render $ cont
+  --   true -> do
+  --     user <- currentUser
+  --     send <<< R.render $ cont .<= T.loginedUser user

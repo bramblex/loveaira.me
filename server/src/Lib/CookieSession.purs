@@ -46,3 +46,26 @@ foreign import _sessionClear ::
 
 foreign import _sessionClearAll ::
   forall eff. Fn1 Request (ExpressM eff Unit)
+
+-- import Data.Foreign
+-- import Data.Foreign.Class
+
+type SimpleUser t = {id :: Int, username :: String, role :: String | t}
+newtype SessionUser = SessionUser (SimpleUser ())
+
+toSessionUser user = SessionUser {id: user.id, username: user.username, role: user.role}
+
+-- class isSessionUser :: IsSessionUser a where
+--   toSessionUser :: a -> SessionUser
+
+instance sessionuUerIsForeign :: IsForeign SessionUser where
+  read value = do
+    id <- readProp "id" value
+    username <- readProp "username" value
+    role <- readProp "role" value
+    return $ SessionUser {id: id, username: username, role: role}
+
+newtype Session = Session { is_logined :: Boolean
+               , user :: Maybe (SimpleUser ())}
+
+empty_session = Session {is_logined: false, user : Nothing}

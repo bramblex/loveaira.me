@@ -86,7 +86,6 @@ redirectBack  = do
     Just url -> redirect $ Utils.decodeURIComponent url
     _ -> redirect "/"
 
-import Model.User (SimpleUser(), SessionUser(..), toSessionUser)
 
 sessionLogin :: forall eff t. SimpleUser t -> ModelHandler eff
 sessionLogin user = do
