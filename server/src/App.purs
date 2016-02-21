@@ -28,6 +28,7 @@ import qualified Template.Base as T
 
 import qualified Handler.User as UserHandler
 import qualified Handler.Article as ArticleHandler
+import qualified Handler.Home as HomeHandler
 
 import Handler.Base
 
@@ -42,7 +43,7 @@ main = do
   useExternalAt "/static" $ MW.static static_path
   useExternal $ cookieSession {secret: Config.security_key}
 
-  get "/" $ render T.index
+  get "/" HomeHandler.main
 
   mount "/user" UserHandler.main
   mount "/article" ArticleHandler.main

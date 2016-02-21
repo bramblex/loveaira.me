@@ -11,7 +11,9 @@ list articles = do
   base
   title "Articles"
   extend "body" $ do
-    t_a [a_href := "/article/create"] $ text "Create"
+
+    ifLogined $ \_ ->
+      t_a [a_href := "/article/create"] $ text "Create"
 
     t_table [] do
       t_tr [] do
@@ -26,6 +28,29 @@ list articles = do
           t_td [] $ t_a [a_href := "/article/show/" ++ show article.id] $ text article.title
           t_td [] $ text article.create_at
           t_td [] $ text article.update_at
+
+show_ :: M.Article -> Template
+show_ article = do
+  base
+  title article.title
+  extend "body" $ do
+
+    ifLogined $ \_ ->
+      t_p [] do
+        t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
+        text " | "
+        t_a [a_href := "/article/delete/" ++ show article.id] $ text "Delete"
+
+    t_p [] do
+      text $ "Create At: " ++ article.create_at
+      t_br []
+      text $ "Update At: " ++ article.update_at
+
+    text article.content
+
+    t_hr []
+
+    t_a [a_href := "/article/"] $ text "Go Back"
 
 create :: Template
 create = do
@@ -45,19 +70,21 @@ create = do
         t_tr [] do
           t_td [] $ t_input [a_type := "submit"]
 
-show_ :: M.Article -> Template
-show_ article = do
+edit :: M.Article -> Template
+edit article = do
   base
-  title article.title
+  title $ "Edit :" ++ article.title
   extend "body" $ do
+    t_form [a_method := "POST"] do
+      t_table [] do
+        t_tr [] do
+          t_td [] $ t_label [] $ text "Title"
+        t_tr [] do
+          t_td [] $ t_input [a_name := "title", a_value := article.title]
+        t_tr [] do
+          t_td [] $ t_label [] $ text "Content"
+        t_tr [] do
+          t_td [] $ t_textarea [a_name := "content"] $ text article.raw_content
+        t_tr [] do
+          t_td [] $ t_input [a_type := "submit"]
 
-    t_p [] do
-      text $ "Create At: " ++ article.create_at
-      t_br []
-      text $ "Update At: " ++ article.update_at
-
-    text article.content
-
-    t_hr []
-
-    t_a [a_href := "/article/"] $ text "Go Back"

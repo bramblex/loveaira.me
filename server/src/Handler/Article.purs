@@ -13,11 +13,22 @@ main = do
   get "/" list
   get "/show/:id" show_
   all "/create" $ requireLogin create
+  all "/edit/:id" $ requireLogin edit
+  get "/delete/:id" $ requireLogin delete_
 
 list :: forall eff. ModelHandler eff
 list = do
   articles <- liftAff $ M.listArticles
   render $ T.list articles
+
+show_ :: forall eff. ModelHandler eff
+show_ = do
+  idParam <- getRouteParam "id"
+  case idParam of
+    Just id -> do
+      article <- liftAff $ M.findArticleById $ Utils.parseInt id
+      render $ T.show_ article
+    _ -> redirect "/article"
 
 create :: forall eff. ModelHandler eff
 create = do
@@ -30,11 +41,34 @@ create = do
       redirect "/article"
     _ -> next
 
-show_ :: forall eff. ModelHandler eff
-show_ = do
+edit :: forall eff. ModelHandler eff
+edit = do
+  method <- getMethod
+  case method of
+    Just GET -> do
+      idParam <- getRouteParam "id"
+      case idParam of
+        Just id -> do
+          article <- liftAff $ M.findArticleById $ Utils.parseInt id
+          render <<< T.edit $ article
+        _ -> redirect "/article"
+    Just POST -> do
+      idParam <- getRouteParam "id"
+      case idParam of
+        Just id -> do
+          Tuple (Just title:: Maybe String) (Just content:: Maybe String) <- Tuple <$> getBodyParam "title" <*> getBodyParam "content"
+          liftAff $ M.updateArticleById (Utils.parseInt id) title content
+          redirect $ "/article/show/" ++ id
+        _ -> do
+          redirect $ "/article"
+    _ -> next
+
+
+delete_ :: forall eff. ModelHandler eff
+delete_ = do
   idParam <- getRouteParam "id"
   case idParam of
     Just id -> do
-      article <- liftAff $ M.findArticleById $ Utils.parseInt id
-      render $ T.show_ article
+      liftAff $ M.deleteArticleById (Utils.parseInt id)
+      redirect "/article"
     _ -> redirect "/article"

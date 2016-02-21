@@ -40,6 +40,15 @@ base = do
           block "title_header" $ Just do
             text "LoveAria.Me"
 
+        t_p [] $ do
+          t_a [a_href := "/"] $ text "Home"
+          text " | "
+          t_a [a_href := "/article"] $ text "Article"
+          text " | "
+          t_a [a_href := "https://github.com/bramblex"] $ text "Github"
+          -- text " | "
+          -- t_a [a_href := "/article/show/1"] $ text "Concat"
+
         t_hr []
 
       t_div [] do
@@ -50,18 +59,6 @@ title :: String -> Template
 title t = do
   extend "title_tab" $ text $ "LoveAria.me - " ++ t
   extend "title_header" $ text t
-
-index :: Template
-index = do
-  base
-  extend "body" $ do
-
-    t_p [] $ t_a [a_href := "https://github.com/bramblex/loveaira.me"] $ text "GitHub 项目地址"
-
-    t_p [] $ t_a [a_href := "/article/"] $ text "博客列表"
-
-    t_p [] $ text "这是一个用纯 PureScript 实现的简易 Web 框架。还有好多蛋疼的问题正在解决中。现在就先凑活用了"
-
 
 -- import Lib.CookieSession (SimpleUser(), SessionUser(..), toSessionUser)
 
