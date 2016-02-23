@@ -6,13 +6,20 @@ module Template.Base ( module Template.Base
 
 import Prelude
 import Data.Maybe
-import Data.Foldable (foldl)
+import Data.Foldable hiding (elem)
 import Data.DOM.Tags
 import Data.DOM.Type
 import Data.DOM.Attributes
 
 forT :: forall t. Array t -> (t -> Template) -> Template
 forT ts f = foldl (\l a -> l >>= (\_ -> f a)) (text "") ts
+
+joinT :: Template -> Array Template -> Template
+joinT s ts = fromMaybe (text "") (foldl mf Nothing ts)
+  where f a b = a >>= (\_ -> s >>= (\_ -> b))
+        mf m y = Just (case m of
+                          Nothing -> y
+                          Just x -> f x y)
 
 base :: Template
 base = do
@@ -25,6 +32,7 @@ base = do
           text "LoveAria.Me"
 
       t_link [a_rel := "stylesheet", a_src := "/static/css/pure-min.css"]
+      t_link [a_rel := "shortcut icon", a_href := "/favicon.ico"]
       t_script' [a_src := "/static/js/main.js"]
 
     t_body [] do
@@ -41,13 +49,11 @@ base = do
             text "LoveAria.Me"
 
         t_p [] $ do
-          t_a [a_href := "/"] $ text "Home"
-          text " | "
-          t_a [a_href := "/article"] $ text "Article"
-          text " | "
-          t_a [a_href := "https://github.com/bramblex"] $ text "Github"
-          -- text " | "
-          -- t_a [a_href := "/article/show/1"] $ text "Concat"
+          joinT (text " | ")
+            [ t_a [a_href := "/"] $ text "Home"
+            , t_a [a_href := "/article"] $ text "Article"
+            , t_a [a_href := "/category"] $ text "Category"
+            , t_a [a_href := "https://github.com/bramblex"] $ text "Github" ]
 
         t_hr []
 

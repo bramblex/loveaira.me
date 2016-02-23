@@ -2,10 +2,10 @@ module Data.DOM.Type where
 
 import Prelude
 import Data.Maybe
+import Lib.CookieSession (Session())
 
 import Control.Monad.Free
 
-import Lib.CookieSession (Session())
 
 data ContentF a = TextContent String a
                 | ElementContent Element a
@@ -31,8 +31,6 @@ newtype Element = Element { name :: String
 
 newtype Block = Block { name :: String
                       , cont :: Maybe (Content Unit) }
-
-(.<-) name cont = Block {name: name, cont: Just cont}
 
 instance showBlock :: Show Block where
   show (Block b) = "Block: " ++ show b.name

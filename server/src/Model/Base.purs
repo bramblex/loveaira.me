@@ -9,6 +9,7 @@ import Data.Array ((:))
 import Data.Foldable (foldr)
 
 import Control.Monad.Eff.Class
+import Control.Monad.Eff.Exception
 
 import Lib.Utils
 
@@ -22,7 +23,7 @@ type Table = String
 type Column = String
 type Value = String
 
-data OP = Eq | Neq | Gt | Gte | Lt | Lte | Like
+data OP = Eq | Neq | Gt | Gte | Lt | Lte | Like | In
 data Condition = Condition OP Column Value
                | And Condition Condition
                | Or Condition Condition
@@ -38,6 +39,7 @@ data Assign = Assign Column Value
 
 newtype UpdateValue = UpdateValue (Array Assign)
 newtype InsertValue = InsertValue (Array Assign)
+newtype IncludeValue = IncludeValue (Array Assign)
 newtype Schema = Schema (Array Assign)
 
 data Order = Desc Column
@@ -57,8 +59,6 @@ data Query = Find Table ConditionSet Order Limit Offset
            | Delete Table ConditionSet
            | Count Table ConditionSet
            | CreateTable Table Schema
-
-           | Join Table Query
 
 infix 5 .~=
 infix 5 .==
@@ -87,6 +87,9 @@ infix 5 .<=
 
 (.~=) :: forall a. (IsValue a) => Column -> a -> Condition
 (.~=) c v = Condition Like c (toValue v)
+
+(.<-) :: forall a. (IsValue a) => Column -> a -> Condition
+(.<-) c v = Condition In c (toValue v)
 
 infix 4 .||
 infix 4 .&&
@@ -131,6 +134,8 @@ instance isValueDateTime :: IsValue DateTime where
                        ++ join ":" (map show [d.hour, d.minute, d.second])
                        ++ "')"
 
+instance isValueInArray :: (IsValue a) => IsValue (Array a) where
+  toValue as = join ", " (map toValue as)
 
 -- instance of ToSql
 
@@ -143,6 +148,7 @@ instance toSqlCondition :: ToSql Condition where
     Lt -> join_ [col, "<", v]
     Lte -> join_ [col, "<=", v]
     Like -> join_ [col, "LIKE", "%" ++ v ++ "%"]
+    In -> join_ [col, "IN", "(", v, ")"]
   tosql (And c1 c2) = join_ [tosql c1, "AND", tosql c2]
   tosql (Or c1 c2) = join_ [tosql c1, "OR", tosql c2]
 
@@ -189,6 +195,7 @@ instance toSqlQuery :: ToSql Query where
   tosql (CreateTable tn shm) = join_ $ ["CREATE TABLE IF NOT EXISTS", tn, "(", tosql shm, ")"]
 
 -- Model Base
+
 
 type ModelAff eff = DBAff (current::CURRENT | eff)
 

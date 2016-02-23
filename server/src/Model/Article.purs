@@ -3,6 +3,9 @@ module Model.Article where
 import Prelude
 import Model.Base
 
+
+import qualified Lib.Utils as Utils
+
 table_name = "article"
 schema = [ "title" .=> "VARCHAR(255) NOT NULL"
          , "content" .=> "TEXT NOT NULL"
@@ -25,21 +28,26 @@ listArticles = findallArticle ("id" .>= 0) (Desc "update_at")
 findArticleById :: forall eff. Int -> ModelAff eff Article
 findArticleById id = firstArticle ("id" .== id) (Asc "id")
 
+findArticleByCategoryIds :: forall eff. Array Int -> ModelAff eff (Array Article)
+findArticleByCategoryIds ids = findallArticle ("category_id" .<- ids) (Desc "id")
+
 import qualified Lib.Utils as Utils
 
 newtype Markdown = Markdown String
 instance isValueMarkdown :: IsValue Markdown where
   toValue (Markdown str) = toValue <<< Utils.mdToHtml $ str
 
-createArticle :: forall eff. String -> String -> ModelAff eff Unit
-createArticle title content =
+createArticle :: forall eff. String -> String -> Int -> ModelAff eff Unit
+createArticle title content category_id =
   insertArticle [ "title" .= title
+                , "category_id" .= category_id
                 , "raw_content" .= content
                 , "content" .= Markdown content ]
 
-updateArticleById :: forall eff. Int -> String -> String -> ModelAff eff Unit
-updateArticleById id title content =
+updateArticleById :: forall eff. Int -> String -> String -> Int -> ModelAff eff Unit
+updateArticleById id title content category_id =
   updateArticle [ "title" .= title
+                , "category_id" .= category_id
                 , "raw_content" .= content
                 , "content" .= Markdown content] ("id" .== id)
 

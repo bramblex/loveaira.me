@@ -22,16 +22,16 @@ import qualified Init as Init
 
 import Handler.Base
 
-type MainEff eff a = HandlerEff (console::CONSOLE, err::EXCEPTION | eff) a
+type MainEff eff a = HandlerEff (console::CONSOLE , err::EXCEPTION | eff) a
 
 runServer :: forall eff. MainEff eff Unit
 runServer = do
   server <- listenHttp App.main Config.port \_ -> log $ "Listening on prot: " ++ show Config.port
-  log $ "Server start"
+  log "Server start"
 
 runInit :: forall eff. MainEff eff Unit
 runInit = do
-  log $ "Run Init"
+  log "Run Init"
   launchAff Init.main
 
 createUser :: forall eff. String -> MainEff eff Unit
@@ -49,6 +49,9 @@ main = let setup = usage "$0 / $0 -i"
        in runY setup $ runMain
           <$> flag "i" ["init"] (Just "Run Init")
           <*> yarg "u" ["user"] (Just "Init with User") (Left []) false
+
+-- import Data.Foldable (sequence_)
+-- main = sequence_ $ map print [0,1,2,3,4,5]
 
 -- import Template.Base as T
 -- import Data.DOM.Render as R

@@ -52,8 +52,8 @@ a_charset = AttributeKey "charset"
 a_cite :: AttributeKey
 a_cite = AttributeKey "cite"
 
-a__class :: AttributeKey
-a__class = AttributeKey "class"
+a_class :: AttributeKey
+a_class = AttributeKey "class"
 
 a_code :: AttributeKey
 a_code = AttributeKey "code"
@@ -88,8 +88,8 @@ a_coords = AttributeKey "coords"
 a_datetime :: AttributeKey
 a_datetime = AttributeKey "datetime"
 
-a__default :: AttributeKey
-a__default = AttributeKey "default"
+a_default :: AttributeKey
+a_default = AttributeKey "default"
 
 a_dir :: AttributeKey
 a_dir = AttributeKey "dir"

@@ -28,6 +28,7 @@ import qualified Template.Base as T
 
 import qualified Handler.User as UserHandler
 import qualified Handler.Article as ArticleHandler
+import qualified Handler.Category as CategoryHandler
 import qualified Handler.Home as HomeHandler
 
 import Handler.Base
@@ -37,13 +38,17 @@ main :: forall e. ModelApp (console :: CONSOLE | e)
 main = do
   liftEff $ log "Setting up"
   setProp "json spaces" 4.0
+  -- use $ send
 
   useExternal $ MW.bodyParser {extended: false}
   static_path <- liftEff $ Config.static_path
   useExternalAt "/static" $ MW.static static_path
   useExternal $ cookieSession {secret: Config.security_key}
 
-  get "/" HomeHandler.main
+  mount "/" HomeHandler.main
 
   mount "/user" UserHandler.main
   mount "/article" ArticleHandler.main
+  mount "/category" CategoryHandler.main
+
+  use $ redirect "/"

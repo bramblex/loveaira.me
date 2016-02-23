@@ -5,35 +5,57 @@ import Data.Maybe
 import Template.Base
 
 import qualified Model.Article as M
+import qualified Model.Category as Category
 
-list :: Array M.Article -> Template
+import qualified Template.Category as CT
+
+list :: Array Category.RichArticle -> Template
 list articles = do
   base
-  title "Articles"
+  title "Article"
   extend "body" $ do
 
     ifLogined $ \_ ->
       t_a [a_href := "/article/create"] $ text "Create"
 
-    t_table [] do
-      t_tr [] do
-        t_th [] $ text "Id"
-        t_th [] $ text "Title"
-        t_th [] $ text "Create At"
-        t_th [] $ text "Update At"
+    article_list articles
+
+category :: Array Category.RichArticle -> Category.Category -> Template
+category articles category = do
+  base
+  title $ "Category " ++ category.name
+  extend "body" $ do
+    article_list articles
+
+article_list :: Array Category.RichArticle -> Template
+article_list articles = do
+  t_table [] do
+    t_tr [] do
+      t_th [] $ text "Id"
+      t_th [] $ text "Title"
+      t_th [] $ text "Category"
+      t_th [] $ text "Create At"
+      t_th [] $ text "Update At"
 
       forT articles $ \article -> do
         t_tr [] do
           t_td [] $ text $ show article.id
-          t_td [] $ t_a [a_href := "/article/show/" ++ show article.id] $ text article.title
+          t_td [] do
+            t_a [a_href := "/article/show/" ++ show article.id]
+              $ text article.title
+          t_td []  do
+            t_a [a_href := "/article/category/" ++ show article.category.id]
+              $ text article.category.name
           t_td [] $ text article.create_at
           t_td [] $ text article.update_at
 
-show_ :: M.Article -> Template
-show_ article = do
+show_ :: M.Article -> Array Category.Category -> Template
+show_ article category_path = do
   base
-  title article.title
+  title $ "Article " ++ article.title
   extend "body" $ do
+    CT.breadcrumb_trail category_path
+    t_hr []
 
     ifLogined $ \_ ->
       t_p [] do
@@ -52,10 +74,10 @@ show_ article = do
 
     t_a [a_href := "/article/"] $ text "Go Back"
 
-create :: Template
-create = do
+create :: Category.CategoryTree -> Template
+create category_tree = do
   base
-  title "Create"
+  title "Create Article"
   extend "body" $ do
     t_form [a_method := "POST"] do
       t_table [] do
@@ -64,16 +86,20 @@ create = do
         t_tr [] do
           t_td [] $ t_input [a_name := "title"]
         t_tr [] do
+          t_td [] $ t_label [] $ text "Category"
+        t_tr [] do
+          t_td [] $ CT.category_select category_tree 0
+        t_tr [] do
           t_td [] $ t_label [] $ text "Content"
         t_tr [] do
           t_td [] $ t_textarea [a_name := "content"] $ text ""
         t_tr [] do
           t_td [] $ t_input [a_type := "submit"]
 
-edit :: M.Article -> Template
-edit article = do
+edit :: M.Article -> Category.CategoryTree -> Template
+edit article category_tree = do
   base
-  title $ "Edit :" ++ article.title
+  title $ "Edit Article " ++ article.title
   extend "body" $ do
     t_form [a_method := "POST"] do
       t_table [] do
@@ -81,6 +107,10 @@ edit article = do
           t_td [] $ t_label [] $ text "Title"
         t_tr [] do
           t_td [] $ t_input [a_name := "title", a_value := article.title]
+        t_tr [] do
+          t_td [] $ t_label [] $ text "Category"
+        t_tr [] do
+          t_td [] $ CT.category_select category_tree article.category_id
         t_tr [] do
           t_td [] $ t_label [] $ text "Content"
         t_tr [] do
