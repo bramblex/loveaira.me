@@ -1,6 +1,5 @@
 "use strict";
 // module Lib.Utils
-var crypto = require('crypto');
 
 exports.__filename = function(){
     return __filename;
@@ -10,11 +9,15 @@ exports.__dirname = function(){
     return __dirname;
 };
 
-exports.sha1 = function(secret){
-    return function(str){
-        return crypto.createHmac('sha1', secret).update(str).digest('hex');
+(function(){
+    var crypto = require('crypto');
+    exports.sha1 = function(secret){
+        return function(str){
+            return crypto.createHmac('sha1', secret).update(str).digest('hex');
+        };
     };
-};
+})();
+
 
 exports.__toplevel = function(){
     return require('child_process').execSync('git rev-parse --show-toplevel').toString('utf8').replace(/\n$/, '');
@@ -68,40 +71,39 @@ var keys = (function() {
     var hasOwnProperty = Object.prototype.hasOwnProperty,
         hasDontEnumBug = !({ toString: null }).propertyIsEnumerable('toString'),
         dontEnums = [
-          'toString',
-          'toLocaleString',
-          'valueOf',
-          'hasOwnProperty',
-          'isPrototypeOf',
-          'propertyIsEnumerable',
-          'constructor'
+            'toString',
+            'toLocaleString',
+            'valueOf',
+            'hasOwnProperty',
+            'isPrototypeOf',
+            'propertyIsEnumerable',
+            'constructor'
         ],
         dontEnumsLength = dontEnums.length;
 
     return function(obj) {
-      if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
-        throw new TypeError('Object.keys called on non-object');
-      }
-
-      var result = [], prop, i;
-
-      for (prop in obj) {
-        if (hasOwnProperty.call(obj, prop)) {
-          result.push(prop);
+        if (typeof obj !== 'object' && (typeof obj !== 'function' || obj === null)) {
+            throw new TypeError('Object.keys called on non-object');
         }
-      }
 
-      if (hasDontEnumBug) {
-        for (i = 0; i < dontEnumsLength; i++) {
-          if (hasOwnProperty.call(obj, dontEnums[i])) {
-            result.push(dontEnums[i]);
-          }
+        var result = [], prop, i;
+
+        for (prop in obj) {
+            if (hasOwnProperty.call(obj, prop)) {
+                result.push(prop);
+            }
         }
-      }
-      return result;
+
+        if (hasDontEnumBug) {
+            for (i = 0; i < dontEnumsLength; i++) {
+                if (hasOwnProperty.call(obj, dontEnums[i])) {
+                    result.push(dontEnums[i]);
+                }
+            }
+        }
+        return result;
     };
-  }());
-
+}());
 
 // exports.escapeString = function(str){
 //     return "'" + str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {

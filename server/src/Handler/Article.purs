@@ -11,6 +11,7 @@ import qualified Lib.Utils as Utils
 
 main :: forall eff. ModelApp eff
 main = do
+  use cleanWhilePost
   get "/" list
   get "/show/:id" show_
   get "/category/:id" category

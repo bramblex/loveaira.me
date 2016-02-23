@@ -13,6 +13,7 @@ import qualified Lib.Utils as Utils
 
 main :: forall eff. ModelApp eff
 main = do
+  use cleanWhilePost
   get "/" index
   all "/create/" $ requireLogin create
   all "/create/parent/:id" $ requireLogin create

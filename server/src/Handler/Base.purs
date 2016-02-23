@@ -66,15 +66,37 @@ import qualified Template.Base as T
 
 -- import
 import Lib.CookieSession (Session(..), empty_session)
+import Lib.Cache
 
 render :: forall eff. Template -> ModelHandler eff
 render cont = do
   is_logined <- isLogin
-  case is_logined of
-    false -> send <<< R.render empty_session $ cont
+  path <- getOriginalUrl
+
+  page <- case is_logined of
+    false -> do
+      return (R.render empty_session $ cont)
     true -> do
       user <- currentUser
-      send <<< R.render (Session { is_logined: true , user: Just user}) $ cont
+      return <<< R.render (Session { is_logined: true , user: Just user}) $ cont
+
+  liftEff $ cache 600 path page
+  send page
+
+cleanWhilePost :: forall eff. ModelHandler eff
+cleanWhilePost = do
+  method <- getMethod
+  case method of
+    Just POST -> do
+      liftEff $ cleanCached
+    _ -> return unit
+  next
+
+  -- case is_logined of
+  --   false -> send <<< R.render empty_session $ cont
+  --   true -> do
+  --     user <- currentUser
+  --     send <<< R.render (Session { is_logined: true , user: Just user}) $ cont
 
   -- is_logined <- isLogin
   -- case is_logined of
