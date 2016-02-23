@@ -31,11 +31,13 @@ base = do
         block "title_tab" $ Just do
           text "LoveAria.Me"
 
-      t_link [a_rel := "stylesheet", a_src := "/static/css/pure-min.css"]
-      t_link [a_rel := "stylesheet", a_src := "/static/css/main.css"]
+      -- t_link [a_rel := "stylesheet", a_href := "/static/css/pure-min.css"]
+      t_link [a_rel := "stylesheet", a_href := "/static/css/main.css"]
       t_link [a_rel := "shortcut icon", a_href := "/favicon.ico"]
       t_script' [a_src := "/static/components/jquery-2.2.1.min.js"]
       t_script' [a_src := "/static/js/main.js"]
+
+      block "head" $ Nothing
 
     t_body [] do
       t_header [] do
@@ -62,6 +64,8 @@ base = do
       t_div [] do
 
         block "body" $ Nothing
+
+      block "foot" $ Nothing
 
 title :: String -> Template
 title t = do

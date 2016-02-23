@@ -80,10 +80,20 @@ show_ article category_path = do
 
     t_a [a_href := "/article/"] $ text "Go Back"
 
+simplemdeEditor id = do
+    t_link [a_rel := "stylesheet", a_href := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"]
+    t_script' [a_src := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"]
+    t_script [] $
+      text $ "new SimpleMDE({spellChecker: false, element: document.getElementById('"++id++"') });"
+
 create :: Category.CategoryTree -> Template
 create category_tree = do
   base
   title "Create Article"
+
+  extend "foot" $ do
+    simplemdeEditor "simplemde"
+
   extend "body" $ do
     t_form [a_method := "POST"] do
       t_table [] do
@@ -98,7 +108,7 @@ create category_tree = do
         t_tr [] do
           t_td [] $ t_label [] $ text "Content"
         t_tr [] do
-          t_td [] $ t_textarea [a_name := "content"] $ text ""
+          t_td [] $ t_textarea [a_name := "content", a_id := "simplemde"] $ text ""
         t_tr [] do
           t_td [] $ t_input [a_type := "submit"]
 
@@ -106,6 +116,10 @@ edit :: M.Article -> Category.CategoryTree -> Template
 edit article category_tree = do
   base
   title $ "Edit Article " ++ article.title
+
+  extend "foot" $ do
+    simplemdeEditor "simplemde"
+
   extend "body" $ do
     t_form [a_method := "POST"] do
       t_table [] do
@@ -120,7 +134,8 @@ edit article category_tree = do
         t_tr [] do
           t_td [] $ t_label [] $ text "Content"
         t_tr [] do
-          t_td [] $ t_textarea [a_name := "content"] $ text article.raw_content
+          t_td [] $ t_textarea [a_name := "content", a_id := "simplemde"]
+            $ text article.raw_content
         t_tr [] do
           t_td [] $ t_input [a_type := "submit"]
 
