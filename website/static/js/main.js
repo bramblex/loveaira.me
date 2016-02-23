@@ -30,7 +30,7 @@ var PS = { };
   var Prelude = PS["Prelude"];
   var Control_Monad_Eff = PS["Control.Monad.Eff"];
   var Control_Monad_Eff_Console = PS["Control.Monad.Eff.Console"];     
-  var main = Control_Monad_Eff_Console.log("Hello sailor!");
+  var main = Control_Monad_Eff_Console.log("Hello!");
   exports["main"] = main;;
  
 })(PS["Main"] = PS["Main"] || {});
