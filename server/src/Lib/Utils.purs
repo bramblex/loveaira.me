@@ -61,3 +61,5 @@ foreign import randString :: forall eff. Int -> Eff (current::CURRENT | eff) Str
 foreign import mdToHtml  :: String -> String
 
 foreign import repeat :: Int -> String -> String
+
+foreign import _require :: String -> String
