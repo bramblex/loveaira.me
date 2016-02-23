@@ -44,6 +44,7 @@ main = do
   useExternalAt "/static" $ MW.static static_path
 
   useExternal $ cookieSession {secret: Config.security_key}
+  useExternal $ MW.setCookiesMaxAge (3600 * 24 * 30)
 
   use CacheHandler.logger
   use CacheHandler.cacheMiddleware
