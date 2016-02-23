@@ -37,7 +37,9 @@ list category_tree = do
                         $ text "Rename"
                       , t_a [a_href := "/category/move/" ++ show category.id]
                         $ text "Move"
-                      , t_a [a_href := "/category/delete/" ++ show category.id]
+                      , t_a [a_data_"delete":= "/category/delete/"++show category.id
+                            , a_data_"redirect" := "/category/"
+                            , a_href := "#"]
                         $ text "Delete"]
                     text " ) "
 

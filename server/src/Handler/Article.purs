@@ -17,7 +17,7 @@ main = do
   get "/category/:id" category
   all "/create" $ requireLogin create
   all "/edit/:id" $ requireLogin edit
-  get "/delete/:id" $ requireLogin delete_
+  post "/delete/:id" $ requireLogin delete_
 
 list :: forall eff. ModelHandler eff
 list = do

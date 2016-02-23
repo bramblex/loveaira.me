@@ -6,7 +6,6 @@ import Lib.Cache
 import Data.Tuple
 import Control.Monad.Eff.Console
 
--- main :: forall eff. ModelHandler eff
 main = do
   get "/clean" $ requireLogin clean
 
@@ -17,13 +16,16 @@ clean = do
 cacheMiddleware = do
   path <- getOriginalUrl
   method <- getMethod
+  is_login <- isLogin
 
   case method of
     Just GET -> do
       r <- liftEff $ getCached path
       case r of
         Just page -> do
-          liftEff $ log $ "cache hit: " ++ path
+          if is_login
+            then return unit
+            else liftEff $ log $ "cache hit: " ++ path
           send page
         _ -> next
     _ -> next

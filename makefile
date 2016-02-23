@@ -17,6 +17,7 @@ website/server.js: server/src/**
 
 $(client_object_targets): website/static/js/%.js:client/% $(client_object_src)
 	cd $< && pulp browserify --force -O --to $(project_dir)$@
+	-jscompiler $(project_dir)$@ $(project_dir)$@.min && mv $(project_dir)$@.min $(project_dir)$@
 
 clean:
 	-rm website/package.json

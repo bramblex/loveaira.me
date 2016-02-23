@@ -12,7 +12,14 @@ schema = [ "title" .=> "VARCHAR(255) NOT NULL"
          , "raw_content" .=> "TEXT NOT NULL"
          , "category_id" .=> "INTEGER DEFAULT 0"
          , "user_id" .=> "INTEGER DEFAULT 0 NOT NULL" ]
-init = createTable table_name schema
+
+init = do
+  createTable table_name schema
+  insertOrUpdateArticle [ "id" .= 0
+                         , "title" .= "Home Page"
+                         , "category_id" .= 0
+                         , "raw_content" .= "#This is Home Page"
+                         , "content" .= Markdown "#This is Home Page"]
 
 type Article = Record (title :: String, content :: String, raw_content :: String, category_id :: Int, user_id :: Int)
 
@@ -20,6 +27,7 @@ findArticle = find table_name
 firstArticle = first table_name
 findallArticle = findall table_name
 insertArticle = insert table_name
+insertOrUpdateArticle = insertOrUpdate table_name
 updateArticle = update table_name
 deleteArticle = delete table_name
 
@@ -30,6 +38,8 @@ findArticleById id = firstArticle ("id" .== id) (Asc "id")
 
 findArticleByCategoryIds :: forall eff. Array Int -> ModelAff eff (Array Article)
 findArticleByCategoryIds ids = findallArticle ("category_id" .<- ids) (Desc "id")
+
+getHomePage = findArticleById 0
 
 import qualified Lib.Utils as Utils
 

@@ -19,7 +19,7 @@ main = do
   all "/create/parent/:id" $ requireLogin create
   all "/rename/:id" $ requireLogin rename
   all "/move/:id" $ requireLogin move
-  get "/delete/:id" $ requireLogin delete_
+  post "/delete/:id" $ requireLogin delete_
 
 index = do
   root_category_tree <- liftAff $ M.getCategoryTree 0

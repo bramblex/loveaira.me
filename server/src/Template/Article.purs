@@ -60,8 +60,14 @@ show_ article category_path = do
     ifLogined $ \_ ->
       t_p [] do
         t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
-        text " | "
-        t_a [a_href := "/article/delete/" ++ show article.id] $ text "Delete"
+        if article.id /= 0
+          then do
+            text " | "
+            t_a [ a_data_"delete" := "/article/delete/" ++ show article.id
+                , a_data_"redirect" := "/article/"
+                , a_href := "#" ]
+              $ text "Delete"
+          else text ""
 
     t_p [] do
       text $ "Create At: " ++ article.create_at

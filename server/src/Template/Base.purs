@@ -32,7 +32,9 @@ base = do
           text "LoveAria.Me"
 
       t_link [a_rel := "stylesheet", a_src := "/static/css/pure-min.css"]
+      t_link [a_rel := "stylesheet", a_src := "/static/css/main.css"]
       t_link [a_rel := "shortcut icon", a_href := "/favicon.ico"]
+      t_script' [a_src := "/static/components/jquery-2.2.1.min.js"]
       t_script' [a_src := "/static/js/main.js"]
 
     t_body [] do
