@@ -23,6 +23,12 @@ exports.__toplevel = function(){
     return require('child_process').execSync('git rev-parse --show-toplevel').toString('utf8').replace(/\n$/, '');
 };
 
+exports.runcmd = function(cmd){
+    return function(){
+        return require('child_process').execSync(cmd).toString('utf8');
+    };
+};
+
 exports.escapeString = function(str){
     return "'" + str.replace(/'/g, '\'\'') + "'";
 };

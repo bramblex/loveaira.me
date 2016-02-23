@@ -63,3 +63,5 @@ foreign import mdToHtml  :: String -> String
 foreign import repeat :: Int -> String -> String
 
 foreign import _require :: String -> String
+
+foreign import runcmd :: forall eff. String -> Eff (current::CURRENT | eff) String
