@@ -7,7 +7,7 @@ all: server client
 client: $(client_object_targets)
 server: website/server.js
 
-website/server.js:
+website/server.js: server/
 	cd server/ && pulp dep install
 	cp server/package.json $(project_dir)website/package.json
 	cd website/ && npm install
