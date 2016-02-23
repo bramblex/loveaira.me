@@ -4,7 +4,10 @@ import qualified Lib.Utils as Utils
 
 port = 8000
 
-security_key = "keyborad cat"
+security_key_path = "data/security_key.js"
+security_key = _getSecurityKey security_key_path
+
+foreign import _getSecurityKey :: String -> String
 
 database_path = Utils.projectDir "data/lovearia.db"
 

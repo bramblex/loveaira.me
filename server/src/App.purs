@@ -42,6 +42,7 @@ main = do
   useExternal $ MW.bodyParser {extended: false}
   static_path <- liftEff $ Config.static_path
   useExternalAt "/static" $ MW.static static_path
+
   useExternal $ cookieSession {secret: Config.security_key}
 
   use CacheHandler.logger
