@@ -44,9 +44,23 @@ exports.randString = function randString(x){
     };
 };
 
-exports.mdToHtml = function (md){
-    return require('markdown').parse(md);
-};
+(function(){
+    var marked = require('marked');
+    var highlightjs = require('highlight.js');
+    marked.setOptions({
+        highlight: function(code, lang){
+            var r;
+            try {r = highlightjs.highlight(lang.toLowerCase(), code);}
+            catch (e){r = highlightjs.highlightAuto(code);}
+            console.log(r);
+            return r.value;
+        },
+        breaks: true
+    });
+    exports.mdToHtml = function (md){
+        return marked(md);
+    };
+})();
 
 exports.merge = function (a){
     return function(b){

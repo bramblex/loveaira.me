@@ -6,7 +6,6 @@ import Template.Base
 
 import qualified Model.Article as M
 import qualified Model.Category as Category
-
 import qualified Template.Category as CT
 
 list :: Array Category.RichArticle -> Template
@@ -53,6 +52,8 @@ show_ :: M.Article -> Array Category.Category -> Template
 show_ article category_path = do
   base
   title $ "Article " ++ article.title
+  extend "head" $ do
+    t_link [a_rel := "stylesheet", a_href := "//cdn.jsdelivr.net/highlight.js/9.2.0/styles/github.min.css"]
   extend "body" $ do
     CT.breadcrumb_trail category_path
     t_hr []
@@ -82,20 +83,13 @@ show_ article category_path = do
 
     comments $ "article_" ++ show article.id
 
-simplemdeEditor :: String -> Template
-simplemdeEditor id = do
-    t_link [a_rel := "stylesheet", a_href := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"]
-    t_script' [a_src := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"]
-    t_script [] $
-      text $ "new SimpleMDE({spellChecker: false, element: document.getElementById("++show id++") });"
-
 create :: Category.CategoryTree -> Template
 create category_tree = do
   base
   title "Create Article"
 
   extend "foot" $ do
-    simplemdeEditor "simplemde"
+    simplemdeEditor "simplemde" "article_create"
 
   extend "body" $ do
     t_form [a_method := "POST"] do
@@ -121,7 +115,7 @@ edit article category_tree = do
   title $ "Edit Article " ++ article.title
 
   extend "foot" $ do
-    simplemdeEditor "simplemde"
+    simplemdeEditor "simplemde" $ "article_edit_" ++ show article.id
 
   extend "body" $ do
     t_form [a_method := "POST"] do
@@ -142,3 +136,10 @@ edit article category_tree = do
         t_tr [] do
           t_td [] $ t_input [a_type := "submit"]
 
+
+simplemdeEditor :: String -> String -> Template
+simplemdeEditor id cached_id = do
+    t_link [a_rel := "stylesheet", a_href := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"]
+    t_script' [a_src := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"]
+    t_script [] $
+      text $ "var simplemde = new SimpleMDE({autosave: {enabled: true, uniqueId: "++show cached_id++", delay: 1000}, spellChecker: false, element: document.getElementById("++show id++") });"
