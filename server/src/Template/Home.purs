@@ -10,3 +10,4 @@ index homepage = do
   base
   extend "body" $ do
     text homepage.content
+    comments "homepage"

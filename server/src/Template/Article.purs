@@ -80,11 +80,14 @@ show_ article category_path = do
 
     t_a [a_href := "/article/"] $ text "Go Back"
 
+    comments $ "article_" ++ show article.id
+
+simplemdeEditor :: String -> Template
 simplemdeEditor id = do
     t_link [a_rel := "stylesheet", a_href := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"]
     t_script' [a_src := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"]
     t_script [] $
-      text $ "new SimpleMDE({spellChecker: false, element: document.getElementById('"++id++"') });"
+      text $ "new SimpleMDE({spellChecker: false, element: document.getElementById("++show id++") });"
 
 create :: Category.CategoryTree -> Template
 create category_tree = do
