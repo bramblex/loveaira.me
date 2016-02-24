@@ -77,12 +77,13 @@ render cont = do
 
   page <- case is_logined of
     false -> do
-      return (R.render empty_session $ cont)
+      let page = (R.render empty_session $ cont)
+      liftEff $ cache 600 path page
+      return page
     true -> do
       user <- currentUser
       return <<< R.render (Session { is_logined: true , user: Just user}) $ cont
 
-  liftEff $ cache 600 path page
   send page
 
 cleanWhilePost :: forall eff. ModelHandler eff
