@@ -115,6 +115,10 @@ exports._require = function(path){
     return require(path);
 };
 
+exports.reomveArgsFromPath = function(path){
+    return path.replace(/\?.*$/, '');
+};
+
 // exports.escapeString = function(str){
 //     return "'" + str.replace(/[\0\x08\x09\x1a\n\r"'\\\%]/g, function (char) {
 //         switch (char) {

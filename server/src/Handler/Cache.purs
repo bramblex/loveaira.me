@@ -3,6 +3,7 @@ module Handler.Cache where
 import Handler.User (requireLogin)
 import Handler.Base
 import Lib.Cache
+import Lib.Utils
 import Data.Tuple
 import Control.Monad.Eff.Console
 
@@ -14,7 +15,8 @@ clean = do
   send "Clean success!"
 
 cacheMiddleware = do
-  path <- getOriginalUrl
+  raw_path <- getOriginalUrl
+  let path = reomveArgsFromPath raw_path
   method <- getMethod
   is_login <- isLogin
 
@@ -23,10 +25,11 @@ cacheMiddleware = do
       r <- liftEff $ getCached path
       case r of
         Just page -> do
-          if is_login
-            then return unit
-            else liftEff $ log $ "cache hit: " ++ path
-          send page
+          case is_login of
+            true -> next
+            false -> do
+              liftEff $ log $ "cache hit: " ++ path
+              send page
         _ -> next
     _ -> next
 

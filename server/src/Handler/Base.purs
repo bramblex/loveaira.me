@@ -71,7 +71,9 @@ import Lib.Cache
 render :: forall eff. Template -> ModelHandler eff
 render cont = do
   is_logined <- isLogin
-  path <- getOriginalUrl
+  -- path <- getOriginalUrl
+  raw_path <- getOriginalUrl
+  let path = reomveArgsFromPath raw_path
 
   page <- case is_logined of
     false -> do
