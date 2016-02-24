@@ -25,7 +25,6 @@ favicon = do
   download favicon
 
 update = do
-  r1 <- liftEff $ Utils.runcmd "git pull"
-  r2 <- liftEff $ Utils.runcmd "npm install"
-  send $ r1 ++ r2
+  r1 <- liftEff $ Utils.runcmd "git pull && npm install"
+  send r1
 

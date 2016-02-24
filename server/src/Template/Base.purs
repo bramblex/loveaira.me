@@ -43,9 +43,16 @@ base = do
       t_header [] do
 
         ifLoginedElse (
-          \user -> t_a [a_style := "float: right", a_href := "/user/status"] $ text $ user.username ++"("++user.role++")"
+          \user -> do
+            t_div [a_style := "float: right"] do
+              t_a [a_href := "/user/status"] $ text $ user.username ++"("++user.role++")"
+              text " | "
+              t_a [a_href := "/cache/clean"] $ text "Clean Cached"
+              text " | "
+              t_a [a_href := "/update"] $ text "Update System"
           ) (
-          t_a [a_style := "float: right", a_href := "/user/login"] $ text "Login"
+          t_div [a_style := "float: right"] do
+             t_a [a_href := "/user/login"] $ text "Login"
           )
 
         t_h1 [] $ do
