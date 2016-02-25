@@ -49,11 +49,10 @@ exports.randString = function randString(x){
     var highlightjs = require('highlight.js');
     marked.setOptions({
         highlight: function(code, lang){
-            var r;
-            try {r = highlightjs.highlight(lang.toLowerCase(), code);}
-            catch (e){r = highlightjs.highlightAuto(code);}
-            console.log(r);
-            return r.value;
+            var langLowerCase = lang && lang.toLowerCase();
+            if (!!lang && !!highlightjs.getLanguage(langLowerCase)){
+                return highlightjs.highlight(langLowerCase, code).value;}
+            else{return highlightjs.highlightAuto(code).value;}
         },
         breaks: true
     });

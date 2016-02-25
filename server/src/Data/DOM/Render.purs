@@ -63,7 +63,7 @@ renderBlock (Block b) = do
 
 renderAttribute :: Attribute -> Interp Unit
 renderAttribute (Attribute a) = do
-  tell $ a.key ++ "=" ++ show a.val
+  tell $ a.key ++ "=" ++ a.val
 renderAttribute (BooleanAttr a) = do
   tell a.key
 

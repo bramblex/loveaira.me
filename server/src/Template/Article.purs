@@ -52,8 +52,6 @@ show_ :: M.Article -> Array Category.Category -> Template
 show_ article category_path = do
   base
   title $ "Article " ++ article.title
-  extend "head" $ do
-    t_link [a_rel := "stylesheet", a_href := "//cdn.jsdelivr.net/highlight.js/9.2.0/styles/github.min.css"]
   extend "body" $ do
     CT.breadcrumb_trail category_path
     t_hr []
@@ -139,7 +137,8 @@ edit article category_tree = do
 
 simplemdeEditor :: String -> String -> Template
 simplemdeEditor id cached_id = do
-    t_link [a_rel := "stylesheet", a_href := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"]
-    t_script' [a_src := "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"]
-    t_script [] $
-      text $ "var simplemde = new SimpleMDE({autosave: {enabled: true, uniqueId: "++show cached_id++", delay: 1000}, spellChecker: false, element: document.getElementById("++show id++") });"
+    css "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
+    javascript "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
+    javascript "//cdn.jsdelivr.net/highlight.js/9.2.0/highlight.min.js"
+    javascript_code
+      $ "new SimpleMDE({autosave: {enabled: true, uniqueId: "++show cached_id++", delay: 1000}, renderingConfig:{codeSyntaxHighlighting:true}, spellChecker: false, element: document.getElementById("++show id++")});"

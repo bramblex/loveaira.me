@@ -1,11 +1,13 @@
 module Template.Base ( module Template.Base
+                     , module Template.Purecss
                      , module Data.DOM.Tags
                      , module Data.DOM.Type
                      , module Data.DOM.Attributes
                      , module Prelude) where
-
+import Template.Purecss
 import Prelude
 import Data.Maybe
+import Data.Tuple
 import Data.Foldable hiding (elem)
 import Data.DOM.Tags
 import Data.DOM.Type
@@ -21,6 +23,13 @@ joinT s ts = fromMaybe (text "") (foldl mf Nothing ts)
                           Nothing -> y
                           Just x -> f x y)
 
+css :: String -> Template
+css href = t_link [a_rel := "stylesheet", a_href := href]
+javascript :: String -> Template
+javascript src = t_script' [a_src := src]
+javascript_code :: String -> Template
+javascript_code code = t_script [] $ text code
+
 base :: Template
 base = do
   t_html [] do
@@ -31,61 +40,82 @@ base = do
         block "title_tab" $ Just do
           text "LoveAria.Me"
 
-      -- t_link [a_rel := "stylesheet", a_href := "/static/css/pure-min.css"]
-      t_link [a_rel := "stylesheet", a_href := "/static/css/main.css"]
       t_link [a_rel := "shortcut icon", a_href := "/favicon.ico"]
-      t_script' [a_src := "/static/components/jquery-2.2.1.min.js"]
-      t_script' [a_src := "/static/js/main.js"]
+
+      css "//cdn.jsdelivr.net/pure/0.6.0/pure-min.css"
+      css "//cdn.jsdelivr.net/highlight.js/9.2.0/styles/github.min.css"
+      css "/static/css/main.css"
+
+      javascript "//cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"
+      javascript "/static/js/main.js"
 
       block "head" $ Nothing
 
     t_body [] do
-      t_header [] do
+      t_div [a_class := [pure_g, "container"]] do
 
-        ifLoginedElse (
-          \user -> do
-            t_div [a_style := "float: right"] do
-              t_a [a_href := "/user/status"] $ text $ user.username ++"("++user.role++")"
-              text " | "
-              t_a [a_href := "/cache/clean"] $ text "Clean Cached"
-              text " | "
-              t_a [a_href := "/update"] $ text "Update System"
-          ) (
-          t_div [a_style := "float: right"] do
-             t_a [a_href := "/user/login"] $ text "Login"
-          )
+        -- header
+        t_div [a_class := [pure_u_1, "header"]] do
+          t_div [a_class := [pure_g]] do
 
-        t_h1 [] $ do
-          block "title_header" $ Just do
-            text "LoveAria.Me"
+            t_div [a_class := [pure_u_1, pure_menu, pure_menu_horizontal, "user-menu"]] do
+              t_ul [a_class := [pure_menu_list], a_style := "float: right;"] do
+                  ifLoginedElse (
+                    \user -> do
+                      let menu_list =
+                            [Tuple user.username "/user/status"
+                            ,Tuple "Clean Cache" "/cache/clean"
+                            ,Tuple "Update System" "/update"]
+                      forT menu_list $ \(Tuple name href) -> do
+                        t_li [a_class := [pure_menu_item]] do
+                          t_a [a_class := [pure_menu_link],a_href := href] do
+                            text name
+                    ) (
+                        t_li [a_class := [pure_menu_item]] do
+                          t_a [a_class := [pure_menu_link] ,a_href := "/user/login"] do
+                            text "Login"
+                    )
 
-        t_p [] $ do
-          joinT (text " | ")
-            [ t_a [a_href := "/"] $ text "Home"
-            , t_a [a_href := "/article"] $ text "Article"
-            , t_a [a_href := "/category"] $ text "Category"
-            , t_a [a_href := "https://github.com/bramblex"] $ text "Github" ]
+            t_div [a_class := [pure_u_1, "title"]] do
+              t_h1 [] $ do
+                block "title_header" $ Just do
+                  text "LoveAria.Me"
 
-        t_hr []
+            t_div [a_class := [pure_u_1, pure_menu, pure_menu_horizontal, "menu"]] do
+              t_ul [a_class := [pure_menu_list]] do
+                let menu_list =
+                      [Tuple "Home" "/"
+                      ,Tuple "Article" "/article"
+                      ,Tuple "Category" "/category"
+                      ,Tuple "Github" "https://github.com/bramblex"]
+                forT menu_list $ \(Tuple name href) -> do
+                  t_li [a_class := [pure_menu_item]] do
+                    t_a [a_class := [pure_menu_link],a_href := href] do
+                      text name
 
-      t_div [] do
+            separate
 
-        block "body" $ Nothing
+        -- content
+        t_div [a_class := [pure_u_1, "content"]] do
+          block "body" $ Nothing
+          -- text "this is content"
 
-      block "foot" $ Nothing
+        -- footer
+        -- t_div [a_class := [pure_u_1, "footer"]] do
+
+        -- foot
+        block "foot" $ Nothing
 
 title :: String -> Template
 title t = do
   extend "title_tab" $ text $ "LoveAria.me - " ++ t
   extend "title_header" $ text t
 
+separate :: Template
+separate = t_div [a_class := [pure_u_1, "separate"]] $ t_hr []
+
 comments :: String -> Template
 comments page_identifier = do
-  text $ "<div id=\"disqus_thread\"></div> <script> var disqus_config = function () {this.page.identifier = "++ show page_identifier ++";}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})(); </script> <noscript>Please enable JavaScript to view the <a href=\"https://disqus.com/?ref_noscript\" rel=\"nofollow\">comments powered by Disqus.</a></noscript>"
-
--- import Lib.CookieSession (SimpleUser(), SessionUser(..), toSessionUser)
-
--- loginedUser :: forall t. SimpleUser t -> Template
--- loginedUser user = do
---   extend "logined_user" do
-    -- t_a [a_style := "float: right", a_href := "/user/status"] $ text $ user.username ++"("++user.role++")"
+  t_div [a_class := [pure_g]] do
+    t_div [a_class := [pure_u_1], a_id := "disqus_thread"] $ text ""
+    javascript_code $ "var disqus_config = function () {this.page.identifier = "++ show page_identifier ++";}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();"

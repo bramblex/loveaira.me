@@ -1,12 +1,25 @@
 module Data.DOM.Attributes where
 
-import Prelude ((++))
+import Prelude
 import Data.DOM.Type
+import Lib.Utils
 
 newtype AttributeKey = AttributeKey String
 
-(:=) :: AttributeKey -> String -> Attribute
-(:=) (AttributeKey key) val = Attribute { key: key , val: val}
+class IsAttrValue a where
+  toAttrValue :: a -> String
+
+instance isAttrValueString :: IsAttrValue String where
+  toAttrValue = show
+
+instance isAttrValueInt :: IsAttrValue Int where
+  toAttrValue = show
+
+instance isAttrValueArray :: IsAttrValue (Array String) where
+  toAttrValue = show <<< join_
+
+(:=) :: forall a.(IsAttrValue a) => AttributeKey -> a -> Attribute
+(:=) (AttributeKey key) val = Attribute { key: key , val: toAttrValue val }
 
 -- Normal Attributes --
 
