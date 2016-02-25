@@ -77,16 +77,16 @@ show_ article category_path = do
         separate
 
 
-      t_div [a_class := [pure_u_1, "article_content"]] do
+      t_div [a_class := [pure_u_1, "article-content"]] do
         text article.content
 
-      t_div [a_class := [pure_u_1, "article_date"]] do
+      t_div [a_class := [pure_u_1, "article-date"]] do
         t_small [a_style := "float: right"] do
           text $ "Updated At: " ++ article.update_at
           text " | "
           text $ "Created At: " ++ article.create_at
 
-      t_div [a_class := [pure_u_1, "article_comments"]] do
+      t_div [a_class := [pure_u_1, "article-comments"]] do
         comments $ "article_" ++ show article.id
 
 create :: Category.CategoryTree -> Template
