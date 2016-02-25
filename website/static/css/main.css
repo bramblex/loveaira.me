@@ -68,6 +68,10 @@
     margin-top: -0.8em;
 }
 
+.article-content p{
+    text-indent: 2em;
+}
+
 /* separate */
 .separate hr{
     margin: 0;
