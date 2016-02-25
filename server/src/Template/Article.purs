@@ -35,27 +35,29 @@ category articles category = do
 article_list :: Array Category.RichArticle -> Template
 article_list articles = do
 
-  t_table [a_class := [pure_table, pure_table_horizontal, pure_u_1]] do
-    t_thead [] do
-      t_tr [] do
-        t_th [] $ text "Id"
-        t_th [] $ text "Title"
-        t_th [] $ text "Category"
-        t_th [] $ text "Update At"
-        t_th [] $ text "Create At"
-
-    t_body [] do
-      forT articles $ \article -> do
+  t_div [a_class := pure_u_1] do
+    t_table [a_class := [pure_table, pure_table_horizontal, pure_u_1]
+            ,a_style := "display: table;"] do
+      t_thead [] do
         t_tr [] do
-          t_td [] $ text $ show article.id
-          t_td [] do
-            t_a [a_href := "/article/show/" ++ show article.id]
-              $ text article.title
-          t_td []  do
-            t_a [a_href := "/article/category/" ++ show article.category.id]
-              $ text article.category.name
-          t_td [] $ text article.update_at
-          t_td [] $ text article.create_at
+          t_th [] $ text "Id"
+          t_th [] $ text "Title"
+          t_th [] $ text "Category"
+          t_th [] $ text "Update At"
+          t_th [] $ text "Create At"
+
+      t_body [] do
+        forT articles $ \article -> do
+          t_tr [] do
+            t_td [] $ text $ show article.id
+            t_td [] do
+              t_a [a_href := "/article/show/" ++ show article.id]
+                $ text article.title
+            t_td []  do
+              t_a [a_href := "/article/category/" ++ show article.category.id]
+                $ text article.category.name
+            t_td [] $ text article.update_at
+            t_td [] $ text article.create_at
 
 show_ :: M.Article -> Array Category.Category -> Template
 show_ article category_path = do
