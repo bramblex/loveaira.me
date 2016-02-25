@@ -53,33 +53,41 @@ show_ article category_path = do
   base
   title $ "Article " ++ article.title
   extend "body" $ do
-    CT.breadcrumb_trail category_path
-    t_hr []
+    t_div [a_class := [pure_g, "markdown-body"]] do
 
-    ifLogined $ \_ ->
-      t_p [] do
-        t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
-        if article.id /= 0
-          then do
-            text " | "
-            t_a [ a_data_"delete" := "/article/delete/" ++ show article.id
-                , a_data_"redirect" := "/article/"
-                , a_href := "#" ]
-              $ text "Delete"
-          else text ""
+      ifLogined $ \_ -> do
+        t_div [a_class := [pure_u_1, "article-operate"]] do
+          text "Opreate: "
+          t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
+          if article.id /= 0
+            then do
+              text " | "
+              t_a [ a_data_"delete" := "/article/delete/" ++ show article.id
+                  , a_data_"redirect" := "/article/"
+                  , a_href := "#" ]
+                $ text "Delete"
+            else text ""
+        separate
 
-    t_p [] do
-      text $ "Create At: " ++ article.create_at
-      t_br []
-      text $ "Update At: " ++ article.update_at
+      t_div [a_class := [pure_u_1, "article-title"]] do
+        t_h1 [] $ text article.title
 
-    text article.content
+      t_div [a_class := [pure_u_1, "article-category"]] do
+        CT.breadcrumb_trail category_path
+        separate
 
-    t_hr []
 
-    t_a [a_href := "/article/"] $ text "Go Back"
+      t_div [a_class := [pure_u_1, "article_content"]] do
+        text article.content
 
-    comments $ "article_" ++ show article.id
+      t_div [a_class := [pure_u_1, "article_date"]] do
+        t_small [a_style := "float: right"] do
+          text $ "Updated At: " ++ article.update_at
+          text " | "
+          text $ "Created At: " ++ article.create_at
+
+      t_div [a_class := [pure_u_1, "article_comments"]] do
+        comments $ "article_" ++ show article.id
 
 create :: Category.CategoryTree -> Template
 create category_tree = do

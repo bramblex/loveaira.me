@@ -9,5 +9,6 @@ index :: Article -> Template
 index homepage = do
   base
   extend "body" $ do
-    text homepage.content
-    comments "homepage"
+    t_div [a_class := [pure_g, "markdown-body"]] do
+      t_div [a_class := [pure_u_1, "article_content"]] $ text homepage.content
+      t_div [a_class := [pure_u_1, "article_comments"]] $ comments "homepage"

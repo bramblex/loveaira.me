@@ -111,9 +111,6 @@ category_select category_tree default_id = do
 
 breadcrumb_trail :: Array M.Category -> Template
 breadcrumb_trail category_path = do
-  t_p [] do
-    joinT (text " > ") $ flip map category_path \c -> do
-      t_a [a_href := "/article/category/" ++ show c.id] $ text c.name
-      -- if c.id == 0
-      --   then t_a [] $ text c.name
-      --   else t_a [a_href := "/article/category/" ++ show c.id] $ text c.name
+  text "Category: "
+  joinT (text " > ") $ flip map category_path \c -> do
+    t_a [a_href := "/article/category/" ++ show c.id] $ text c.name

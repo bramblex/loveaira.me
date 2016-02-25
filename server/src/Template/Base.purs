@@ -37,12 +37,13 @@ base = do
       t_meta [a_name := "viewport", a_content := "width=device-width, initial-scale=1"]
 
       t_title [] $ do
-        block "title_tab" $ Just do
+        block "title" $ Just do
           text "LoveAria.Me"
 
       t_link [a_rel := "shortcut icon", a_href := "/favicon.ico"]
 
       css "//cdn.jsdelivr.net/pure/0.6.0/pure-min.css"
+      css "//cdn.jsdelivr.net/github-markdown-css/2.2.1/github-markdown.css"
       css "//cdn.jsdelivr.net/highlight.js/9.2.0/styles/github.min.css"
       css "/static/css/main.css"
 
@@ -77,9 +78,8 @@ base = do
                     )
 
             t_div [a_class := [pure_u_1, "title"]] do
-              t_h1 [] $ do
-                block "title_header" $ Just do
-                  text "LoveAria.Me"
+              t_h1 [] do
+                text "LoveAria.Me"
 
             t_div [a_class := [pure_u_1, pure_menu, pure_menu_horizontal, "menu"]] do
               t_ul [a_class := [pure_menu_list]] do
@@ -108,8 +108,7 @@ base = do
 
 title :: String -> Template
 title t = do
-  extend "title_tab" $ text $ "LoveAria.me - " ++ t
-  extend "title_header" $ text t
+  extend "title" $ text $ "LoveAria.Me - " ++ t
 
 separate :: Template
 separate = t_div [a_class := [pure_u_1, "separate"]] $ t_hr []

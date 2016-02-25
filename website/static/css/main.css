@@ -63,7 +63,14 @@
     margin: 0.5em 1em;
 }
 
+/* article */
+.article-category {
+    margin-top: -0.8em;
+}
+
 /* separate */
 .separate hr{
+    margin: 0;
+    height: 1px;
     border-color: #FFF;
 }
