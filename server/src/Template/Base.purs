@@ -42,9 +42,7 @@ base = do
 
       t_link [a_rel := "shortcut icon", a_href := "/favicon.ico"]
 
-      css "//cdn.jsdelivr.net/pure/0.6.0/pure-min.css"
-      css "//cdn.jsdelivr.net/github-markdown-css/2.2.1/github-markdown.css"
-      css "//cdn.jsdelivr.net/highlight.js/9.2.0/styles/github.min.css"
+      css "//cdn.jsdelivr.net/g/pure@0.6.0,github-markdown-css@2.2.1,highlight.js@9.2.0(styles/github.min.css)"
       css "/static/css/main.css"
 
       javascript "//cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"
