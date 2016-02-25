@@ -16,17 +16,12 @@ login mes = do
       Just m -> t_p [] $ text m
       _ -> text ""
 
-    t_form [a_method := "POST"] do
-
-      t_table [] do
-        t_tr [] do
-          t_td [] $ t_label [] $ text "username: "
-          t_td [] $ t_input [a_name := "username"]
-        t_tr [] do
-          t_td [] $ t_label [] $ text "password: "
-          t_td [] $ t_input [a_name := "password", a_type := "password"]
-        t_tr [] do
-          t_td [] $ t_input [a_type := "submit"]
+    t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
+      t_label [] $ text "username: "
+      t_input [a_name := "username"]
+      t_label [] $ text "password: "
+      t_input [a_name := "password", a_type := "password"]
+      t_input [a_class := [pure_button, pure_button_primary], a_type := "submit"]
 
 status :: forall t. M.SimpleUser t -> Template
 status user = do
