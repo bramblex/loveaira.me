@@ -11,12 +11,18 @@ import qualified Template.Category as CT
 list :: Array Category.RichArticle -> Template
 list articles = do
   base
+
   title "Article"
   extend "body" $ do
+    t_div [a_class := [pure_g]] do
 
     ifLogined $ \_ ->
-      t_a [a_href := "/article/create"] $ text "Create"
+      t_div [a_class := [pure_u_1]] do
+        t_p [] do
+          t_a [ a_class := [pure_button, pure_button_primary]
+              , a_href := "/article/create"] $ text "Create"
 
+    -- t_div [a_class := [pure_u_1]] do
     article_list articles
 
 category :: Array Category.RichArticle -> Category.Category -> Template
@@ -28,14 +34,17 @@ category articles category = do
 
 article_list :: Array Category.RichArticle -> Template
 article_list articles = do
-  t_table [] do
-    t_tr [] do
-      t_th [] $ text "Id"
-      t_th [] $ text "Title"
-      t_th [] $ text "Category"
-      t_th [] $ text "Create At"
-      t_th [] $ text "Update At"
 
+  t_table [a_class := [pure_table, pure_table_horizontal, pure_u_1]] do
+    t_thead [] do
+      t_tr [] do
+        t_th [] $ text "Id"
+        t_th [] $ text "Title"
+        t_th [] $ text "Category"
+        t_th [] $ text "Update At"
+        t_th [] $ text "Create At"
+
+    t_body [] do
       forT articles $ \article -> do
         t_tr [] do
           t_td [] $ text $ show article.id
@@ -45,8 +54,8 @@ article_list articles = do
           t_td []  do
             t_a [a_href := "/article/category/" ++ show article.category.id]
               $ text article.category.name
-          t_td [] $ text article.create_at
           t_td [] $ text article.update_at
+          t_td [] $ text article.create_at
 
 show_ :: M.Article -> Array Category.Category -> Template
 show_ article category_path = do
@@ -57,24 +66,22 @@ show_ article category_path = do
 
       ifLogined $ \_ -> do
         t_div [a_class := [pure_u_1, "article-operate"]] do
-          text "Opreate: "
-          t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
-          if article.id /= 0
-            then do
-              text " | "
-              t_a [ a_data_"delete" := "/article/delete/" ++ show article.id
-                  , a_data_"redirect" := "/article/"
-                  , a_href := "#" ]
-                $ text "Delete"
-            else text ""
-        separate
-
-      t_div [a_class := [pure_u_1, "article-title"]] do
-        t_h1 [] $ text article.title
+          t_div [a_style := "float: right"] do
+            t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
+            if article.id /= 0
+              then do
+                text " | "
+                t_a [ a_data_"delete" := "/article/delete/" ++ show article.id
+                    , a_data_"redirect" := "/article/"
+                    , a_href := "#" ]
+                  $ text "Delete"
+              else text ""
 
       t_div [a_class := [pure_u_1, "article-category"]] do
         CT.breadcrumb_trail category_path
-        separate
+
+      t_div [a_class := [pure_u_1, "article-title"]] do
+        t_h1 [] $ text article.title
 
 
       t_div [a_class := [pure_u_1, "article-content"]] do
@@ -98,22 +105,20 @@ create category_tree = do
     simplemdeEditor "simplemde" "article_create"
 
   extend "body" $ do
-    t_form [a_method := "POST"] do
-      t_table [] do
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Title"
-        t_tr [] do
-          t_td [] $ t_input [a_name := "title"]
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Category"
-        t_tr [] do
-          t_td [] $ CT.category_select category_tree 0
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Content"
-        t_tr [] do
-          t_td [] $ t_textarea [a_name := "content", a_id := "simplemde"] $ text ""
-        t_tr [] do
-          t_td [] $ t_input [a_type := "submit"]
+    t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
+
+      t_fieldset [] do
+
+        t_label [] $ text "Title"
+        t_input [a_class:=pure_input_1, a_name := "title"]
+
+        t_label [] $ text "Category"
+        CT.category_select category_tree 0
+
+        t_label [] $ text "Content"
+        t_textarea [a_name := "content", a_id := "simplemde"] $ text ""
+
+        t_input [a_class := [pure_button, pure_button_primary], a_type := "submit"]
 
 edit :: M.Article -> Category.CategoryTree -> Template
 edit article category_tree = do
@@ -124,24 +129,23 @@ edit article category_tree = do
     simplemdeEditor "simplemde" $ "article_edit_" ++ show article.id
 
   extend "body" $ do
-    t_form [a_method := "POST"] do
-      t_table [] do
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Title"
-        t_tr [] do
-          t_td [] $ t_input [a_name := "title", a_value := article.title]
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Category"
-        t_tr [] do
-          t_td [] $ CT.category_select category_tree article.category_id
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Content"
-        t_tr [] do
-          t_td [] $ t_textarea [a_name := "content", a_id := "simplemde"]
-            $ text article.raw_content
-        t_tr [] do
-          t_td [] $ t_input [a_type := "submit"]
 
+    t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
+
+      t_fieldset [] do
+
+        t_label [] $ text "Title"
+        t_input [a_class:=pure_input_1, a_name := "title"
+                , a_value := article.title]
+
+        t_label [] $ text "Category"
+        CT.category_select category_tree article.category_id
+
+        t_label [] $ text "Content"
+        t_textarea [a_name := "content", a_id := "simplemde"]
+          $ text article.raw_content
+
+        t_input [a_class := [pure_button, pure_button_primary], a_type := "submit"]
 
 simplemdeEditor :: String -> String -> Template
 simplemdeEditor id cached_id = do

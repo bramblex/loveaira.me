@@ -14,7 +14,8 @@ list category_tree = do
 
     ifLogined $ \_ -> do
       t_p [] do
-        t_a [a_href := "/category/create"] $ text "Create"
+        t_a [ a_class := [pure_button, pure_button_primary]
+            , a_href := "/category/create"] $ text "Create"
     t_ul [] do
       list' category_tree
     where list' :: M.CategoryTree -> Template
@@ -53,17 +54,14 @@ create category_tree parent = do
   title "Create Category"
   extend "body" do
 
-    t_form [a_method := "POST"] do
+    t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
+      t_label [] $ text "parent: "
+      category_select category_tree parent
 
-      t_table [] do
-        t_tr [] do
-          t_td [] $ t_label [] $ text "parent: "
-          t_td [] $ category_select category_tree parent
-        t_tr [] do
-          t_td [] $ t_label [] $ text "name: "
-          t_td [] $ t_input [a_name := "name"]
-        t_tr [] do
-          t_td [] $ t_input [a_type := "submit"]
+      t_label [] $ text "name: "
+      t_input [a_name := "name"]
+
+      t_input [a_class := [pure_button, pure_button_primary], a_type := "submit"]
 
 rename :: M.Category -> Template
 rename category = do
@@ -71,17 +69,12 @@ rename category = do
   title $ "Rename Category " ++ category.name
   extend "body" do
 
-    t_form [a_method := "POST"] do
-
-      t_table [] do
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Name: "
-          t_td [] $ text category.name
-        t_tr [] do
-          t_td [] $ t_label [] $ text "New Name: "
-          t_td [] $ t_input [a_name := "name"]
-        t_tr [] do
-          t_td [] $ t_input [a_type := "submit"]
+    t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
+      t_label [] $ text "Name: "
+      text category.name
+      t_label [] $ text "New Name: "
+      t_input [a_name := "name"]
+      t_input [a_class := [pure_button, pure_button_primary], a_type := "submit"]
 
 move :: M.CategoryTree -> M.Category -> Template
 move category_tree category = do
@@ -89,14 +82,10 @@ move category_tree category = do
   title $ "Move Category " ++ category.name
   extend "body" do
 
-    t_form [a_method := "POST"] do
-
-      t_table [] do
-        t_tr [] do
-          t_td [] $ t_label [] $ text "Move to: "
-          t_td [] $ category_select category_tree category.parent_id
-        t_tr [] do
-          t_td [] $ t_input [a_type := "submit"]
+    t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
+      t_label [] $ text "Move to: "
+      category_select category_tree category.parent_id
+      t_input [a_class := [pure_button, pure_button_primary], a_type := "submit"]
 
 category_select :: M.CategoryTree -> Int -> Template
 category_select category_tree default_id = do
