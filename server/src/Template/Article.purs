@@ -175,7 +175,7 @@ edit article category_tree = do
   extend "foot" $ do
     simplemdeEditor "simplemde" $ "article_edit_" ++ show article.id
 
-  extend "body" $ do
+  extend "content" $ do
 
     t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
 
