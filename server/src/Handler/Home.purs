@@ -16,8 +16,8 @@ main :: forall eff. ModelApp eff
 main = do
   get "/" index
   get "/favicon.ico" favicon
-  post "/update" MW.githubWebhockHandler
-  -- get "/update" $ requireLogin update
+  -- post "/update" MW.githubWebhockHandler
+  get "/update" $ requireLogin update
 
 index = do
   homepage <- liftAff $ getHomePage
@@ -27,7 +27,7 @@ favicon = do
   favicon <- liftEff $ Config.favicon_path
   download favicon
 
--- update = do
---   r <- liftEff $ Utils.runcmd "git pull && npm install"
---   send r
+update = do
+  r <- liftEff $ Utils.runcmd "git pull && npm install"
+  send r
 
