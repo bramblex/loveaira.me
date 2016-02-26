@@ -127,12 +127,12 @@ instance isValueInt :: IsValue Int where
   toValue int = show int
 
 instance isValueDateTime :: IsValue DateTime where
-  toValue Now = "DATETIME('NOW')"
+  toValue Now = "DATETIME('NOW', 'localtime')"
   toValue (DateTime d) = "DATETIME('"
                        ++ join "-" (map show [d.year, d.month, d.day])
                        ++ " "
                        ++ join ":" (map show [d.hour, d.minute, d.second])
-                       ++ "')"
+                       ++ "', 'localtime')"
 
 instance isValueInArray :: (IsValue a) => IsValue (Array a) where
   toValue as = join ", " (map toValue as)
