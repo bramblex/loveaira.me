@@ -95,9 +95,9 @@ show_ article category_path = do
       t_div [a_class := [pure_u_1]] do
         t_div [a_class := ["article-date"]] do
           t_small [] do
-            text $ "Updated At: " ++ article.update_at
+            text article.update_at
             text " | "
-            text $ "Created At: " ++ article.create_at
+            text article.create_at
 
       t_div [a_class := [pure_u_1, "article-comments"]] do
         comments $ "article_" ++ show article.id
