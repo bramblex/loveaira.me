@@ -64,11 +64,14 @@ show_ article category_path = do
   base
   title $ "Article " ++ article.title
   extend "body" $ do
-    t_div [a_class := [pure_g, "markdown-body"]] do
+    t_div [a_class := [pure_g]] do
 
-      ifLogined $ \_ -> do
-        t_div [a_class := [pure_u_1, "article-operate"]] do
-          t_div [a_style := "float: right"] do
+
+      t_div [a_class := [pure_u_1 ]] do
+        t_div [a_class := ["article-category"]] do
+          CT.breadcrumb_trail category_path
+        ifLogined $ \_ -> do
+          t_div [a_class := ["article-operate"]] do
             t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
             if article.id /= 0
               then do
@@ -79,21 +82,22 @@ show_ article category_path = do
                   $ text "Delete"
               else text ""
 
-      t_div [a_class := [pure_u_1, "article-category"]] do
-        CT.breadcrumb_trail category_path
+      t_div [a_class := [pure_u_1, "markdown-body"]] do
 
-      t_div [a_class := [pure_u_1, "article-title"]] do
-        t_h1 [] $ text article.title
+        t_div [a_class := ["article"]] do
 
+          t_div [a_class := ["article-title"]] do
+            t_h1 [] $ text article.title
 
-      t_div [a_class := [pure_u_1, "article-content"]] do
-        text article.content
+          t_div [a_class := ["article-content"]] do
+            text article.content
 
-      t_div [a_class := [pure_u_1, "article-date"]] do
-        t_small [a_style := "float: right"] do
-          text $ "Updated At: " ++ article.update_at
-          text " | "
-          text $ "Created At: " ++ article.create_at
+      t_div [a_class := [pure_u_1]] do
+        t_div [a_class := ["article-date"]] do
+          t_small [] do
+            text $ "Updated At: " ++ article.update_at
+            text " | "
+            text $ "Created At: " ++ article.create_at
 
       t_div [a_class := [pure_u_1, "article-comments"]] do
         comments $ "article_" ++ show article.id

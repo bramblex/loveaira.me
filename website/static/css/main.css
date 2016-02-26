@@ -24,22 +24,38 @@ a {
 
 /* content */
 .content {
-    margin: 0.5em 1em;
+    /* margin: 0.5em 1em; */
 }
 
 /* article */
-.article-operate {
-    height: 0;
+.article {
+    margin: 0 1em;
 }
-
+/* .article-operate { */
+/*     height: 0; */
+/* } */
 .article-category {
+    padding: 0 1em; 
+    padding-top: 0.5em;
+    float: left;
 }
 .article-category a {
     padding: 0 0.64em;
 }
 
+.article-operate{
+    padding: 0 1em ; 
+    padding-top: 0.5em;
+    float: right;
+}
+
 .article-content p{
     text-indent: 2em;
+}
+
+.article-date {
+    float: right;
+    padding: 0 1em; 
 }
 
 /* separate */
@@ -51,6 +67,11 @@ a {
 
 
 /* pure extend */
+
+.pure-g-r {
+    display: flex;
+}
+
 .pure-button-success,
 .pure-button-error,
 .pure-button-warning,
