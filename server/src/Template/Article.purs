@@ -25,11 +25,13 @@ list articles = do
     -- t_div [a_class := [pure_u_1]] do
     article_list articles
 
-category :: Array Category.RichArticle -> Category.Category -> Template
-category articles category = do
+category :: Array Category.RichArticle -> Category.Category -> Array Category.Category -> Template
+category articles category category_path = do
   base
   title $ "Category " ++ category.name
   extend "body" $ do
+    t_p [] do
+      CT.breadcrumb_trail category_path
     article_list articles
 
 article_list :: Array Category.RichArticle -> Template

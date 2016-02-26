@@ -87,9 +87,10 @@ category :: forall eff. ModelHandler eff
 category = do
   (Just category_id) <- getRouteParam "id"
   category_tree <- liftAff $ Category.getCategoryTree (Utils.parseInt category_id)
+  category_path <- liftAff $ Category.getCategoryPath (Utils.parseInt category_id)
   let categorys = Category.getCategorysFromTree category_tree
   let ids = Category.filterId categorys
   articles <- liftAff $ M.findArticleByCategoryIds ids
 
   let category = Category.fromCategoryTree category_tree
-  render $ T.category (Category.withCategory articles categorys) category
+  render $ T.category (Category.withCategory articles categorys) category category_path
