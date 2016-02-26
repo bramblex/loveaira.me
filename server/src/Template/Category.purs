@@ -10,7 +10,7 @@ list :: M.CategoryTree -> Template
 list category_tree = do
   base
   title "Category"
-  extend "body" do
+  extend "content" do
 
     ifLogined $ \_ -> do
       t_p [] do
@@ -52,7 +52,7 @@ create :: M.CategoryTree -> Int -> Template
 create category_tree parent = do
   base
   title "Create Category"
-  extend "body" do
+  extend "content" do
 
     t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
       t_label [] $ text "parent: "
@@ -67,7 +67,7 @@ rename :: M.Category -> Template
 rename category = do
   base
   title $ "Rename Category " ++ category.name
-  extend "body" do
+  extend "content" do
 
     t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
       t_label [] $ text "Name: "
@@ -80,7 +80,7 @@ move :: M.CategoryTree -> M.Category -> Template
 move category_tree category = do
   base
   title $ "Move Category " ++ category.name
-  extend "body" do
+  extend "content" do
 
     t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
       t_label [] $ text "Move to: "

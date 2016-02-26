@@ -27,24 +27,35 @@ findRedirectUrl headers =
 
 main = ready do
   buttom <- select "a[data-delete]"
-  on "click" (handler) buttom
-    where handler e el = do
-            href <- getAttr "data-delete" el
-            redirect_url <- getAttr "data-redirect" el
-            checed <- confirm $ "Are you sure to run this command " ++ href
-            log $ show checed
-            case checed of
-              true -> launchAff $ do
-                liftEff $ log $ href ++ " " ++ redirect_url
-                res <- post href ""
-                case res.status of
-                  StatusCode 200 -> do
-                    let cont = res.response ++ ""
-                    case redirect_url of
-                      "" -> liftEff $ refresh
-                      url -> liftEff $ redirect url
-                  _ -> liftEff $ alert "Delete Error!"
-              fase -> return unit
+  void $ on "click" (deleteArticleHandler) buttom
+  menuLink <- select "#menuLink"
+  void $ on "click" (menuLinkHandler) menuLink
+
+menuLinkHandler e el = do
+  preventDefault e
+  layout <- select "#layout"
+  menu <- select "#menu"
+  toggleClass "active" layout
+  toggleClass "active" menu
+  toggleClass "active" el
+
+deleteArticleHandler e el = do
+  href <- getAttr "data-delete" el
+  redirect_url <- getAttr "data-redirect" el
+  checed <- confirm $ "Are you sure to run this command " ++ href
+  log $ show checed
+  case checed of
+    true -> launchAff $ do
+      liftEff $ log $ href ++ " " ++ redirect_url
+      res <- post href ""
+      case res.status of
+        StatusCode 200 -> do
+          let cont = res.response ++ ""
+          case redirect_url of
+            "" -> liftEff $ refresh
+            url -> liftEff $ redirect url
+        _ -> liftEff $ alert "Delete Error!"
+    fase -> return unit
 
 
 foreign import data MAIN :: !
