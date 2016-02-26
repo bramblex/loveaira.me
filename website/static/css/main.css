@@ -283,15 +283,19 @@ Hides the menu at `48em`, but modify this based on your app's needs.
     text-indent: 2em;
 }
 
-.article-list-head {
-    padding: 0.64em 1em;
-    background: #EFEFEF;
-}
-
-.article-list-body {
-    padding: 0.64em 1em;
+.article-list{
+    padding: 0.64em 0;
     border-bottom: 1px solid #EFEFEF;
 }
+
+.article-list-category{
+    float: left;
+}
+
+.article-list-date{
+    float: right;
+}
+
 
 
 /* /\* separate *\/ */

@@ -35,19 +35,21 @@ category articles category category_path = do
 article_list :: Array Category.RichArticle -> Template
 article_list articles = do
 
-    t_div [a_class := [pure_g, "article-list-head"]] do
-      t_div [a_class := pure_u_5_6] $ text "Title"
-      t_div [a_class := pure_u_1_6] $ text "Category"
-
     forT articles $ \article ->
-      t_div [a_class := [pure_g, "article-list-body"]] do
-        t_div [a_class := pure_u_5_6] do
-          t_a [a_href := "/article/show/" ++ show article.id]
+      t_div [a_class := [pure_g, "article-list"]] do
+
+        t_div [a_class:=pure_u_1] do
+          t_a [a_href := "/article/show/" ++ show article.id
+              ,a_class := ["article-list-title"]]
             $ text article.title
-          t_small [] $ text $ "(" ++ article.update_at ++ ")"
-        t_div [a_class := pure_u_1_6] do
-          t_a [a_href := "/article/category/" ++ show article.category.id] do
+
+        t_div [a_class:=pure_u_1] do
+          t_a [a_href := "/article/category/" ++ show article.category.id
+              ,a_class := ["article-list-category"]] do
             text article.category.name
+
+          t_small [a_class := ["article-list-date"]] do
+            text $ "(" ++ article.update_at ++ ")"
 
   -- t_div [a_class := pure_u_1] do
   --   t_table [a_class := [pure_table, pure_table_horizontal, pure_u_1]
