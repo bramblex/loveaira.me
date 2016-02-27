@@ -29,11 +29,11 @@ listAllCategorys = findallCategory ("id" .>= 0) (Desc "id")
 
 findCategoryByName :: forall eff. String -> ModelAff eff Category
 findCategoryByName name =
-  firstCategory ("name" .== name) (Asc "id")
+  firstCategory ("name" .== name) (Desc "id")
 
 findCategoryById :: forall eff. Int -> ModelAff eff Category
 findCategoryById id =
-  firstCategory ("id" .== id) (Asc "id")
+  firstCategory ("id" .== id) (Desc "id")
 
 -- CategoryTree
 import Data.Traversable (sequence)

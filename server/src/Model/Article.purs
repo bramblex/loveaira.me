@@ -31,13 +31,13 @@ insertOrUpdateArticle = insertOrUpdate table_name
 updateArticle = update table_name
 deleteArticle = delete table_name
 
-listArticles = findallArticle ("id" .>= 0) (Desc "update_at")
+listArticles = findallArticle ("id" .>= 0) (Desc "create_at")
 
 findArticleById :: forall eff. Int -> ModelAff eff Article
-findArticleById id = firstArticle ("id" .== id) (Asc "id")
+findArticleById id = firstArticle ("id" .== id) (Desc "create_at")
 
 findArticleByCategoryIds :: forall eff. Array Int -> ModelAff eff (Array Article)
-findArticleByCategoryIds ids = findallArticle ("category_id" .<- ids) (Desc "id")
+findArticleByCategoryIds ids = findallArticle ("category_id" .<- ids) (Desc "create_at")
 
 getHomePage = findArticleById 0
 
