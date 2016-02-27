@@ -195,9 +195,11 @@ edit article category_tree = do
         t_input [a_class := [pure_button, pure_button_primary], a_type := "submit"]
 
 simplemdeEditor :: String -> String -> Template
-simplemdeEditor id cached_id = do
+simplemdeEditor editor_id cached_id = do
     css "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.css"
     javascript "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
     javascript "//cdn.jsdelivr.net/highlight.js/9.2.0/highlight.min.js"
-    javascript_code
-      $ "new SimpleMDE({autosave: {enabled: true, uniqueId: "++show cached_id++", delay: 1000}, renderingConfig:{codeSyntaxHighlighting:true}, spellChecker: false, element: document.getElementById("++show id++")});"
+    javascript_code $ simplemdeInit editor_id cached_id
+      -- $ "new SimpleMDE({autosave: {enabled: true, uniqueId: "++show cached_id++", delay: 1000}, renderingConfig:{codeSyntaxHighlighting:true}, spellChecker: false, element: document.getElementById("++show id++")});"
+
+foreign import simplemdeInit :: String -> String -> String
