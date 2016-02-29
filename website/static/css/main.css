@@ -1,6 +1,5 @@
 
 body {
-    font-family:"微软雅黑","Microsoft YaHei",Arial,sans,SimHei !important;;
     color: #777;
 }
 
@@ -296,6 +295,21 @@ Hides the menu at `48em`, but modify this based on your app's needs.
 .article-list-date{
     float: right;
 }
+
+/* fixed font family */
+body {
+    font-family:"微软雅黑","Microsoft YaHei",Arial,sans,SimHei !important;
+}
+
+.pure-g [class *="pure-u"] {
+    font-family:"微软雅黑","Microsoft YaHei",Arial,sans,SimHei !important;
+}
+
+.markdown-body {
+    font-family:"微软雅黑","Microsoft YaHei",Arial,sans,SimHei !important;
+}
+
+
 
 
 
