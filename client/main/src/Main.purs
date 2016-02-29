@@ -29,7 +29,7 @@ main = ready do
   -- buttom <- select "a[data-delete]"
   -- void $ on "click" (deleteArticleHandler) buttom
   on "click" (deleteArticleHandler) <$> select "a[data-delete]"
-  menuLink <- select ".toggle-menu"
+  menuLink <- select "#menuLink"
   void $ on "click" (menuLinkHandler) menuLink
 
 menuLinkHandler e el = do

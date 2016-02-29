@@ -71,7 +71,7 @@ base = do
     t_body [] do
       t_div [a_id := "layout"] do
 
-        t_a [a_href', a_id := "menuLink", a_class := ["menu-link", "toggle-menu"]] do
+        t_a [a_href', a_id := "menuLink", a_class := ["menu-link"]] do
           t_span [] $ text ""
 
         t_div [a_id := "menu"] do
@@ -106,11 +106,6 @@ base = do
                           ,a_href := "/user/login"] do
                         text "Login"
                 )
-
-              t_li [a_class := [pure_menu_item, "menu-item-divided"]] do
-                t_a [a_class := [pure_menu_link, "toggle-menu"]
-                    ,a_href := "/user/login"] do
-                  text "Hide Menu"
 
         t_div [a_id := "main"] do
 
