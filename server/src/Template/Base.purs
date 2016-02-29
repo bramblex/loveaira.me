@@ -107,10 +107,10 @@ base = do
                         text "Login"
                 )
 
-                t_li [a_class := [pure_menu_item, "menu-item-divided"]] do
-                  t_a [a_class := [pure_menu_link, "toggle-menu"]
-                      ,a_href := "/user/login"] do
-                    text "Hide Menu"
+              t_li [a_class := [pure_menu_item, "menu-item-divided"]] do
+                t_a [a_class := [pure_menu_link, "toggle-menu"]
+                    ,a_href := "/user/login"] do
+                  text "Hide Menu"
 
         t_div [a_id := "main"] do
 
