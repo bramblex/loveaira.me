@@ -13,11 +13,11 @@ website/server.js: server/src/**
 	cp server/package.json $(project_dir)website/package.json
 	cd website/ && npm install
 	cd server && pulp build --force -O --to $(project_dir)website/server.js
-	-jscompiler $(project_dir)website/server.js $(project_dir)website/server.js.min && mv $(project_dir)website/server.js.min $(project_dir)website/server.js
+#	-jscompiler $(project_dir)website/server.js $(project_dir)website/server.js.min && mv $(project_dir)website/server.js.min $(project_dir)website/server.js
 
 $(client_object_targets): website/static/js/%.js:client/% $(client_object_src)
 	cd $< && pulp browserify --force -O --to $(project_dir)$@
-	-jscompiler $(project_dir)$@ $(project_dir)$@.min && mv $(project_dir)$@.min $(project_dir)$@
+#	-jscompiler $(project_dir)$@ $(project_dir)$@.min && mv $(project_dir)$@.min $(project_dir)$@
 
 clean:
 	-rm website/package.json

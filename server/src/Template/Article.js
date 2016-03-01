@@ -42,8 +42,23 @@ exports.simplemdeInit = function(editor_id){
                 ]
             };
         };
-        return 'new SimpleMDE((' + opts.toString() + ')('
+        var init_editor_code = 'var smde = new SimpleMDE((' + opts.toString() + ')('
             + [editor_id, cached_id].map(function(i){return JSON.stringify(i);}).join(', ')
             + '));';
+
+        var binding_function = function(smde){
+            var form = document.querySelector('form');
+            form.onsubmit = function(e){
+                if (confirm('Submit Changes?')){
+                    smde.clearAutosavedValue();
+                }
+                else{
+                    e.preventDefault();
+                }
+            };
+        };
+        var binding_submit_code = '('+ binding_function.toString() + ')(smde);';
+
+        return '(function(){' + init_editor_code + binding_submit_code + '})();';
     };
 };
