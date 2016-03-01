@@ -26,9 +26,9 @@ findRedirectUrl headers =
     where unwaper (Just h) = responseHeaderValue h
 
 main = ready do
-  -- buttom <- select "a[data-delete]"
-  -- void $ on "click" (deleteArticleHandler) buttom
-  on "click" (deleteArticleHandler) <$> select "a[data-delete]"
+  buttom <- select "a[data-delete]"
+  void $ on "click" (deleteArticleHandler) buttom
+  -- on "click" (deleteArticleHandler) <$> select "a[data-delete]"
   menuLink <- select "#menuLink"
   void $ on "click" (menuLinkHandler) menuLink
 

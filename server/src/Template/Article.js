@@ -3,7 +3,7 @@
 
 exports.simplemdeInit = function(editor_id){
     return function(cached_id){
-        var opts = function(editor_id, cached_id){
+        var opts = function(editor_id, cached_id, form_id){
             return {
                 autosave: {enabled: true, uniqueId: cached_id, delay: 1000},
                 renderingConfig:{codeSyntaxHighlighting:true},
