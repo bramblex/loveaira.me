@@ -2,6 +2,8 @@ module Main where
 
 import Prelude hiding (append)
 
+import Control.Bind ((=<<))
+
 import Control.Monad.Eff
 import Control.Monad.Eff.Exception
 import Control.Monad.Eff.Class
@@ -20,23 +22,19 @@ import DOM
 
 import qualified Data.Foldable as F
 
-findRedirectUrl :: Array ResponseHeader -> String
-findRedirectUrl headers =
-  unwaper $ F.find (\h -> responseHeaderName h == "Location") headers
-    where unwaper (Just h) = responseHeaderValue h
+import LazyLoad
+
+testHandler mes _ _ = do
+  alert mes
 
 main = ready do
-  buttom <- select "a[data-delete]"
-  void $ on "click" (deleteArticleHandler) buttom
-  menuLink <- select "#menuLink"
-  void $ on "click" (menuLinkHandler) menuLink
+  on "click" (deleteArticleHandler) =<<  select "a[data-delete]"
+  on "click" (menuLinkHandler) =<< select "#menuLink"
 
 menuLinkHandler e el = do
   preventDefault e
-  layout <- select "#layout"
-  menu <- select "#menu"
-  toggleClass "active" layout
-  toggleClass "active" menu
+  toggleClass "active" =<< select "#layout"
+  toggleClass "active" =<< select "#menu"
   toggleClass "active" el
 
 deleteArticleHandler e el = do
