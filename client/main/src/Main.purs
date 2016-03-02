@@ -24,9 +24,6 @@ import qualified Data.Foldable as F
 
 import LazyLoad
 
-testHandler mes _ _ = do
-  alert mes
-
 main = ready do
   on "click" (deleteArticleHandler) =<<  select "a[data-delete]"
   on "click" (menuLinkHandler) =<< select "#menuLink"
