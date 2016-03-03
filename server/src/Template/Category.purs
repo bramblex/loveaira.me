@@ -16,6 +16,9 @@ list category_tree = do
       t_p [] do
         t_a [ a_class := [pure_button, pure_button_primary]
             , a_href := "/category/create"] $ text "Create"
+        text " "
+        t_a [ a_class := [pure_button, pure_button_primary]
+            , a_href', a_data_"show" := "operation"] $ text "Show/Hide Operation"
     t_ul [] do
       list' category_tree
     where list' :: M.CategoryTree -> Template
@@ -25,24 +28,25 @@ list category_tree = do
                 $ text category.name
 
               ifLogined $ \_ -> do
-                case category.id of
-                  0 -> do
-                    text " ( "
-                    t_a [a_href := "/category/rename/"++show category.id]
-                      $ text "Rename"
-                    text " ) "
-                  _ -> do
-                    text " ( "
-                    joinT (text " | ")
-                      [ t_a [a_href := "/category/rename/"++show category.id]
+                t_span [a_style := "display: none;", a_data_"view" := "operation"] do
+                  case category.id of
+                    0 -> do
+                      text " ( "
+                      t_a [a_href := "/category/rename/"++show category.id]
                         $ text "Rename"
-                      , t_a [a_href := "/category/move/" ++ show category.id]
-                        $ text "Move"
-                      , t_a [a_data_"delete":= "/category/delete/"++show category.id
-                            , a_data_"redirect" := "/category/"
-                            , a_href := "#"]
-                        $ text "Delete"]
-                    text " ) "
+                      text " ) "
+                    _ -> do
+                      text " ( "
+                      joinT (text " | ")
+                        [ t_a [a_href := "/category/rename/"++show category.id]
+                          $ text "Rename"
+                        , t_a [a_href := "/category/move/" ++ show category.id]
+                          $ text "Move"
+                        , t_a [a_data_"delete":= "/category/delete/"++show category.id
+                              , a_data_"redirect" := "/category/"
+                              , a_href := "#"]
+                          $ text "Delete"]
+                      text " ) "
 
               forT children $ \c -> do
                 t_ul [] do

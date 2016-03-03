@@ -27,6 +27,12 @@ import LazyLoad
 main = ready do
   on "click" (deleteArticleHandler) =<<  select "a[data-delete]"
   on "click" (menuLinkHandler) =<< select "#menuLink"
+  on "click" (showViewHandler) =<< select "a[data-show]"
+
+showViewHandler e el = do
+  view :: String <- getAttr "data-show" el
+  log $ "toggle " ++ show view
+  void $ toggle =<< select ("[data-view="++ show view ++"]")
 
 menuLinkHandler e el = do
   preventDefault e
