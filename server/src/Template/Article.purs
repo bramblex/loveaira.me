@@ -51,30 +51,6 @@ article_list articles = do
           t_small [a_class := ["article-list-date"]] do
             text $ "(" ++ article.update_at ++ ")"
 
-  -- t_div [a_class := pure_u_1] do
-  --   t_table [a_class := [pure_table, pure_table_horizontal, pure_u_1]
-  --           ,a_style := "display: table;"] do
-  --     t_thead [] do
-  --       t_tr [] do
-  --         t_th [] $ text "Id"
-  --         t_th [] $ text "Title"
-  --         t_th [] $ text "Category"
-  --         t_th [] $ text "Update At"
-  --         t_th [] $ text "Create At"
-
-  --     t_body [] do
-  --       forT articles $ \article -> do
-  --         t_tr [] do
-  --           t_td [] $ text $ show article.id
-  --           t_td [] do
-  --             t_a [a_href := "/article/show/" ++ show article.id]
-  --               $ text article.title
-  --           t_td []  do
-  --             t_a [a_href := "/article/category/" ++ show article.category.id]
-  --               $ text article.category.name
-  --           t_td [] $ text article.update_at
-  --           t_td [] $ text article.create_at
-
 show_ :: M.Article -> Array Category.Category -> Template
 show_ article category_path = do
   base
@@ -109,39 +85,6 @@ show_ article category_path = do
 
     t_div [a_class := [pure_u_1, "comments"]] do
       comments $ "article_" ++ show article.id
-
-    -- t_div [a_class := ["article-"]]
-    -- t_div [a_class := [pure_g]] do
-
-    --   t_div [a_class := [pure_u_1]] do
-    --     t_div [a_class := ["article-category"]] do
-    --       CT.breadcrumb_trail category_path
-    --     ifLogined $ \_ -> do
-    --       t_div [a_class := ["article-operate"]] do
-    --         t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
-    --         if article.id /= 0
-    --           then do
-    --             text " | "
-    --             t_a [ a_data_"delete" := "/article/delete/" ++ show article.id
-    --                 , a_data_"redirect" := "/article/"
-    --                 , a_href := "#" ]
-    --               $ text "Delete"
-    --           else text ""
-
-    --   t_div [a_class := [pure_u_1, "markdown-body"]] do
-
-    --     t_div [a_class := ["article"]] do
-    --         text article.content
-
-    --   t_div [a_class := [pure_u_1]] do
-    --     t_div [a_class := ["article-date"]] do
-    --       t_small [] do
-    --         text article.update_at
-    --         text " | "
-    --         text article.create_at
-
-    --   t_div [a_class := [pure_u_1, "article-comments"]] do
-    --     comments $ "article_" ++ show article.id
 
 create :: Category.CategoryTree -> Template
 create category_tree = do
@@ -200,6 +143,5 @@ simplemdeEditor editor_id cached_id = do
     javascript "//cdn.jsdelivr.net/simplemde/latest/simplemde.min.js"
     javascript "//cdn.jsdelivr.net/highlight.js/9.2.0/highlight.min.js"
     javascript_code $ simplemdeInit editor_id cached_id
-      -- $ "new SimpleMDE({autosave: {enabled: true, uniqueId: "++show cached_id++", delay: 1000}, renderingConfig:{codeSyntaxHighlighting:true}, spellChecker: false, element: document.getElementById("++show id++")});"
 
 foreign import simplemdeInit :: String -> String -> String
