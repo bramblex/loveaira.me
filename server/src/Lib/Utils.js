@@ -56,8 +56,65 @@ exports.randString = function randString(x){
         },
         breaks: true
     });
+
+    var toc = {
+        __content__: [],
+        clean: function(){
+            this.__content__ = [];
+        },
+        add: function(text, level, href){
+            this.__content__.push({text: text, level: level, href: href});
+        },
+        render: function(){
+            var tmp = this.__content__.map(function(heading){
+                return {
+                    level: heading.level,
+                    content: '<li><a href="#' + heading.href +'">' + heading.text + '</a></li>'
+                };
+            });
+
+            var result = "";
+            var last_stack = [0];
+
+            for (var i=0; i<tmp.length; i++){
+                var h = tmp[i];
+                var last = last_stack.unshift();
+                if (h.level === last){
+                    result += h.content;
+                }
+                else if (h.level > last){
+                    last_stack.push(h.level);
+                    result += "<ul>";
+                    result += h.content;
+                }
+                else if (h.level < last){
+                    last_stack.pop();
+                    result += "</ul>";
+                    i -= 1;
+                    continue;
+                }
+            }
+
+            return '<h2>目录</h2>'+ result + last_stack.map(function(){return '</ul>';}).join('');
+        }
+    };
+
+    var renderer = new marked.Renderer();
+    renderer.heading = function(text, level){
+        var escapedText = text.replace(/[^a-zA-Z0-9\u4e00-\u9fa5_]+/g, '-');
+        toc.add(text, level, escapedText);
+        return '<h' + level + '><a name="' +
+            escapedText +
+            '" class="anchor" href="#' +
+            escapedText +
+            '"><span class="header-link">▶</span></a>' +
+            text + '</h' + level + '>';
+    };
+
     exports.mdToHtml = function (md){
-        return marked(md);
+        toc.clean();
+        var doc = marked(md, {renderer: renderer});
+        return toc.render() + doc;
     };
 })();
 

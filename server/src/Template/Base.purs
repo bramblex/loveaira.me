@@ -80,6 +80,8 @@ base = do
             t_ul [a_class := [pure_menu_list]] do
               let menu_list =
                     [ Tuple "首页" "/"
+                    , Tuple "作者" "/#作者"
+                    , Tuple "联系" "/#联系"
                     , Tuple "文章" "/article"
                     , Tuple "分类" "/category"
                     , Tuple "Github" "https://github.com/bramblex" ]

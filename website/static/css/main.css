@@ -106,7 +106,7 @@ appears on the left side of the page.
     All anchors inside the menu should be styled like this.
     */
     #menu a {
-        color: #999;
+        color: #CCC;
         border: none;
         padding: 0.6em 0 0.6em 0.6em;
     }
@@ -309,9 +309,12 @@ body {
     font-family:"微软雅黑","Microsoft YaHei",Arial,sans,SimHei !important;
 }
 
-
-
-
+.header-link {
+    color: #EFEFEF;
+}
+.header-link:hover{
+    color: #999;
+}
 
 /* /\* separate *\/ */
 /* .separate hr{ */
