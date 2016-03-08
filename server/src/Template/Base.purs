@@ -79,9 +79,9 @@ base = do
             t_a [a_class := [pure_menu_heading]] $ text "LOVEARIA.ME"
             t_ul [a_class := [pure_menu_list]] do
               let menu_list =
-                    [ Tuple "Home" "/"
-                    , Tuple "Article" "/article"
-                    , Tuple "Category" "/category"
+                    [ Tuple "首页" "/"
+                    , Tuple "文章" "/article"
+                    , Tuple "分类" "/category"
                     , Tuple "Github" "https://github.com/bramblex" ]
               forT menu_list $ \(Tuple content url) ->
                 t_li [a_class := [pure_menu_item]] do
@@ -104,7 +104,7 @@ base = do
                     t_li [a_class := [pure_menu_item, "menu-item-divided"]] do
                       t_a [a_class := [pure_menu_link]
                           ,a_href := "/user/login"] do
-                        text "Login"
+                        text "登录"
                 )
 
         t_div [a_id := "main"] do

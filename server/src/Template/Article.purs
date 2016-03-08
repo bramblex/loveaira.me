@@ -12,21 +12,21 @@ list :: Array Category.RichArticle -> Template
 list articles = do
   base
 
-  title "Article"
+  title "文章"
   extend "content" $ do
 
     ifLogined $ \_ ->
       t_div [a_class := [pure_u_1]] do
         t_p [] do
           t_a [ a_class := [pure_button, pure_button_primary]
-              , a_href := "/article/create"] $ text "Create"
+              , a_href := "/article/create"] $ text "新建"
 
     article_list articles
 
 category :: Array Category.RichArticle -> Category.Category -> Array Category.Category -> Template
 category articles category category_path = do
   base
-  title $ "Category " ++ category.name
+  title $ "分类 - " ++ category.name
   extend "content" $ do
     t_p [] do
       CT.breadcrumb_trail category_path
@@ -64,14 +64,14 @@ show_ article category_path = do
 
       ifLogined $ \_ -> do
         t_div [a_class := ["article-operate"]] do
-          t_a [a_href := "/article/edit/" ++ show article.id] $ text "Edit"
+          t_a [a_href := "/article/edit/" ++ show article.id] $ text "编辑"
           if article.id /= 0
             then do
               text " | "
               t_a [ a_data_"delete" := "/article/delete/" ++ show article.id
                   , a_data_"redirect" := "/article/"
                   , a_href := "#" ]
-                $ text "Delete"
+                $ text "删除"
             else text ""
 
     t_div [a_class := ["article", "markdown-body"]] do
@@ -89,7 +89,7 @@ show_ article category_path = do
 create :: Category.CategoryTree -> Template
 create category_tree = do
   base
-  title "Create Article"
+  title "创建文章"
 
   extend "foot" $ do
     simplemdeEditor "simplemde" "article_create"
@@ -113,7 +113,7 @@ create category_tree = do
 edit :: M.Article -> Category.CategoryTree -> Template
 edit article category_tree = do
   base
-  title $ "Edit Article " ++ article.title
+  title $ "编辑文章 - " ++ article.title
 
   extend "foot" $ do
     simplemdeEditor "simplemde" $ "article_edit_" ++ show article.id

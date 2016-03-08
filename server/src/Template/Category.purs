@@ -9,7 +9,7 @@ import qualified Lib.Utils as Utils
 list :: M.CategoryTree -> Template
 list category_tree = do
   base
-  title "Category"
+  title "分类"
   extend "content" do
 
     ifLogined $ \_ -> do
@@ -55,7 +55,7 @@ list category_tree = do
 create :: M.CategoryTree -> Int -> Template
 create category_tree parent = do
   base
-  title "Create Category"
+  title "创建新分类"
   extend "content" do
 
     t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
@@ -70,7 +70,7 @@ create category_tree parent = do
 rename :: M.Category -> Template
 rename category = do
   base
-  title $ "Rename Category " ++ category.name
+  title $ "重命名分类 - " ++ category.name
   extend "content" do
 
     t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
@@ -83,7 +83,7 @@ rename category = do
 move :: M.CategoryTree -> M.Category -> Template
 move category_tree category = do
   base
-  title $ "Move Category " ++ category.name
+  title $ "移动分类节点 - " ++ category.name
   extend "content" do
 
     t_form [a_class := [pure_form, pure_form_stacked], a_method := "POST"] do
@@ -104,6 +104,6 @@ category_select category_tree default_id = do
 
 breadcrumb_trail :: Array M.Category -> Template
 breadcrumb_trail category_path = do
-  text "Category: "
+  text "分类： "
   joinT (text " > ") $ flip map category_path \c -> do
     t_a [a_href := "/article/category/" ++ show c.id] $ text c.name
