@@ -66,9 +66,8 @@ exports.randString = function randString(x){
             this.__content__.push({text: text, level: level, href: href});
         },
         render: function(){
-            if (this.__content__.length <= 0){
-              return '';
-            }
+            if (this.__content__.length <= 0) return '';
+
             var tmp = this.__content__.map(function(heading){
                 return {
                     level: heading.level,
