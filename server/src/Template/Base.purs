@@ -44,7 +44,7 @@ comments :: String -> Template
 comments page_identifier = do
   t_div [a_class := [pure_g]] do
     t_div [a_class := [pure_u_1], a_id := "disqus_thread"] $ text ""
-    javascript_code $ "var disqus_config = function () {this.page.identifier = "++ show page_identifier ++";}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();"
+    javascript_code $ "var disqus_config = function () {this.page.identifier = "++ show page_identifier ++"; this.page.title = document.title; this.page.url = location.href;}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();"
 
 base :: Template
 base = do
