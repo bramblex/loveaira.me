@@ -1,0 +1,170 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="http://lovearia.me/article/show/5"><style type="text/css">body { margin-left:0;margin-right:0;margin-top:0; }#google-cache-hdr {background:#f5f5f5 !important;font:13px arial,sans-serif !important;text-align:left !important;color:#202020 !important;border:0 !important;margin:0 !important;border-bottom:1px solid #cecece !important;line-height:16px !important ;padding:16px 28px 24px 28px !important;}#google-cache-hdr * {display:inline !important;font:inherit !important;text-align:inherit !important;color:inherit !important;line-height:inherit !important;background:none !important;border:0 !important;margin:0 !important;padding:0 !important;letter-spacing:0 !important;}#google-cache-hdr a {text-decoration:none !important;color:#1a0dab !important;}#google-cache-hdr a:hover { text-decoration:underline !important; }#google-cache-hdr a:visited { color:#609 !important; }#google-cache-hdr div { display:block !important;margin-top:4px !important; }#google-cache-hdr b {font-weight:bold !important;display:inline-block !important;direction:ltr !important;}</style><div id="google-cache-hdr"  dir=ltr><div>This is Google&#39;s cache of <a href="http://lovearia.me/article/show/5" dir="ltr">http://lovearia.me/article/show/5</a>. It is a snapshot of the page as it appeared on Aug 9, 2016 23:14:46 GMT. </div><div>The <a href="http://lovearia.me/article/show/5" dir="ltr">current page</a> could have changed in the meantime. <a href="http://support.google.com/websearch/bin/answer.py?hl=en&amp;p=cached&amp;answer=1687222">Learn more</a></div><div></div><div><span style="display:inline-block !important;margin-top:8px !important;margin-right:104px !important;white-space:nowrap !important;"><span style="margin-right:28px !important;"><span style="font-weight:bold !important;">Full version</span></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/5&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=1&vwsrc=0">Text-only version</a></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/5&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=0&vwsrc=1">View source</a></span></span><span style="display:inline-block !important;margin-top:8px !important;color:#717171 !important;">Tip: To quickly find your search term on this page, press <b>Ctrl+F</b> or <b>⌘-F</b> (Mac) and use the find bar.</span></div></div><div style="position:relative;">
+<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content="Brambles' Blog."/><title>LoveAria.Me - 简单几行代码为你的 Markdwon 文章添加目录</title><link rel="shortcut icon" href="/favicon.ico"/><link rel="stylesheet" href="//cdn.jsdelivr.net/g/pure@0.6.0,github-markdown-css@2.2.1,highlight.js@9.2.0(styles/github.min.css)"/><link rel="stylesheet" href="/static/css/main.css"/><script src="//cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"></script><script src="/static/js/main.js"></script></head><body><div id="layout"><a href="javascript:void(0);" id="menuLink" class="menu-link"><span></span></a><div id="menu"><div class="pure-menu"><a class="pure-menu-heading">LOVEARIA.ME</a><ul class="pure-menu-list"><li class="pure-menu-item"><a class="pure-menu-link" href="/">首页</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#作者">作者</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#联系">联系</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/article">文章</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/category">分类</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="https://github.com/bramblex">Github</a></li><li class="pure-menu-item menu-item-divided"><a class="pure-menu-link" href="/user/login">登录</a></li></ul></div></div><div id="main"><div class="header"><h1>简单几行代码为你的 Markdwon 文章添加目录</h1><h2></h2></div><div class="content"><div class="pure-u-1 article-toolbar"><div class="article-category">分类： <a href="/article/category/0">根分类</a> > <a href="/article/category/6">LoveAria.Me 是怎样建成的</a></div></div><div class="article markdown-body"><h2>目录</h2><ul><li><a href="#关于-Markdown-的标题">关于 Markdown 的标题</a></li><li><a href="#提取标题">提取标题</a></li><li><a href="#结构化标题">结构化标题</a></li><ul><li><a href="#标题列表是一个怎么样的结构-">标题列表是一个怎么样的结构？</a></li><li><a href="#分解步骤">分解步骤</a></li></ul><li><a href="#参考代码">参考代码</a></li></ul></ul><p>既然你都已经看到这篇文章了，那么 Markdown 是什么，以及 Markdown 的语法这里就不多加说明了。我们直接进入正题吧。</p>
+<h2><a name="关于-Markdown-的标题" class="anchor" href="#关于-Markdown-的标题"><span class="header-link">▶</span></a>关于 Markdown 的标题</h2><p>markdown 标题其实有两种语法，用 <code>=</code> 和 <code>-</code> 作为底线的形式，和用 <code>#</code> 开头的形式。底线语法只能支持一二级标题， <code>#</code> 开头的语法则能够支持一到六级全部的标题。</p>
+<p>但是我们一般用的比较多的是 <code>#</code> 开头的标题语法，所以我们接下来都以 <code>#</code> 开头的标题语法来讲，如何给自己的 Markdown 文章加上目录。</p>
+<h2><a name="提取标题" class="anchor" href="#提取标题"><span class="header-link">▶</span></a>提取标题</h2><p>手工提取只需要简单的使用正则来提取就可以了，比如我们可以用如下正则来提取标题</p>
+<pre><code class="lang-JavaScript"><span class="hljs-keyword">const</span> doc = <span class="hljs-string">'#h1\n##h2-1\n##h2-2\n'</span>;
+<span class="hljs-keyword">const</span> title_reg = <span class="hljs-regexp">/^\s*#+/</span>;
+<span class="hljs-keyword">const</span> title_list = doc.split(<span class="hljs-string">'\n'</span>).filter((s) =&gt; title_reg.test(s)).map((s) =&gt; s.trim());
+</code></pre>
+<p>我们来把它封装成一个函数：</p>
+<pre><code>const getTitleList = <span class="hljs-function"><span class="hljs-params">(doc)</span> =&gt;</span> doc.split(<span class="hljs-string">'\n'</span>).filter(<span class="hljs-function"><span class="hljs-params">(s)</span> =&gt;</span> title_reg.test(s)).map(<span class="hljs-function"><span class="hljs-params">(s)</span> =&gt;</span> s.trim());
+</code></pre><p>这样我们就得到了一个篇 Markdown 文章里面所有的标题的列表了。看，就那么简单。如果你不需要生成一个具有层级的目录结构，那么这个 <code>title_list</code> 就已经够用了。不过我现在假设你想把它做成一个带有层级关系的列表，比如像 LoveAria.Me 的标题结构一样。那接下来就就是如何结构化我们得到的标题列表了。</p>
+<h2><a name="结构化标题" class="anchor" href="#结构化标题"><span class="header-link">▶</span></a>结构化标题</h2><p>在上一节我们已经得到标题了，现在就是对标题进行处理，把它变成就一个带有层级结构的结构化数据。比如</p>
+<pre><code class="lang-JavaScript">title = {
+    name: <span class="hljs-string">"h1"</span>,
+    children: [...]
+};
+</code></pre>
+<p>但是要如何做到呢？其实也并不是非常困难，接下来我来逐一讲解。</p>
+<h3><a name="标题列表是一个怎么样的结构-" class="anchor" href="#标题列表是一个怎么样的结构-"><span class="header-link">▶</span></a>标题列表是一个怎么样的结构？</h3><p>我们首先看看我们得到的标题列表是一个怎么样的结构。如下面示例所表示的一样，这样的字符，到底蕴含了那些信息呢？显而易见的，这个标题列表里面蕴含了标题的深度信息，以及标题的顺序。那么根据标题的深度信息和顺序，就能够还原标题的原本的层次结构。</p>
+<pre><code><span class="hljs-meta">#A</span>
+<span class="hljs-meta">##A1</span>
+<span class="hljs-meta">##A2</span>
+<span class="hljs-meta">###A21</span>
+<span class="hljs-meta">###A22</span>
+<span class="hljs-meta">#B</span>
+</code></pre><p>最终我们可以从上面的列表，得到一个如下的树状结构：</p>
+<ul>
+<li>. A<ul>
+<li>. A1</li>
+<li>. A2<ul>
+<li>. A21</li>
+<li>. A22</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>. B</li>
+</ul>
+<h3><a name="分解步骤" class="anchor" href="#分解步骤"><span class="header-link">▶</span></a>分解步骤</h3><p>我个人非常非常喜欢递归，一旦一个问题找到了递归的方法，就相当于把一个问题的解分解成了 n 个简单并且重复步骤的叠加，也就是意味着递归的方法就是把一个复杂的问题分成 n 个相同的小问题。同理，我们这里也能找到一个非常非常简单的一个步骤来解决这个问题。</p>
+<p>假设我们有下方这样的一个标题列表：</p>
+<pre><code><span class="hljs-meta">#A</span>
+<span class="hljs-meta">##A1</span>
+<span class="hljs-meta">##A2</span>
+<span class="hljs-meta">###A21</span>
+<span class="hljs-meta">###A22</span>
+<span class="hljs-meta">#B</span>
+</code></pre><p>然后提取第一个标题：</p>
+<pre><code><span class="hljs-meta">#A &lt;- 首先提取第一个标题</span>
+  <span class="hljs-string">|----------- &lt;- 然后找到所有深度比 A 深的标题</span>
+  <span class="hljs-string">|##A1</span>
+  <span class="hljs-string">|##A2</span>
+  <span class="hljs-string">|###A21</span>
+  <span class="hljs-string">|###A22</span>
+  <span class="hljs-string">|----------- </span>
+<span class="hljs-meta">#B</span>
+</code></pre><p>好了，这个问题已近解决完了。我们接下来的所有步骤都是重复上面哪一个步骤：</p>
+<pre><code><span class="hljs-meta">#A </span>
+  <span class="hljs-string">|----------- </span>
+  <span class="hljs-string">|##A1       &lt;- 首先提取第一个标题，然后发现没有比他层级低的标题，于是就不理他了。</span>
+  <span class="hljs-string">|##A2</span>
+  <span class="hljs-string">|###A21</span>
+  <span class="hljs-string">|###A22</span>
+  <span class="hljs-string">|----------- </span>
+<span class="hljs-meta">#B</span>
+</code></pre><p>接下来一样没有变：</p>
+<pre><code><span class="hljs-comment">#A </span>
+  |<span class="hljs-string">----------- 
+  </span>|<span class="hljs-string">##A1
+  </span>|<span class="hljs-string">##A2       &lt;- 首先提取第一个标题
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">--------- &lt;-然后找到所有深度比 A 深的标题
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">###A21
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">###A22
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">---------
+  </span>|<span class="hljs-string">----------- 
+#B</span>
+</code></pre><p>最后：</p>
+<pre><code><span class="hljs-comment">#A </span>
+  |<span class="hljs-string">----------- 
+  </span>|<span class="hljs-string">##A1
+  </span>|<span class="hljs-string">##A2
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">---------
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">###A21  &lt;- 这里找不到比他深度更深的标题
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">###A22  &lt;- 这里也是
+  </span>|<span class="hljs-string">  </span>|<span class="hljs-string">---------
+  </span>|<span class="hljs-string">-----------  &lt;- 到这里，所有在 A 标题下的标题就已经生成完了
+#B &lt;- 同理，这里也没有深度更深的标题了，所以不理他。</span>
+</code></pre><p>得到：</p>
+<ul>
+<li>. A<ul>
+<li>. A1</li>
+<li>. A2<ul>
+<li>. A21</li>
+<li>. A22</li>
+</ul>
+</li>
+</ul>
+</li>
+<li>. B</li>
+</ul>
+<p>看，这个过程就这么简单。</p>
+<h2><a name="参考代码" class="anchor" href="#参考代码"><span class="header-link">▶</span></a>参考代码</h2><pre><code class="lang-JavaScript"><span class="hljs-keyword">const</span> compose = (f, g) =&gt; (x) =&gt; f(g(x));
+
+<span class="hljs-keyword">const</span> _let = (v, f) =&gt; f(v);
+
+<span class="hljs-keyword">const</span> Z = (g) =&gt; (v) =&gt; g (Z (g)) (v);
+
+<span class="hljs-keyword">const</span> slice = (arr, start, end) =&gt; <span class="hljs-built_in">Array</span>.prototype.slice.call(arr, start, end);
+<span class="hljs-keyword">const</span> head = (arr) =&gt; arr[<span class="hljs-number">0</span>];
+<span class="hljs-keyword">const</span> tail = (arr) =&gt; slice(arr, <span class="hljs-number">1</span>);
+<span class="hljs-keyword">const</span> init = (arr) =&gt; slice(arr, <span class="hljs-number">0</span>, <span class="hljs-number">-1</span>);
+<span class="hljs-keyword">const</span> last = (arr) =&gt; slice(arr, <span class="hljs-number">-1</span>)[<span class="hljs-number">0</span>];
+
+<span class="hljs-keyword">const</span> splitAt = (arr, index) =&gt; ({
+    left: slice(arr, <span class="hljs-number">0</span>, index),
+    right: slice(arr, index)
+});
+
+<span class="hljs-keyword">const</span> splitWhile = (arr, f) =&gt; _let(
+    Z((_spliteWhile) =&gt;
+      (r) =&gt;
+      (r.right.length)
+      ? _let(head(r.right), (item) =&gt; f(item)
+             ? {left: r.left, right: r.right}
+             : _spliteWhile({left:r.left.concat([item]), right:tail(r.right)}))
+      : {left: r.left, right: []}
+    ),
+    (_spliteWhile) =&gt; _spliteWhile({left:[], right:arr, f:f})
+);
+
+
+<span class="hljs-keyword">const</span> extractTitles = (doc) =&gt; _let(
+    (raw_title) =&gt; ({
+        name: raw_title.replace(<span class="hljs-regexp">/^#*([^#])/</span>, <span class="hljs-string">'$1'</span>).trim(),
+        deep: raw_title.replace(<span class="hljs-regexp">/^(#*).*/</span>, <span class="hljs-string">'$1'</span>).length
+    }),
+    (makeTitle) =&gt;
+        doc.split(<span class="hljs-string">'\n'</span>).filter((s) =&gt; <span class="hljs-regexp">/^\s*#+/</span>.test(s)).map((s) =&gt; s.trim()).map(makeTitle)
+);
+
+
+<span class="hljs-keyword">const</span> makeNode = (name, children) =&gt;
+          ({name: name, children: children});
+
+<span class="hljs-keyword">const</span> toTree = (l) =&gt; _let(
+    (l) =&gt;
+        _let(head(l), (title) =&gt;
+             _let(splitWhile(tail(l), (r) =&gt; r.deep &lt;= title.deep), (result) =&gt;
+                  [makeNode(title.name, toTree(result.left))].concat(toTree(result.right))
+                 )) ,
+    (_toTree) =&gt; (l.length &gt; <span class="hljs-number">0</span> ) ? _toTree(l) : []
+);
+
+<span class="hljs-keyword">const</span> doc = <span class="hljs-string">`
+#A
+##A1
+##A2
+###A21
+###A22
+#B
+##B1
+##B2
+#C
+`</span>;
+
+<span class="hljs-keyword">const</span> t = compose(toTree, extractTitles)(doc);
+<span class="hljs-built_in">console</span>.log(<span class="hljs-built_in">JSON</span>.stringify(t));
+</code></pre>
+</div><div class="article-date"><small>2016-03-21 22:08:17 | 2016-03-15 14:54:08</small></div><div class="pure-u-1 comments"><div class="pure-g"><div class="pure-u-1" id="disqus_thread"></div><script>var disqus_config = function () {this.page.identifier = "article_5"; this.page.title = document.title; this.page.url = location.href;}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();</script></div></div></div><div class="footer"></div></div></div></body></html>

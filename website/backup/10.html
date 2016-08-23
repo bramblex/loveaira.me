@@ -1,0 +1,43 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="http://lovearia.me/article/show/10"><style type="text/css">body { margin-left:0;margin-right:0;margin-top:0; }#google-cache-hdr {background:#f5f5f5 !important;font:13px arial,sans-serif !important;text-align:left !important;color:#202020 !important;border:0 !important;margin:0 !important;border-bottom:1px solid #cecece !important;line-height:16px !important ;padding:16px 28px 24px 28px !important;}#google-cache-hdr * {display:inline !important;font:inherit !important;text-align:inherit !important;color:inherit !important;line-height:inherit !important;background:none !important;border:0 !important;margin:0 !important;padding:0 !important;letter-spacing:0 !important;}#google-cache-hdr a {text-decoration:none !important;color:#1a0dab !important;}#google-cache-hdr a:hover { text-decoration:underline !important; }#google-cache-hdr a:visited { color:#609 !important; }#google-cache-hdr div { display:block !important;margin-top:4px !important; }#google-cache-hdr b {font-weight:bold !important;display:inline-block !important;direction:ltr !important;}</style><div id="google-cache-hdr"  dir=ltr><div>This is Google&#39;s cache of <a href="http://lovearia.me/article/show/10" dir="ltr">http://lovearia.me/article/show/10</a>. It is a snapshot of the page as it appeared on Aug 10, 2016 01:00:54 GMT. </div><div>The <a href="http://lovearia.me/article/show/10" dir="ltr">current page</a> could have changed in the meantime. <a href="http://support.google.com/websearch/bin/answer.py?hl=en&amp;p=cached&amp;answer=1687222">Learn more</a></div><div></div><div><span style="display:inline-block !important;margin-top:8px !important;margin-right:104px !important;white-space:nowrap !important;"><span style="margin-right:28px !important;"><span style="font-weight:bold !important;">Full version</span></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/10&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=1&vwsrc=0">Text-only version</a></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/10&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=0&vwsrc=1">View source</a></span></span><span style="display:inline-block !important;margin-top:8px !important;color:#717171 !important;">Tip: To quickly find your search term on this page, press <b>Ctrl+F</b> or <b>⌘-F</b> (Mac) and use the find bar.</span></div></div><div style="position:relative;">
+<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content="Brambles' Blog."/><title>LoveAria.Me - 【瞎扯】FSM ——  一个走格子游戏</title><link rel="shortcut icon" href="/favicon.ico"/><link rel="stylesheet" href="//cdn.jsdelivr.net/g/pure@0.6.0,github-markdown-css@2.2.1,highlight.js@9.2.0(styles/github.min.css)"/><link rel="stylesheet" href="/static/css/main.css"/><script src="//cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"></script><script src="/static/js/main.js"></script></head><body><div id="layout"><a href="javascript:void(0);" id="menuLink" class="menu-link"><span></span></a><div id="menu"><div class="pure-menu"><a class="pure-menu-heading">LOVEARIA.ME</a><ul class="pure-menu-list"><li class="pure-menu-item"><a class="pure-menu-link" href="/">首页</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#作者">作者</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#联系">联系</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/article">文章</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/category">分类</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="https://github.com/bramblex">Github</a></li><li class="pure-menu-item menu-item-divided"><a class="pure-menu-link" href="/user/login">登录</a></li></ul></div></div><div id="main"><div class="header"><h1>【瞎扯】FSM ——  一个走格子游戏</h1><h2></h2></div><div class="content"><div class="pure-u-1 article-toolbar"><div class="article-category">分类： <a href="/article/category/0">根分类</a> > <a href="/article/category/1">技术杂谈</a></div></div><div class="article markdown-body"><h2>目录</h2><ul><li><a href="#FSM-是啥">FSM 是啥</a></li><li><a href="#走格子的游戏">走格子的游戏</a></li><li><a href="#走格子游戏的基本要素">走格子游戏的基本要素</a></li><li><a href="#回到-FSM">回到 FSM</a></li><li><a href="#未完待续">未完待续</a></li></ul></ul><p>我以前教小朋友写前端的时候（我不是前端，我只是单纯 JavaScript 写得好而已），专门给他们教了如何使用 FSM 来解决问题。虽然 FSM 是一个非常非常简单的东西，但是用来管理状态和状态的转移简直尼玛是神器好么！而前端大部分复杂的东西，都是复杂在这个状态上，一旦状态问题解决了，那一切就迎刃而解了。</p>
+<p>我自己还曾写了一个 FSM 库来自娱自乐 —— <a href="https://github.com/bramblex/BlxJSTK/blob/master/src/FSM.js">Github传送门</a>。然而由于之前我的 JavaScript 项目都是在自己造的 JavaScript 通用模块化方案下折腾的……所以离不开我那一套蛋疼的东西。以后会花时间重构一个的 PureScript 版本的来玩 /w\……</p>
+<h2><a name="FSM-是啥" class="anchor" href="#FSM-是啥"><span class="header-link">▶</span></a>FSM 是啥</h2><p>FSM 的中文名字叫做“有限状态机”。通常情况下，我们说的有限状态机都有“确定性”这个隐含条件，所以大多时候下，FSM 其实可以等价一个成一个确定性有限状态自动机。那么具体 FSM 到底是啥呢？FSM 其实是一个走格子的游戏。</p>
+<h2><a name="走格子的游戏" class="anchor" href="#走格子的游戏"><span class="header-link">▶</span></a>走格子的游戏</h2><p>如上面所说，FSM 不是什么高深复杂的东西，而是一个非常简单的走格子游戏，而且是一个绝对比飞行棋还简单的走格子游戏。我随手设计了下面这么一个棋盘，我们再准备一个骰子（这个词我至今不知道怎么读）开始游戏</p>
+<p><img src="http://7xr7a3.com1.z0.glb.clouddn.com/Sample Flowchart Template.png" alt="FSM 游戏图"></p>
+<p>游戏规则如下：</p>
+<ol>
+<li>开始的时候玩家的棋子（图中的小人）处于图中标有“开始”的格子里</li>
+<li>玩家开始掷骰子，根据棋盘上箭头上的条件把当前格子里面的棋子移动到</li>
+<li>当玩家的棋子移动到图中标有“胜利”的格子则玩家获胜</li>
+</ol>
+<p>看到了吧，所谓的 FSM 就是一个这样一个简单的游戏，完全没有任何难度吧。</p>
+<h2><a name="走格子游戏的基本要素" class="anchor" href="#走格子游戏的基本要素"><span class="header-link">▶</span></a>走格子游戏的基本要素</h2><p>这个游戏我们已经会玩了，但是会玩不是目的，我们要学会怎么设计游戏。在第一小节里面，我提到过一个叫做“自动机”的概念。望文生义，自动机肯定要自己动才叫自动机吧。但是上一节玩的游戏一点都不“自动”啊，明明是手动的。对的，没错，其实上面的小游戏并不是给人玩的，而是给计算机玩的。所以在这一节里面，我们要先要总结出来走格子游戏有那些基本要素。</p>
+<p>我们先总结，一个走格子游戏的棋盘上有那些内容。</p>
+<ol>
+<li>一些格子</li>
+<li>棋子从一个格子跳到另一个格子的条件</li>
+<li>开始游戏的时候要把棋子放在哪个格子里面</li>
+<li>棋子跳到哪个（哪些）格子</li>
+</ol>
+<p>然后在总结，我们玩走格子游戏的时候有哪些步骤。</p>
+<ol>
+<li>掷骰子</li>
+<li>根据条件跳格子。</li>
+</ol>
+<p>到此为止，这个走格子的游戏所有的元素就已经总结清楚了。我们只需要根据这些基本要素，就能设计出自己的走格子游戏。</p>
+<h2><a name="回到-FSM" class="anchor" href="#回到-FSM"><span class="header-link">▶</span></a>回到 FSM</h2><p>前面两节我们讲了一个“走格子”游戏让大家感性的认识了所谓的 FSM ，这一节我们要把话题扯回来，理性地认识一下 FSM。</p>
+<p>首先 FSM 的基本要素：</p>
+<ol>
+<li>一些状态</li>
+<li>状态迁移的条件</li>
+<li>开始状态</li>
+<li>接受状态</li>
+</ol>
+<p>运行时的步骤：</p>
+<ol>
+<li>输入</li>
+<li>状态转移</li>
+</ol>
+<p>现在再对应上面的走各自有，是不是发现一点都不难啊。</p>
+<h2><a name="未完待续" class="anchor" href="#未完待续"><span class="header-link">▶</span></a>未完待续</h2></div><div class="article-date"><small>2016-04-12 19:39:37 | 2016-04-04 11:12:57</small></div><div class="pure-u-1 comments"><div class="pure-g"><div class="pure-u-1" id="disqus_thread"></div><script>var disqus_config = function () {this.page.identifier = "article_10"; this.page.title = document.title; this.page.url = location.href;}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();</script></div></div></div><div class="footer"></div></div></div></body></html>

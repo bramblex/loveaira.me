@@ -1,0 +1,77 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="http://lovearia.me/article/show/9"><style type="text/css">body { margin-left:0;margin-right:0;margin-top:0; }#google-cache-hdr {background:#f5f5f5 !important;font:13px arial,sans-serif !important;text-align:left !important;color:#202020 !important;border:0 !important;margin:0 !important;border-bottom:1px solid #cecece !important;line-height:16px !important ;padding:16px 28px 24px 28px !important;}#google-cache-hdr * {display:inline !important;font:inherit !important;text-align:inherit !important;color:inherit !important;line-height:inherit !important;background:none !important;border:0 !important;margin:0 !important;padding:0 !important;letter-spacing:0 !important;}#google-cache-hdr a {text-decoration:none !important;color:#1a0dab !important;}#google-cache-hdr a:hover { text-decoration:underline !important; }#google-cache-hdr a:visited { color:#609 !important; }#google-cache-hdr div { display:block !important;margin-top:4px !important; }#google-cache-hdr b {font-weight:bold !important;display:inline-block !important;direction:ltr !important;}</style><div id="google-cache-hdr"  dir=ltr><div>This is Google&#39;s cache of <a href="http://lovearia.me/article/show/9" dir="ltr">http://lovearia.me/article/show/9</a>. It is a snapshot of the page as it appeared on Aug 9, 2016 23:22:14 GMT. </div><div>The <a href="http://lovearia.me/article/show/9" dir="ltr">current page</a> could have changed in the meantime. <a href="http://support.google.com/websearch/bin/answer.py?hl=en&amp;p=cached&amp;answer=1687222">Learn more</a></div><div></div><div><span style="display:inline-block !important;margin-top:8px !important;margin-right:104px !important;white-space:nowrap !important;"><span style="margin-right:28px !important;"><span style="font-weight:bold !important;">Full version</span></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/9&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=1&vwsrc=0">Text-only version</a></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/9&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=0&vwsrc=1">View source</a></span></span><span style="display:inline-block !important;margin-top:8px !important;color:#717171 !important;">Tip: To quickly find your search term on this page, press <b>Ctrl+F</b> or <b>⌘-F</b> (Mac) and use the find bar.</span></div></div><div style="position:relative;">
+<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content="Brambles' Blog."/><title>LoveAria.Me - 【瞎扯】尾递归优化其实很简单</title><link rel="shortcut icon" href="/favicon.ico"/><link rel="stylesheet" href="//cdn.jsdelivr.net/g/pure@0.6.0,github-markdown-css@2.2.1,highlight.js@9.2.0(styles/github.min.css)"/><link rel="stylesheet" href="/static/css/main.css"/><script src="//cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"></script><script src="/static/js/main.js"></script></head><body><div id="layout"><a href="javascript:void(0);" id="menuLink" class="menu-link"><span></span></a><div id="menu"><div class="pure-menu"><a class="pure-menu-heading">LOVEARIA.ME</a><ul class="pure-menu-list"><li class="pure-menu-item"><a class="pure-menu-link" href="/">首页</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#作者">作者</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#联系">联系</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/article">文章</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/category">分类</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="https://github.com/bramblex">Github</a></li><li class="pure-menu-item menu-item-divided"><a class="pure-menu-link" href="/user/login">登录</a></li></ul></div></div><div id="main"><div class="header"><h1>【瞎扯】尾递归优化其实很简单</h1><h2></h2></div><div class="content"><div class="pure-u-1 article-toolbar"><div class="article-category">分类： <a href="/article/category/0">根分类</a> > <a href="/article/category/1">技术杂谈</a></div></div><div class="article markdown-body"><h2>目录</h2><ul><li><a href="#举个栗子">举个栗子</a></li><li><a href="#函数栈的作用">函数栈的作用</a></li><li><a href="#为什么尾递归可以优化">为什么尾递归可以优化</a></li><li><a href="#如何手动优化">如何手动优化</a></li><li><a href="#如何用代码自动完成">如何用代码自动完成</a></li></ul></ul><p>多年以前我一直觉得尾递归优化是一个多么多么高深的东西，知道后来我自己会对语言做静态分析以后，才懂得所谓的尾递归优化其实并不是什么多难的东西。接下来我就花上半个小时讲讲所谓的尾递归。</p>
+<h2><a name="举个栗子" class="anchor" href="#举个栗子"><span class="header-link">▶</span></a>举个栗子</h2><p>首先我们选择一个最简单的例子——阶乘。以下是一个用递归形式写的用来计算 n 的阶乘的函数：</p>
+<pre><code class="lang-JavaScript"><span class="hljs-keyword">const</span> fact = (n) =&gt; {
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span>;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> n * fact (n - <span class="hljs-number">1</span>);
+    }
+};
+</code></pre>
+<p>我们使用递归的时候，经常会考虑一个问题，叫做”爆栈“。比如你把上面的函数放到 node 里面执行，试试 fact (10000000000000000000)，然后你就会得到一条报错信息 <code>Maximum call stack size exceeded</code>，这就是所谓的”爆栈“了。</p>
+<h2><a name="函数栈的作用" class="anchor" href="#函数栈的作用"><span class="header-link">▶</span></a>函数栈的作用</h2><p>栈这种数据结构怎么定义的以及怎么用大家都非常了解了，但是为什么会这么一种叫做”栈“的数据结构呢？而且当一个函数被调用的时候，我们会把函数扔进一个叫做“函数栈“的地方，但是我们为什么要用栈而不用其他的呢？</p>
+<p>栈的作用好意义其实非常简单，只有五个字——<strong>保持入口环境</strong>。我们结合一段简单代码来展示一下：</p>
+<pre><code class="lang-JavaScript"><span class="hljs-keyword">const</span> main = () =&gt; {
+    <span class="hljs-comment">//...</span>
+    foo1();
+    <span class="hljs-comment">//...</span>
+    foo2();
+    <span class="hljs-comment">//...</span>
+    <span class="hljs-keyword">return</span>;
+};
+</code></pre>
+<p>上面是一个简单的示例代码，我们现在简单在大脑里面模拟一下这个 main 函数调用的整个过程。</p>
+<ol>
+<li>首先我们建立一个函数栈。这是栈 -&gt; $</li>
+<li>mian 函数调用，将 main 函数压进函数栈里面。$ main</li>
+<li>做完了一些操作以后，调用 foo1 函数，foo1 函数入栈。$ main foo1</li>
+<li>foo1 函数返回并出栈。$ main</li>
+<li>做完一些操作以后，调用 foo2 函数，foo2 函数入栈。$ main foo2</li>
+<li>foo2 函数返回并出栈。$ main</li>
+<li>做完余下的操作以后，main函数返回并出栈。$</li>
+</ol>
+<p>上面这个过程说明了函数栈的作用是什么？就是第 4 和第 6 步的作用，让 foo1 和 foo2 函数执行完了以后能够在回到 main 函数调用 foo1 和 foo2 原来的地方。这就是栈，这种”后入先出“的数据结构的意义所在。</p>
+<h2><a name="为什么尾递归可以优化" class="anchor" href="#为什么尾递归可以优化"><span class="header-link">▶</span></a>为什么尾递归可以优化</h2><p>上面说了，函数栈的目的是啥？是保持入口环境。那么在什么情况下可以把这个入口环境给优化掉？答案不言而喻，入口环境没意义的情况下为啥要保持入口环境？尾递归，就是这种情况。</p>
+<p>因为尾递归的情况下，我们保持这个函数的入口环境没意义，所以我们就可以把这个函数的调用栈给优化掉。比如还是那个阶乘函数把它写成尾递归的形式。</p>
+<pre><code class="lang-JavaScript"><span class="hljs-keyword">const</span> fact = (n, r) =&gt; {
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> * r;
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> fact (n - <span class="hljs-number">1</span>, r * n); <span class="hljs-comment">// &lt;= 这里的入口环境没有必要保留。</span>
+    }
+};
+</code></pre>
+<p>所以我们就可以把他优化掉。</p>
+<h2><a name="如何手动优化" class="anchor" href="#如何手动优化"><span class="header-link">▶</span></a>如何手动优化</h2><p>好了，现在我们有一个尾递归函数了。假设我们的语言没有原生支持尾递归优化，那么要怎么在语言层面上手动实现一个尾递归优化呢？这其实就是一个把递归变成循环的过程嘛。</p>
+<p>首先，把上面尾递归代码抄过来，并且套进一个 while 循环里面。因为尾递归就是在用参数来临时传递迭代的变量而已。所以我们就把尾递归的参数转换成变量，把函数体转换成循环</p>
+<pre><code class="lang-JavaScript"><span class="hljs-keyword">const</span> fact = (n, r) =&gt; { <span class="hljs-comment">// &lt;= 这里把 fact 去掉， 把 n, r 作为变量提出来</span>
+    <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">0</span>) {
+        <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> * r; <span class="hljs-comment">// &lt;= 递归终止条件</span>
+    } <span class="hljs-keyword">else</span> {
+        <span class="hljs-keyword">return</span> fact (n - <span class="hljs-number">1</span>, r * n); <span class="hljs-comment">// &lt;= 这里也把 fact 去掉，并把 (n - 1, r * n) 带入下一次迭代。</span>
+    }
+};
+</code></pre>
+<p>得到</p>
+<pre><code class="lang-JavaScript"><span class="hljs-keyword">const</span> fact = (x, y) =&gt; {
+    <span class="hljs-keyword">let</span> n = x;
+    <span class="hljs-keyword">let</span> r = y;
+    <span class="hljs-keyword">while</span> (<span class="hljs-literal">true</span>){
+        <span class="hljs-keyword">if</span> (n &lt;= <span class="hljs-number">0</span>){
+            <span class="hljs-keyword">return</span> <span class="hljs-number">1</span> * r; <span class="hljs-comment">// 遇到递归终止条件就直接原封不动得 return 就好了。</span>
+        } <span class="hljs-keyword">else</span> {
+            <span class="hljs-keyword">let</span> _r = r;
+            <span class="hljs-keyword">let</span> _n = n; <span class="hljs-comment">// 把临时变量存下来，主要是防止后面迭代有顺序依赖的蛋疼问题。</span>
+            n = _n - <span class="hljs-number">1</span>;
+            r = _r *  _n;
+            <span class="hljs-keyword">continue</span>; <span class="hljs-comment">// 尾递归的地方就直接 continue 进入下一次迭代</span>
+        }
+    };
+};
+</code></pre>
+<p>到这里，一个尾递归函数就已经转换成了一个循环。</p>
+<h2><a name="如何用代码自动完成" class="anchor" href="#如何用代码自动完成"><span class="header-link">▶</span></a>如何用代码自动完成</h2><p>手动把尾递归转换成循环其实没什么用处（当然啦，在没有尾递归优化的语言里面可以应一下急，虽然没有尾递归优化的语言一般都有叫做”迭代器“的东东），所以我们希望能够写代码来自动优化。整个思路和过程在上一步已经解决了。</p>
+<p>代码之后再补上 /w\</p>
+</div><div class="article-date"><small>2016-04-04 11:21:36 | 2016-04-04 10:37:55</small></div><div class="pure-u-1 comments"><div class="pure-g"><div class="pure-u-1" id="disqus_thread"></div><script>var disqus_config = function () {this.page.identifier = "article_9"; this.page.title = document.title; this.page.url = location.href;}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();</script></div></div></div><div class="footer"></div></div></div></body></html>

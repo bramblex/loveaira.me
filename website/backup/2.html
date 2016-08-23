@@ -1,0 +1,39 @@
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<base href="http://lovearia.me/article/show/2"><style type="text/css">body { margin-left:0;margin-right:0;margin-top:0; }#google-cache-hdr {background:#f5f5f5 !important;font:13px arial,sans-serif !important;text-align:left !important;color:#202020 !important;border:0 !important;margin:0 !important;border-bottom:1px solid #cecece !important;line-height:16px !important ;padding:16px 28px 24px 28px !important;}#google-cache-hdr * {display:inline !important;font:inherit !important;text-align:inherit !important;color:inherit !important;line-height:inherit !important;background:none !important;border:0 !important;margin:0 !important;padding:0 !important;letter-spacing:0 !important;}#google-cache-hdr a {text-decoration:none !important;color:#1a0dab !important;}#google-cache-hdr a:hover { text-decoration:underline !important; }#google-cache-hdr a:visited { color:#609 !important; }#google-cache-hdr div { display:block !important;margin-top:4px !important; }#google-cache-hdr b {font-weight:bold !important;display:inline-block !important;direction:ltr !important;}</style><div id="google-cache-hdr"  dir=ltr><div>This is Google&#39;s cache of <a href="http://lovearia.me/article/show/2" dir="ltr">http://lovearia.me/article/show/2</a>. It is a snapshot of the page as it appeared on Aug 18, 2016 07:02:25 GMT. </div><div>The <a href="http://lovearia.me/article/show/2" dir="ltr">current page</a> could have changed in the meantime. <a href="http://support.google.com/websearch/bin/answer.py?hl=en&amp;p=cached&amp;answer=1687222">Learn more</a></div><div></div><div><span style="display:inline-block !important;margin-top:8px !important;margin-right:104px !important;white-space:nowrap !important;"><span style="margin-right:28px !important;"><span style="font-weight:bold !important;">Full version</span></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/2&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=1&vwsrc=0">Text-only version</a></span><span style="margin-right:28px !important;"><a href="http://webcache.googleusercontent.com/search?q=cache:lovearia.me/article/show/2&amp;num=1&amp;ie=UTF-8&amp;prmd=ivns&strip=0&vwsrc=1">View source</a></span></span><span style="display:inline-block !important;margin-top:8px !important;color:#717171 !important;">Tip: To quickly find your search term on this page, press <b>Ctrl+F</b> or <b>⌘-F</b> (Mac) and use the find bar.</span></div></div><div style="position:relative;">
+<html><head><meta charset="utf-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta name="description" content="Brambles' Blog."/><title>LoveAria.Me - LoveAria.Me 语言篇 - PureScript</title><link rel="shortcut icon" href="/favicon.ico"/><link rel="stylesheet" href="//cdn.jsdelivr.net/g/pure@0.6.0,github-markdown-css@2.2.1,highlight.js@9.2.0(styles/github.min.css)"/><link rel="stylesheet" href="/static/css/main.css"/><script src="//cdn.jsdelivr.net/jquery/2.2.1/jquery.min.js"></script><script src="/static/js/main.js"></script></head><body><div id="layout"><a href="javascript:void(0);" id="menuLink" class="menu-link"><span></span></a><div id="menu"><div class="pure-menu"><a class="pure-menu-heading">LOVEARIA.ME</a><ul class="pure-menu-list"><li class="pure-menu-item"><a class="pure-menu-link" href="/">首页</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#作者">作者</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/#联系">联系</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/article">文章</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="/category">分类</a></li><li class="pure-menu-item"><a class="pure-menu-link" href="https://github.com/bramblex">Github</a></li><li class="pure-menu-item menu-item-divided"><a class="pure-menu-link" href="/user/login">登录</a></li></ul></div></div><div id="main"><div class="header"><h1>LoveAria.Me 语言篇 - PureScript</h1><h2></h2></div><div class="content"><div class="pure-u-1 article-toolbar"><div class="article-category">分类： <a href="/article/category/0">根分类</a> > <a href="/article/category/6">LoveAria.Me 是怎样建成的</a></div></div><div class="article markdown-body"><h2>目录</h2><ul><li><a href="#什么是-PureScript">什么是 PureScript</a></li><li><a href="#为什么选择-PureScript">为什么选择 PureScript</a></li><li><a href="#在本博客程序是如何使用-PureScript-的">在本博客程序是如何使用 PureScript 的</a></li><ul><li><a href="#模板-DSL">模板 DSL</a></li><li><a href="#异步控制">异步控制</a></li></ul></ul></ul><p>我的这个博客的总代码量大概有3500行左右，根据 Github 上面的统计，我博客的代码中各个语言的比例如下:</p>
+<table>
+<thead>
+<tr>
+<th>语言</th>
+<th style="text-align:right">所占比例</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>PureScript</td>
+<td style="text-align:right">86.7%</td>
+</tr>
+<tr>
+<td>JavaScript</td>
+<td style="text-align:right">7.4%</td>
+</tr>
+<tr>
+<td>CSS</td>
+<td style="text-align:right">5.1%</td>
+</tr>
+</tbody>
+</table>
+<p>对的，正如上面图所示，我的博客程序绝大部分代码都是 PureScript 代码。但是很多人应该都没有听过 PureScript 是什么东西，我就在本篇简单介绍一下 PureScript 以及 PureScript 在我这个博客程序里面的应用。</p>
+<h2><a name="什么是-PureScript" class="anchor" href="#什么是-PureScript"><span class="header-link">▶</span></a>什么是 PureScript</h2><p>我们先看看 PureScript 官网怎么介绍自己的：</p>
+<blockquote>
+<p>PureScript is a small strongly typed programming language that compiles to JavaScript.</p>
+</blockquote>
+<p>正如官网所介绍的那样，PureScript 是一个强类型的并且编译到 JavaScript 的编程语言。从语法上来看，PureScript 是一个使用 Haskell 语法风格的强类型纯函数式语言。但是在语义上，PureScript 的作者称 PureScript 还是尊崇 JavaScript 的语义而不是 Haskell 语义。比如 PureScript 是立即求值，而 Haskell 是惰性求值等等。</p>
+<p>PureScript 具备和 Haskell 类似的类型系统、类型推导、Type Class 等，但是同时也具有自己的特点。比如处理副作用的 Effect ，以及直接对应 JavaScript 对象的 Recrod 类型。然而最强的特点还是 PureScript 和 JavaScript 的互操作性了。 </p>
+<h2><a name="为什么选择-PureScript" class="anchor" href="#为什么选择-PureScript"><span class="header-link">▶</span></a>为什么选择 PureScript</h2><p>一开始其实我并没有考虑用 PureScript， 甚至那时候我都还不知道 PureScript 是什么。我只是想用 Haskell 来装个逼，作为我的博客后端。然而我的 vps 实在是太破了，根本装不上 ghc 。所以只能退而求其次，最终找到了这么一个 PureScript。</p>
+<p>PureScript 是一门通用的语言，所以不仅仅可以跑在 Node 上作为后端，也可以跑在浏览器上作为前端。所以决定干脆前后端都用 PureScript 。</p>
+<h2><a name="在本博客程序是如何使用-PureScript-的" class="anchor" href="#在本博客程序是如何使用-PureScript-的"><span class="header-link">▶</span></a>在本博客程序是如何使用 PureScript 的</h2><p>接下来就是安利 PureScript 的时间了 /w\。不过一般情况下是没有任何卵用的，反正智商门槛太高了，并不是我安利了别人就有能力用的。</p>
+<p>接下来我挑几个例子，在我博客程序里是怎么利用 PureScript 的。</p>
+<h3><a name="模板-DSL" class="anchor" href="#模板-DSL"><span class="header-link">▶</span></a>模板 DSL</h3><p>待续……</p>
+<h3><a name="异步控制" class="anchor" href="#异步控制"><span class="header-link">▶</span></a>异步控制</h3><p>待续……</p>
+</div><div class="article-date"><small>2016-03-11 02:14:18 | 2016-02-27 01:17:48</small></div><div class="pure-u-1 comments"><div class="pure-g"><div class="pure-u-1" id="disqus_thread"></div><script>var disqus_config = function () {this.page.identifier = "article_2"; this.page.title = document.title; this.page.url = location.href;}; (function() { var d = document, s = d.createElement('script'); s.src = '//lovearia.disqus.com/embed.js'; s.setAttribute('data-timestamp', +new Date()); (d.head || d.body).appendChild(s);})();</script></div></div></div><div class="footer"></div></div></div></body></html>
